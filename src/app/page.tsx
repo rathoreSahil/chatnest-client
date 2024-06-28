@@ -1,29 +1,24 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import LogoutButton from "@/components/logout-button";
-import { useAuth } from "@/context/auth-provider";
+"use client";
 
-function LoginSignupButtons() {
-  return (
-    <>
-      <Button asChild>
-        <Link href="/login">Login</Link>
-      </Button>
-      <Button asChild>
-        <Link href="/signup">Signup</Link>
-      </Button>
-    </>
-  );
-}
+import { useAuth } from "@/context/auth-provider";
+import Sidebar from "@/components/sidebar";
+import Chat from "@/components/chat";
+import LoginSignupButtons from "@/components/loginSignup-buttons";
+import LogoutButton from "@/components/logout-button";
 
 export default function Home() {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { user } = useAuth();
 
   return (
     <>
-      <h1>Home</h1>
-      <p>Welcome!</p>
-      <LogoutButton />
+      <div className="flex justify-center gap-4 p-4">
+        <LoginSignupButtons />
+        <LogoutButton />
+      </div>
+      <div className="flex">
+        <Sidebar />
+        <Chat />
+      </div>
     </>
   );
 }

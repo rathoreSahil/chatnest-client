@@ -1,11 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/auth-provider";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const LogoutButton = () => {
   const router = useRouter();
+  const { setUser } = useAuth();
 
   async function handleLogout() {
     try {
@@ -16,6 +18,7 @@ const LogoutButton = () => {
         }
       );
       if (response.ok) {
+        setUser(null);
         toast.success("Logged out successfully!");
       } else {
         toast.error("An unexpected error occurred!");
@@ -25,7 +28,11 @@ const LogoutButton = () => {
     }
   }
 
-  return <Button onClick={handleLogout}>LogOut</Button>;
+  return (
+    <Button className="rounded-full" onClick={handleLogout}>
+      LogOut
+    </Button>
+  );
 };
 
 export default LogoutButton;

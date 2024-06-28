@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/theme-provider";
 import { Toaster } from "react-hot-toast";
 import AuthContextProvider from "@/context/auth-provider";
+import { SocketContextProvider } from "@/context/socket-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning={true} lang="en">
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -27,8 +28,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthContextProvider>
-            {children}
-            <Toaster />
+            <SocketContextProvider>
+              {children}
+              <Toaster />
+            </SocketContextProvider>
           </AuthContextProvider>
         </ThemeProvider>
       </body>

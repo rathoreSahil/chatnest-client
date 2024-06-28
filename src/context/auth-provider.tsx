@@ -8,8 +8,8 @@ import {
 } from "react";
 
 type AuthContextType = {
-  isLoggedIn: boolean;
-  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+  user: object | null;
+  setUser: Dispatch<SetStateAction<object | null>>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -17,10 +17,10 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null as object | null);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

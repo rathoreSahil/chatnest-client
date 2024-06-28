@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/auth-provider";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -23,6 +24,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,10 +44,14 @@ export function LoginForm() {
         credentials: "include",
         body: JSON.stringify(values),
       });
+
+      const responseJson = await response.json();
+
       if (response.ok) {
+        setUser(responseJson.data);
         toast.success("Logged in successfully!");
+        router.push("/");
       } else {
-        const responseJson = await response.json();
         toast.error(responseJson.message);
       }
     } catch (error) {
