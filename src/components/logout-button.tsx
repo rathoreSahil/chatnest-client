@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { MdLogout } from "react-icons/md";
 
 const LogoutButton = () => {
   const router = useRouter();
@@ -20,6 +21,7 @@ const LogoutButton = () => {
       if (response.ok) {
         setUser(null);
         toast.success("Logged out successfully!");
+        window.location.reload();
       } else {
         toast.error("An unexpected error occurred!");
       }
@@ -30,7 +32,7 @@ const LogoutButton = () => {
 
   return (
     <Button className="rounded-full" onClick={handleLogout}>
-      LogOut
+      Logout
     </Button>
   );
 };

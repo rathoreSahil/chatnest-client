@@ -1,24 +1,28 @@
 "use client";
 
 import { useAuth } from "@/context/auth-provider";
-import Sidebar from "@/components/sidebar";
-import Chat from "@/components/chat";
-import LoginSignupButtons from "@/components/loginSignup-buttons";
-import LogoutButton from "@/components/logout-button";
+import { useEffect } from "react";
+
+import LoggedInComponent from "@/components/logged-in-component";
+import LoggedOutComponent from "@/components/logged-out-component";
+import { useSocket } from "@/context/socket-provider";
 
 export default function Home() {
   const { user } = useAuth();
+  const socket = useSocket();
 
-  return (
-    <>
-      <div className="flex justify-center gap-4 p-4">
-        <LoginSignupButtons />
-        <LogoutButton />
-      </div>
-      <div className="flex">
-        <Sidebar />
-        <Chat />
-      </div>
-    </>
-  );
+  useEffect(() => {
+    if (!socket) return;
+
+    if (user) {
+      socket.connect();
+    } else {
+      socket.disconnect();
+    }
+    return () => {
+      socket.disconnect();
+    };
+  }, [user, socket]);
+
+  return <>{user ? <LoggedInComponent /> : <LoggedOutComponent />}</>;
 }

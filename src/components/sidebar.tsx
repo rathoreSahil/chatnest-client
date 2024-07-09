@@ -1,5 +1,12 @@
+import LogoutButton from "@/components/logout-button";
+
 const Sidebar = () => {
-  return <div className="border-2 h-lvh flex-[1]">Sidebar</div>;
+  return (
+    <div className="border-2 flex-[1]">
+      Sidebar
+      <LogoutButton />
+    </div>
+  );
 };
 
 export default Sidebar;

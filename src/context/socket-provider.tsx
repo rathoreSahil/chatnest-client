@@ -1,20 +1,41 @@
 "use client";
 
-import { socket } from "@/socket";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
+import { useAuth } from "@/context/auth-provider";
 
-const SocketContext = createContext(socket);
+const SocketContext = createContext<Socket | null>(null);
 
-export const SocketContextProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) return;
+
+    const newSocket = io("http://localhost:3182", {
+      autoConnect: false,
+    });
+
+    newSocket.on("connect", () => {
+      console.log("socket connected: ", newSocket.id);
+      console.log("user connected: ", user.name);
+    });
+
+    newSocket.on("disconnect", () => {
+      console.log("socket disconnected");
+    });
+
+    setSocket(newSocket);
+  }, [user]);
+
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 
-export const useSocket = () => {
+const useSocket = () => {
   return useContext(SocketContext);
 };
+
+export { SocketContextProvider, useSocket };

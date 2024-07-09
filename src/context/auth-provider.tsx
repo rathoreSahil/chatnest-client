@@ -4,12 +4,19 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
+type UserType = {
+  _id: string;
+  email: string;
+  name: string;
+};
+
 type AuthContextType = {
-  user: object | null;
-  setUser: Dispatch<SetStateAction<object | null>>;
+  user: UserType | null;
+  setUser: Dispatch<SetStateAction<UserType | null>>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -17,7 +24,32 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(null as object | null);
+  const [user, setUser] = useState(null as UserType | null);
+
+  useEffect(() => {
+    async function checkLoggedIn() {
+      try {
+        const res = await fetch(
+          "http://localhost:3182/api/v1/users/is-logged-in",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        const resJson = await res.json();
+
+        if (res.ok) {
+          setUser(resJson.data.user);
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred:", error);
+        setUser(null);
+      }
+    }
+
+    checkLoggedIn();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
