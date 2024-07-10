@@ -3,9 +3,9 @@
 import { useAuth } from "@/context/auth-provider";
 import { useEffect } from "react";
 
-import LoggedInComponent from "@/components/logged-in-component";
-import LoggedOutComponent from "@/components/logged-out-component";
 import { useSocket } from "@/context/socket-provider";
+import LoggedInComponent from "@/components/auth/logged-in-component";
+import LoggedOutComponent from "@/components/auth/logged-out-component";
 
 export default function Home() {
   const { user } = useAuth();

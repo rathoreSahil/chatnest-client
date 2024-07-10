@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { MdLogout } from "react-icons/md";
 
 const LogoutButton = () => {
   const router = useRouter();

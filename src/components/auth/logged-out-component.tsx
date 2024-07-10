@@ -1,4 +1,4 @@
-import LoginSignupButtons from "@/components/loginSignup-buttons";
+import LoginSignupButtons from "@/components/auth/loginSignup-buttons";
 
 const LoggedOutComponent = () => {
   return <LoginSignupButtons />;

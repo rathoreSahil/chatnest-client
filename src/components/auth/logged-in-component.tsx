@@ -1,5 +1,7 @@
-import Chat from "@/components/chat";
-import Sidebar from "@/components/sidebar";
+"use client";
+
+import Chat from "@/components/chat-window/chat";
+import Sidebar from "@/components/sidebar/sidebar";
 
 const LoggedInComponent = () => {
   return (
