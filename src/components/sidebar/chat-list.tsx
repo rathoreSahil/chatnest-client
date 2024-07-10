@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/auth-provider";
-import { useSocket } from "@/context/socket-provider";
 import { Chat } from "@/lib/types";
 import { getChatsByUserId } from "@/lib/utils";
 import { useStore } from "@/lib/zustand";
@@ -10,7 +9,6 @@ import { useEffect, useState } from "react";
 const ChatList = () => {
   const [chats, setChats] = useState<Chat[] | undefined>(undefined);
   const [filteredChats, setFilteredChats] = useState<Chat[]>([]);
-  const socket = useSocket();
   const { user } = useAuth();
 
   const search = useStore((state) => state.search);
@@ -32,11 +30,6 @@ const ChatList = () => {
     setFilteredChats(results);
   }, [chats, search]);
 
-  const openChat = (chat: Chat) => {
-    if (!socket) return;
-    setCurrentChat(chat);
-  };
-
   if (!chats) return <div>Loading...</div>;
 
   return (
@@ -44,7 +37,7 @@ const ChatList = () => {
       {filteredChats.map((chat) => {
         return (
           <div
-            onClick={() => openChat(chat)}
+            onClick={() => setCurrentChat(chat)}
             key={chat._id}
             className="p-4 cursor-pointer hover:bg-slate-900"
           >

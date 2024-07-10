@@ -1,32 +1,27 @@
 "use client";
 
-import { useSocket } from "@/context/socket-provider";
-import { Message } from "@/lib/types";
+import { useStore } from "@/lib/zustand";
+import ChatHistory from "@/components/chat-window/chat-history";
 import { useEffect, useState } from "react";
+import { Message } from "@/lib/types";
 
 const ChatContent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const socket = useSocket();
+  const currentChat = useStore((state) => state.currentChat);
 
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("message", (message: Message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    return () => {
-      socket.off("message");
-    };
-  }, [socket]);
+  useEffect(() => {}, []);
 
   return (
     <div className="flex-1">
-      {messages.map((message, index) => (
-        <div key={index} className="p-4">
-          {message.content}
-        </div>
-      ))}
+      <ChatHistory />
+      {messages.map((message, index) => {
+        if (message.chat === currentChat?._id)
+          return (
+            <div key={index} className="p-4">
+              {message.content}
+            </div>
+          );
+      })}
     </div>
   );
 };

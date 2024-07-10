@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Chat } from "@/lib/types";
+import { Chat, Message } from "@/lib/types";
 
 type Store = {
   currentChat: Chat | null;

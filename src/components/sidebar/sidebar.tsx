@@ -1,7 +1,7 @@
 "use client";
 
 import LogoutButton from "@/components/auth/logout-button";
-import ChatList from "@/components/chat-window/chat-list";
+import ChatList from "@/components/sidebar/chat-list";
 import Search from "@/components/sidebar/search";
 
 const Sidebar = () => {

@@ -8,6 +8,7 @@ const SocketContext = createContext<Socket | null>(null);
 
 const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
     newSocket.on("connect", () => {
       console.log("socket connected: ", newSocket.id);
       console.log("user connected: ", user.name);
+      newSocket.emit("join-rooms", user._id);
     });
 
     newSocket.on("disconnect", () => {

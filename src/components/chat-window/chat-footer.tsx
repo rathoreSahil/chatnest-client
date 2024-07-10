@@ -6,26 +6,38 @@ import { Input } from "@/components/ui/input";
 import { SendHorizontal } from "lucide-react";
 import { useState } from "react";
 import { useStore } from "@/lib/zustand";
+import { useAuth } from "@/context/auth-provider";
+import { addMessageToDB } from "@/lib/utils";
 
 const ChatFooter = () => {
-  const [message, setMessage] = useState("");
+  const [messageContent, setMessageContent] = useState("");
   const socket = useSocket();
   const currentChat = useStore((state) => state.currentChat);
+  const { user } = useAuth();
 
   function handleSend(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log("message", message);
     if (!socket) return;
-    if (!message) return;
-    socket.emit("message", message, currentChat);
-    setMessage("");
+    if (!messageContent) return;
+
+    const message = {
+      chat: currentChat!._id,
+      sender: user!._id,
+      content: messageContent,
+      createdAt: new Date(),
+    };
+
+    console.log("message", message);
+    addMessageToDB(message);
+    socket.emit("message", message);
+    setMessageContent("");
   }
 
   return (
     <form onSubmit={handleSend} className="flex gap-4 p-4">
       <Input
-        value={message}
-        onChange={(event) => setMessage(event.target.value)}
+        value={messageContent}
+        onChange={(event) => setMessageContent(event.target.value)}
         placeholder="Type a message..."
         className="rounded-xl"
       />
