@@ -9,7 +9,7 @@ const Chat = () => {
   const currentChat = useStore((state) => state.currentChat);
 
   return (
-    <div className="flex flex-col border-2 flex-[2]">
+    <div className="flex flex-col bg-gray-900 flex-[20]">
       {currentChat ? (
         <>
           <ChatHeader />
@@ -17,7 +17,11 @@ const Chat = () => {
           <ChatFooter />
         </>
       ) : (
-        "Select a chat to start chatting!"
+        <div className="text-center my-auto">
+          Welcome to Chatnest.
+          <br />
+          Select a chat to start chatting!
+        </div>
       )}
     </div>
   );

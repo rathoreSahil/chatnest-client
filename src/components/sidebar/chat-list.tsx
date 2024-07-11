@@ -9,7 +9,9 @@ import { useEffect, useState } from "react";
 const ChatList = () => {
   const [chats, setChats] = useState<Chat[] | undefined>(undefined);
   const [filteredChats, setFilteredChats] = useState<Chat[]>([]);
+
   const { user } = useAuth();
+  const isNewChatModalOpen = useStore((state) => state.isNewChatModalOpen);
 
   const search = useStore((state) => state.search);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
@@ -34,17 +36,21 @@ const ChatList = () => {
 
   return (
     <div className="flex-1">
-      {filteredChats.map((chat) => {
-        return (
-          <div
-            onClick={() => setCurrentChat(chat)}
-            key={chat._id}
-            className="p-4 cursor-pointer hover:bg-slate-900"
-          >
-            {chat.name}
-          </div>
-        );
-      })}
+      {filteredChats.length ? (
+        filteredChats.map((chat) => {
+          return (
+            <div
+              onClick={() => setCurrentChat(chat)}
+              key={chat._id}
+              className="p-4 cursor-pointer hover:bg-slate-900"
+            >
+              {chat.name}
+            </div>
+          );
+        })
+      ) : (
+        <div className="text-center mt-10">Your chats will appear here...</div>
+      )}
     </div>
   );
 };

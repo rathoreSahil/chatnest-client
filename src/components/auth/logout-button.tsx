@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { MdOutlineLogout } from "react-icons/md";
 
 const LogoutButton = () => {
   const router = useRouter();
@@ -30,8 +31,8 @@ const LogoutButton = () => {
   }
 
   return (
-    <Button className="rounded-full" onClick={handleLogout}>
-      Logout
+    <Button className="w-min" onClick={handleLogout}>
+      <MdOutlineLogout />
     </Button>
   );
 };

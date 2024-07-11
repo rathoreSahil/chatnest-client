@@ -6,9 +6,21 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function getChatsByUserId(
-  userId: string
-): Promise<Chat[] | undefined> {
+export async function getChatIdsByUserId(userId: string): Promise<string[]> {
+  try {
+    const res = await fetch(
+      `http://localhost:3182/api/v1/chats/chat-ids/${userId}`
+    );
+    const resJson = await res.json();
+
+    return resJson.data;
+  } catch (error) {
+    console.error("error fetching chat ids", error);
+    return [];
+  }
+}
+
+export async function getChatsByUserId(userId: string): Promise<Chat[]> {
   try {
     const res = await fetch(`http://localhost:3182/api/v1/chats/${userId}`);
     const resJson = await res.json();
@@ -16,6 +28,7 @@ export async function getChatsByUserId(
     return resJson.data;
   } catch (error) {
     console.error("error fetching chats", error);
+    return [];
   }
 }
 
@@ -41,6 +54,6 @@ export async function addMessageToDB(message: Message) {
       body: JSON.stringify({ message }),
     });
   } catch (error) {
-    console.error("error adding messages", error);
+    console.error("error adding message to DB", error);
   }
 }

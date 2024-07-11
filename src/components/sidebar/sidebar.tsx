@@ -1,15 +1,15 @@
 "use client";
 
-import LogoutButton from "@/components/auth/logout-button";
 import ChatList from "@/components/sidebar/chat-list";
 import Search from "@/components/sidebar/search";
+import Menubar from "@/components/menubar/menubar";
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col border-2 flex-[1]">
+    <div className="flex flex-col border-x flex-[9]">
+      <Menubar />
       <Search />
       <ChatList />
-      <LogoutButton />
     </div>
   );
 };
