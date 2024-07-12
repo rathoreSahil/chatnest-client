@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { Fetch } from "@/lib/fetch";
+import { User } from "@/lib/types";
+import { useState, useCallback } from "react";
 
-const useFetchUsers = () => {
-  const [loading, setLoading] = useState<Boolean>(true);
+const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
+  const [loading, setLoading] = useState<boolean>(true);
 
-  async function fetchUsers() {
+  const fetchUsers = useCallback(async (): Promise<User[]> => {
     try {
-      const res = await fetch("http://localhost:3182/api/v1/users");
-      const resJson = await res.json();
-
+      const resJson = await Fetch.GET("/users");
       return resJson.data;
-    } catch (error) {
-      console.error("error fetching users", error);
+    } catch (error: any) {
+      console.error("error fetching users", error.message);
       return [];
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   return [loading, fetchUsers];
 };

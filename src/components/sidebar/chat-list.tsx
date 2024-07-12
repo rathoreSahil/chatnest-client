@@ -1,30 +1,31 @@
 "use client";
 
 import { useAuth } from "@/context/auth-provider";
+import useFetchChats from "@/hooks/useFetchChats";
 import { Chat } from "@/lib/types";
-import { getChatsByUserId } from "@/lib/utils";
 import { useStore } from "@/lib/zustand";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ChatList = () => {
-  const [chats, setChats] = useState<Chat[] | undefined>(undefined);
+  const [chats, setChats] = useState<Chat[]>([]);
   const [filteredChats, setFilteredChats] = useState<Chat[]>([]);
+  const [loading, fetChatsByUserId] = useFetchChats();
 
   const { user } = useAuth();
-  const isNewChatModalOpen = useStore((state) => state.isNewChatModalOpen);
 
   const search = useStore((state) => state.search);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
 
   useEffect(() => {
     if (!user) return;
-    getChatsByUserId(user._id).then((data) => {
+    fetChatsByUserId(user._id).then((data) => {
       setChats(data);
     });
-  }, [user]);
+  }, [user, fetChatsByUserId]);
 
   useEffect(() => {
-    if (!chats) return;
+    if (!chats.length) return;
     const results = chats.filter((chat) =>
       chat.name.toLowerCase().includes(search.toLowerCase())
     );
@@ -32,7 +33,9 @@ const ChatList = () => {
     setFilteredChats(results);
   }, [chats, search]);
 
-  if (!chats) return <div>Loading...</div>;
+  if (loading) {
+    return <Loader2 className="animate-spin w-full" />;
+  }
 
   return (
     <div className="flex-1">

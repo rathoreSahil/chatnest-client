@@ -2,7 +2,6 @@ import { FaPlus } from "react-icons/fa";
 import { Button } from "../ui/button";
 import useFetchUsers from "@/hooks/useFetchUsers";
 import { useStore } from "@/lib/zustand";
-import { set } from "react-hook-form";
 
 const NewChatButton = () => {
   const setIsNewChatModalOpen = useStore(

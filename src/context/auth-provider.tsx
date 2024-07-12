@@ -1,4 +1,6 @@
 "use client";
+import { Fetch } from "@/lib/fetch";
+import { User } from "@/lib/types";
 import {
   Dispatch,
   SetStateAction,
@@ -8,15 +10,9 @@ import {
   useState,
 } from "react";
 
-type UserType = {
-  _id: string;
-  email: string;
-  name: string;
-};
-
 type AuthContextType = {
-  user: UserType | null;
-  setUser: Dispatch<SetStateAction<UserType | null>>;
+  user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -24,24 +20,13 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(null as UserType | null);
+  const [user, setUser] = useState(null as User | null);
 
   useEffect(() => {
     async function checkLoggedIn() {
       try {
-        const res = await fetch(
-          "http://localhost:3182/api/v1/users/is-logged-in",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-
-        const resJson = await res.json();
-
-        if (res.ok) {
-          setUser(resJson.data.user);
-        }
+        const resJson = await Fetch.GET("/users/is-logged-in");
+        setUser(resJson.data.user);
       } catch (error) {
         console.error("An unexpected error occurred:", error);
         setUser(null);

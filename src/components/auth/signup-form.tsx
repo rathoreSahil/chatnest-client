@@ -16,9 +16,14 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAuth } from "@/context/auth-provider";
+import { Fetch } from "@/lib/fetch";
 
 const formSchema = z.object({
-  name: z.string().min(3).max(50),
+  name: z
+    .string()
+    .min(3)
+    .max(50)
+    .regex(/^[a-zA-Z0-9]*$/, "Must be alphanumeric"),
   email: z.string().email(),
   password: z.string().min(8),
   passwordConfirm: z.string().min(8),
@@ -40,27 +45,13 @@ export function SignupForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch(
-        "http://localhost:3182/api/v1/users/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(values),
-        }
-      );
-      const responseJson = await response.json();
+      const responseJson = await Fetch.POST("/users/signup", values);
 
-      if (response.ok) {
-        setUser(responseJson.data);
-        toast.success("Signed Up successfully!");
-        router.push("/");
-      } else {
-        toast.error(responseJson.message);
-      }
-    } catch (error) {
+      setUser(responseJson.data);
+      toast.success("Signed Up successfully!");
+      router.push("/");
+    } catch (error: any) {
+      toast.error(error.message);
       console.error("An unexpected error occurred:", error);
     }
   }

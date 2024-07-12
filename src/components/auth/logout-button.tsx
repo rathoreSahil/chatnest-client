@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
+import { Fetch } from "@/lib/fetch";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { MdOutlineLogout } from "react-icons/md";
@@ -12,20 +13,11 @@ const LogoutButton = () => {
 
   async function handleLogout() {
     try {
-      const response = await fetch(
-        "http://localhost:3182/api/v1/users/logout",
-        {
-          credentials: "include",
-        }
-      );
-      if (response.ok) {
-        setUser(null);
-        toast.success("Logged out successfully!");
-        window.location.reload();
-      } else {
-        toast.error("An unexpected error occurred!");
-      }
-    } catch (error) {
+      await Fetch.GET("/users/logout");
+      setUser(null);
+      toast.success("Logged out successfully!");
+    } catch (error: any) {
+      toast.error(error.message);
       console.error("An unexpected error occurred:", error);
     }
   }
