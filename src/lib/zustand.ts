@@ -1,22 +1,26 @@
 import { create } from "zustand";
-import { Chat, Message } from "@/lib/types";
+import { Chat } from "@/lib/types";
 
 type Store = {
-  isNewChatModalOpen: boolean;
+  chatModalType: "chat" | "new-chat" | "new-group-chat" | "profile";
   currentChat: Chat | null;
   search: string;
 
-  setIsNewChatModalOpen: (open: boolean) => void;
+  setChatModalType: (
+    type: "chat" | "new-chat" | "new-group-chat" | "profile"
+  ) => void;
   setCurrentChat: (newChat: Chat) => void;
   setSearch: (search: string) => void;
 };
 
 const useStore = create<Store>()((set) => ({
-  isNewChatModalOpen: false,
+  chatModalType: "chat",
   currentChat: null,
   search: "",
 
-  setIsNewChatModalOpen: (open: boolean) => set({ isNewChatModalOpen: open }),
+  setChatModalType: (
+    type: "chat" | "new-chat" | "new-group-chat" | "profile"
+  ) => set({ chatModalType: type }),
   setCurrentChat: (newChat: Chat) => set({ currentChat: newChat }),
   setSearch: (search: string) => set({ search }),
 }));

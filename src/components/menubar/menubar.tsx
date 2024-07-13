@@ -1,31 +1,39 @@
-import LogoutButton from "@/components/auth/logout-button";
-import NewChatButton from "@/components/menubar/new-chat-button";
 import { useStore } from "@/lib/zustand";
-import { Button } from "@/components/ui/button";
-import { IoArrowBackSharp } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
+import { Button } from "../ui/button";
+import Dropdown from "@/components/menubar/dropdown";
+import MenuHeader from "./menu-header";
 
 const Menubar = () => {
-  const isNewChatModalOpen = useStore((state) => state.isNewChatModalOpen);
-  const setIsNewChatModalOpen = useStore(
-    (state) => state.setIsNewChatModalOpen
-  );
-  return (
-    <div className="p-3 space-x-2 bg-black border">
-      {isNewChatModalOpen ? (
-        <>
-          <Button variant="ghost" onClick={() => setIsNewChatModalOpen(false)}>
-            <IoArrowBackSharp className="text-xl" />
-          </Button>
-          <span>New Chat</span>
-        </>
-      ) : (
-        <>
-          <NewChatButton />
-          <LogoutButton />
-        </>
-      )}
-    </div>
-  );
+  const chatModalType = useStore((state) => state.chatModalType);
+  const setChatModalType = useStore((state) => state.setChatModalType);
+
+  if (chatModalType === "chat") {
+    return (
+      <div className="flex items-center justify-end gap-2 p-3 bg-black border">
+        <Button
+          size={"sm"}
+          variant="base"
+          onClick={() => setChatModalType("new-chat")}
+          className="rounded-lg "
+        >
+          <FaPlus className="text-white" />
+        </Button>
+        <Dropdown />
+      </div>
+    );
+  }
+
+  let title = "";
+  if (chatModalType === "new-chat") {
+    title = "New Chat";
+  } else if (chatModalType === "new-group-chat") {
+    title = "New Group Chat";
+  } else if (chatModalType === "profile") {
+    title = "Profile";
+  }
+
+  return <MenuHeader title={title} />;
 };
 
 export default Menubar;

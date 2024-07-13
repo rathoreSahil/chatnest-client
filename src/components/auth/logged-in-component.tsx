@@ -16,7 +16,7 @@ const LoggedInComponent = () => {
         <ResizablePanel defaultSize={30}>
           <Sidebar />
         </ResizablePanel>
-        <ResizableHandle withHandle />
+        <ResizableHandle />
         <ResizablePanel defaultSize={70}>
           <Chat />
         </ResizablePanel>

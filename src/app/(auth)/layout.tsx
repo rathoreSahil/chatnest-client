@@ -7,13 +7,11 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <div className="flex flex-col gap-10 justify-center items-center h-lvh">
-        <Button className="rounded-full" asChild>
-          <Link href="/">Home</Link>
-        </Button>
-        {children}
-      </div>
-    </>
+    <div className="flex flex-col gap-10 justify-center items-center h-lvh">
+      <Button asChild>
+        <Link href="/">Home</Link>
+      </Button>
+      {children}
+    </div>
   );
 }

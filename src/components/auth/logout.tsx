@@ -1,13 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { Fetch } from "@/lib/fetch";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { MdOutlineLogout } from "react-icons/md";
 
-const LogoutButton = () => {
+const Logout = () => {
   const router = useRouter();
   const { setUser } = useAuth();
 
@@ -22,11 +20,7 @@ const LogoutButton = () => {
     }
   }
 
-  return (
-    <Button className="w-min" onClick={handleLogout}>
-      <MdOutlineLogout />
-    </Button>
-  );
+  return <div onClick={handleLogout}>Logout</div>;
 };
 
-export default LogoutButton;
+export default Logout;

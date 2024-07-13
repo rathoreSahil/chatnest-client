@@ -9,9 +9,7 @@ const UserList = () => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, fetchUsers] = useFetchUsers();
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setIsNewChatModalOpen = useStore(
-    (state) => state.setIsNewChatModalOpen
-  );
+  const setChatModalType = useStore((state) => state.setChatModalType);
   const search = useStore((state) => state.search);
 
   // fetch users
@@ -36,7 +34,7 @@ const UserList = () => {
   async function handleClick(user: User) {
     try {
       setCurrentChat(user);
-      setIsNewChatModalOpen(false);
+      setChatModalType("chat");
     } catch (error: any) {
       console.error("error creating chat", error.message);
     }

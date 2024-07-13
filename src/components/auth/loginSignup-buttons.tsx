@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 
 function LoginSignupButtons() {
   return (
-    <>
-      <Button className="rounded-full" asChild>
+    <div className="flex pt-4 gap-4">
+      <Button asChild>
         <Link href="/login">Login</Link>
       </Button>
-      <Button className="rounded-full" asChild>
+      <Button asChild>
         <Link href="/signup">Signup</Link>
       </Button>
-    </>
+    </div>
   );
 }
 
