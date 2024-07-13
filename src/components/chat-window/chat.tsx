@@ -9,7 +9,7 @@ const Chat = () => {
   const currentChat = useStore((state) => state.currentChat);
 
   return (
-    <div className="flex flex-col bg-gray-900 flex-[20]">
+    <div className="flex flex-col bg-gray-900 h-full">
       {currentChat ? (
         <>
           <ChatHeader />

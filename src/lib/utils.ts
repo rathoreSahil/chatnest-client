@@ -19,17 +19,6 @@ export async function getChatIdsByUserId(userId: string): Promise<string[]> {
   }
 }
 
-export async function getMessagesByChatId(chatId: string): Promise<Message[]> {
-  try {
-    const resJson = await Fetch.GET(`/messages/${chatId}`);
-
-    return resJson.data;
-  } catch (error: any) {
-    console.error("error fetching chats", error.messages);
-    return [];
-  }
-}
-
 export async function addMessageToDB(message: Message) {
   try {
     await Fetch.POST(`/messages`, { message });

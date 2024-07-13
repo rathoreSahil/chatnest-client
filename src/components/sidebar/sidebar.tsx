@@ -10,7 +10,7 @@ const Sidebar = () => {
   const isNewChatModalOpen = useStore((state) => state.isNewChatModalOpen);
 
   return (
-    <div className="flex flex-col border-x flex-[9]">
+    <div className="flex flex-col border-x">
       <Menubar />
       <Search />
       {isNewChatModalOpen ? <UserList /> : <ChatList />}

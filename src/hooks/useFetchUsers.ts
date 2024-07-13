@@ -7,6 +7,7 @@ const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
 
   const fetchUsers = useCallback(async (): Promise<User[]> => {
     try {
+      setLoading(true);
       const resJson = await Fetch.GET("/users");
       return resJson.data;
     } catch (error: any) {

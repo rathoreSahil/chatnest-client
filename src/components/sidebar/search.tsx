@@ -9,7 +9,7 @@ const Search = () => {
   }));
 
   return (
-    <div className="p-4 pt-0">
+    <div className="p-4">
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}

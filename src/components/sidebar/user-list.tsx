@@ -1,6 +1,4 @@
-import { useAuth } from "@/context/auth-provider";
 import useFetchUsers from "@/hooks/useFetchUsers";
-import { Fetch } from "@/lib/fetch";
 import { User } from "@/lib/types";
 import { useStore } from "@/lib/zustand";
 import { Loader2 } from "lucide-react";
@@ -16,8 +14,7 @@ const UserList = () => {
   );
   const search = useStore((state) => state.search);
 
-  const { user: currentUser } = useAuth();
-
+  // fetch users
   useEffect(() => {
     console.log("fetching users");
     fetchUsers().then((data) => {
@@ -25,6 +22,7 @@ const UserList = () => {
     });
   }, [fetchUsers]);
 
+  // filter users based on search
   useEffect(() => {
     if (!users.length) return;
     const results = users.filter((chat) =>
@@ -34,37 +32,26 @@ const UserList = () => {
     setFilteredUsers(results);
   }, [users, search]);
 
+  // handle new chat click
   async function handleClick(user: User) {
     try {
-      // create new chat
-      const newChatDetails = { name: `${currentUser?.name}-${user.name}` };
-      const res = await Fetch.POST("/chats", newChatDetails);
-
-      const newChat = res.data;
-      const newChatId = res.data._id;
-
-      // create 2 participants for the chat - currentUser and user
-      const newParticipantsData = {
-        participants: [
-          { chat: newChatId, user: currentUser?._id },
-          { chat: newChatId, user: user._id },
-        ],
-      };
-
-      await Fetch.POST("/participants", newParticipantsData);
-
-      // set current chat
-      setCurrentChat(newChat);
+      setCurrentChat(user);
       setIsNewChatModalOpen(false);
     } catch (error: any) {
       console.error("error creating chat", error.message);
     }
   }
 
+  // loading state
   if (loading) {
-    return <Loader2 className="animate-spin w-full" />;
+    return (
+      <div className="flex-1">
+        <Loader2 className="animate-spin w-full" />
+      </div>
+    );
   }
 
+  // render users
   return (
     <div className="flex-1">
       {filteredUsers.length ? (

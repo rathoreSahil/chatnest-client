@@ -15,7 +15,7 @@ const NewChatButton = () => {
   return (
     <Button
       onClick={handleNewChatAction}
-      className=" bg-slate-800 w-min hover:bg-slate-800"
+      className=" bg-slate-800 w-min hover:bg-slate-800 border border-white border-opacity-25"
     >
       <FaPlus className="text-white" />
     </Button>

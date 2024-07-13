@@ -10,7 +10,7 @@ const Menubar = () => {
     (state) => state.setIsNewChatModalOpen
   );
   return (
-    <div className="p-4 space-x-2">
+    <div className="p-3 space-x-2 bg-black border">
       {isNewChatModalOpen ? (
         <>
           <Button variant="ghost" onClick={() => setIsNewChatModalOpen(false)}>
