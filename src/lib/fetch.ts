@@ -10,6 +10,10 @@ enum Request {
 
 type RequestMethod = `${Request}`;
 
+type RequestHeaders = {
+  [key: string]: string;
+};
+
 type RequestBody = {
   [key: string]: unknown;
 };
@@ -21,16 +25,28 @@ export class Fetch {
     return this.requestFn(url, Request.GET);
   }
 
-  static async POST(url: string, reqBody: RequestBody) {
-    return this.requestFn(url, Request.POST, reqBody);
+  static async POST(
+    url: string,
+    reqBody: RequestBody | FormData,
+    reqHeaders?: RequestHeaders
+  ) {
+    return this.requestFn(url, Request.POST, reqBody, reqHeaders);
   }
 
-  static async PATCH(url: string, reqBody: RequestBody) {
-    return this.requestFn(url, Request.PATCH, reqBody);
+  static async PATCH(
+    url: string,
+    reqBody: RequestBody | FormData,
+    reqHeaders?: RequestHeaders
+  ) {
+    return this.requestFn(url, Request.PATCH, reqBody, reqHeaders);
   }
 
-  static async PUT(url: string, reqBody: RequestBody) {
-    return this.requestFn(url, Request.PUT, reqBody);
+  static async PUT(
+    url: string,
+    reqBody: RequestBody | FormData,
+    reqHeaders?: RequestHeaders
+  ) {
+    return this.requestFn(url, Request.PUT, reqBody, reqHeaders);
   }
 
   static async DELETE(url: string) {
@@ -40,21 +56,22 @@ export class Fetch {
   private static async requestFn(
     url: string,
     method: RequestMethod,
-    reqBody?: RequestBody
+    reqBody?: RequestBody | FormData,
+    reqHeaders?: RequestHeaders
   ) {
     const reqContent: RequestContent = {
       method,
-      headers: {
+      headers: reqHeaders || {
         "Content-Type": "application/json",
       },
       credentials: "include",
     };
     if (reqBody) {
-      reqContent.body = JSON.stringify(reqBody);
+      const isFormData = reqBody instanceof FormData;
+      reqContent.body = isFormData ? reqBody : JSON.stringify(reqBody);
     }
 
     const resp = await fetch(`${API_URL}${url}`, reqContent);
-
     const data = await resp.json();
 
     if (!resp.ok || resp.status >= 400) {
