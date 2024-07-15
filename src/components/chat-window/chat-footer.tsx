@@ -29,7 +29,10 @@ const ChatFooter = () => {
       const otherUser = JSON.parse(JSON.stringify(currentChat));
 
       // create new chat
-      const newChatDetails = { name: `${currentUser?.name}-${otherUser.name}` };
+      const newChatDetails = {
+        name: `${currentUser?.name}-${otherUser.name}`,
+        photo: `${currentUser?.photo} ${otherUser.photo}`,
+      };
       const res = await Fetch.POST("/chats", newChatDetails);
       const newChat = res.data;
       const newChatId = res.data._id;

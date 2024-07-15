@@ -9,10 +9,12 @@ const Sidebar = () => {
   const chatModalType = useStore((state) => state.chatModalType);
 
   return (
-    <div className="flex flex-col border-x">
+    <div className="flex flex-col border-x h-full">
       <Menubar />
       {chatModalType !== "profile" && <Search />}
-      <SidebarContent />
+      <div className="flex-1">
+        <SidebarContent />
+      </div>
     </div>
   );
 };

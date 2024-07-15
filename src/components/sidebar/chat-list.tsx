@@ -7,6 +7,7 @@ import { Chat } from "@/lib/types";
 import { useStore } from "@/lib/zustand";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import ProfilePhoto from "../profile/profile-photo";
 
 const ChatList = () => {
   const [chats, setChats] = useState<Chat[]>([]);
@@ -59,18 +60,24 @@ const ChatList = () => {
 
   // render chats
   return (
-    <div className="flex-1">
+    <>
       {filteredChats.length ? (
         filteredChats.map((chat) => {
+          console.log("Chat:", chat.photo);
           const displayName = chat.name
             .split("-")
-            .filter((name) => name !== user?.name);
+            .filter((name) => name !== user?.name)[0];
+
+          const chatPhoto = chat.photo
+            .split(" ")
+            .filter((photo) => photo !== user?.photo)[0];
           return (
             <div
               onClick={() => setCurrentChat(chat)}
               key={chat._id}
-              className="p-4 cursor-pointer hover:bg-slate-900"
+              className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
             >
+              <ProfilePhoto src={chatPhoto} />
               {displayName}
             </div>
           );
@@ -78,7 +85,7 @@ const ChatList = () => {
       ) : (
         <div className="text-center mt-10">Your chats will appear here...</div>
       )}
-    </div>
+    </>
   );
 };
 

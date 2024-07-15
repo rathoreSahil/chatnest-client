@@ -3,6 +3,7 @@ import { User } from "@/lib/types";
 import { useStore } from "@/lib/zustand";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import ProfilePhoto from "../profile/profile-photo";
 
 const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -51,23 +52,28 @@ const UserList = () => {
 
   // render users
   return (
-    <div className="flex-1">
+    <>
       {filteredUsers.length ? (
         filteredUsers.map((user) => {
+          console.log("User:", user.photo);
           return (
             <div
               onClick={() => handleClick(user)}
               key={user._id}
-              className="p-4 cursor-pointer hover:bg-slate-900"
+              className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
             >
-              {user.name}
+              <ProfilePhoto src={user.photo} />
+              <div>
+                <p>{user.name}</p>
+                <p className="opacity-50 text-sm italic">{user.description}</p>
+              </div>
             </div>
           );
         })
       ) : (
         <div className="text-center mt-10">User list will appear here...</div>
       )}
-    </div>
+    </>
   );
 };
 

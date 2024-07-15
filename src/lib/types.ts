@@ -2,7 +2,8 @@ type User = {
   _id: string;
   name: string;
   email: string;
-  photo?: string;
+  description?: string;
+  photo: string;
   role: "user" | "admin";
 };
 
@@ -10,7 +11,7 @@ type Chat = {
   _id: string;
   name: string;
   description?: string;
-  photo?: string;
+  photo: string;
 };
 
 type Message = {
