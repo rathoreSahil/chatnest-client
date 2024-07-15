@@ -7,7 +7,6 @@ import { Input } from "../ui/input";
 
 const Profile = () => {
   const { user } = useAuth();
-  console.log("profile:", user?.photo);
 
   return (
     <div className="p-10 space-y-8">
@@ -20,6 +19,7 @@ const Profile = () => {
           className="border-0 text-md focus-visible:border-b focus-visible:border-white"
           id="name"
           value={user?.name}
+          readOnly
         />
       </div>
       <div>
@@ -27,9 +27,10 @@ const Profile = () => {
           Description
         </Label>
         <Input
-          className="border-0 text-md focus-visible:border-b focus-visible:border-white"
+          className="border-0 text-md text-wrap break-words focus-visible:border-b focus-visible:border-white"
           id="description"
           value={user?.description}
+          readOnly
         />
       </div>
     </div>

@@ -7,6 +7,7 @@ import useFetchMessages from "@/hooks/useFetchMessages";
 import { Loader2 } from "lucide-react";
 import { useMessage } from "@/context/message-provider";
 import { useAuth } from "@/context/auth-provider";
+import { cn } from "@/lib/utils";
 
 const ChatContent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -49,13 +50,23 @@ const ChatContent = () => {
   return (
     <div className="px-10 flex-1 overflow-y-auto" ref={chatContainerRef}>
       {messages.map((message, index) => {
-        let align = "text-left";
-        if (message.sender === currentUser?._id) {
-          align = "text-right";
-        }
+        const isMyMessage = message.sender === currentUser?._id;
         return (
-          <div key={index} className={`py-4 ${align}`}>
-            {message.content}
+          <div
+            key={index}
+            className={cn(
+              "py-3 flex",
+              isMyMessage ? "justify-end" : "justify-start"
+            )}
+          >
+            <p
+              className={cn(
+                "max-w-[60%] text-wrap break-words rounded-lg py-2 px-4  inline",
+                isMyMessage ? "bg-purple-800" : "bg-gray-800"
+              )}
+            >
+              {message.content}
+            </p>
           </div>
         );
       })}

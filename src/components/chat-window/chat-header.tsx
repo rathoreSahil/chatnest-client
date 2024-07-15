@@ -16,7 +16,7 @@ const ChatHeader = () => {
     .filter((photo) => photo !== user?.photo)[0];
 
   return (
-    <div className="p-4 text-xl bg-black border flex gap-4 items-center">
+    <div className="p-4 text-xl bg-slate-800 border flex gap-4 items-center">
       <ProfilePhoto className="h-10 w-10" src={chatPhoto} />
       {displayName}
     </div>

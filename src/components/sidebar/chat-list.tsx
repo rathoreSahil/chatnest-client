@@ -63,7 +63,6 @@ const ChatList = () => {
     <>
       {filteredChats.length ? (
         filteredChats.map((chat) => {
-          console.log("Chat:", chat.photo);
           const displayName = chat.name
             .split("-")
             .filter((name) => name !== user?.name)[0];

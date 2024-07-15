@@ -46,8 +46,6 @@ export function SignupForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values.profilePhoto);
-
     const formData = new FormData();
 
     formData.append("name", values.name);

@@ -15,7 +15,6 @@ const UserList = () => {
 
   // fetch users
   useEffect(() => {
-    console.log("fetching users");
     fetchUsers().then((data) => {
       setUsers(data);
     });
@@ -55,7 +54,6 @@ const UserList = () => {
     <>
       {filteredUsers.length ? (
         filteredUsers.map((user) => {
-          console.log("User:", user.photo);
           return (
             <div
               onClick={() => handleClick(user)}

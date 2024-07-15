@@ -10,8 +10,6 @@ const ProfilePhoto = ({
   src: string | undefined;
   className?: string;
 }) => {
-  console.log("Image source:", src);
-
   return (
     <div className={cn("rounded-full overflow-hidden h-12 w-12", className)}>
       <Image

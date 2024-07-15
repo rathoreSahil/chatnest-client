@@ -11,7 +11,7 @@ const Chat = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex flex-col bg-gray-900 h-full">
+    <div className="flex flex-col bg-gray-950 h-full">
       {currentChat ? (
         <>
           <ChatHeader />
