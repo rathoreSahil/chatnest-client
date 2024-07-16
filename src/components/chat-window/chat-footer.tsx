@@ -9,7 +9,6 @@ import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
 import { addMessageToDB } from "@/lib/utils";
 import { Fetch } from "@/lib/fetch";
-import { Message } from "@/lib/types";
 
 const ChatFooter = () => {
   const [messageContent, setMessageContent] = useState("");

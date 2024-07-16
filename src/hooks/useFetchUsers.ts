@@ -1,5 +1,4 @@
 import { Fetch } from "@/lib/fetch";
-import { User } from "@/lib/types";
 import { useState, useCallback } from "react";
 
 const useFetchUsers = (): [boolean, () => Promise<User[]>] => {

@@ -1,5 +1,5 @@
 "use client";
-import { Message } from "@/lib/types";
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSocket } from "@/context/socket-provider";
 

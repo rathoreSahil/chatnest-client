@@ -3,25 +3,26 @@
 import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
 import useFetchChats from "@/hooks/useFetchChats";
-import { Chat } from "@/lib/types";
 import { useStore } from "@/lib/zustand";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
 
 const ChatList = () => {
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [loading, fetchChats] = useFetchChats();
   const [filteredChats, setFilteredChats] = useState<Chat[]>([]);
-  const [loading, fetchChatsByUserId] = useFetchChats();
+
+  const chats = useStore((state) => state.chats);
   const search = useStore((state) => state.search);
+  const setChats = useStore((state) => state.setChats);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const { user } = useAuth();
+
   const socket = useSocket();
+  const { user } = useAuth();
 
   // fetch chats by user id
   const updateChatList = useCallback(() => {
-    if (!user) return;
-    fetchChatsByUserId(user._id).then((data) => {
+    fetchChats().then((data) => {
       setChats(data);
 
       if (!socket) return;
@@ -29,7 +30,7 @@ const ChatList = () => {
         socket.emit("join-room", chat._id);
       });
     });
-  }, [fetchChatsByUserId, socket, user]);
+  }, [fetchChats, setChats, socket]);
 
   // update chat list
   useEffect(() => {

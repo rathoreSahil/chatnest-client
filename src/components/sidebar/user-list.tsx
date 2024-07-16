@@ -1,17 +1,20 @@
 import useFetchUsers from "@/hooks/useFetchUsers";
-import { User } from "@/lib/types";
 import { useStore } from "@/lib/zustand";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
+import { useAuth } from "@/context/auth-provider";
 
 const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, fetchUsers] = useFetchUsers();
+  const chats = useStore((state) => state.chats);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
   const setChatModalType = useStore((state) => state.setChatModalType);
   const search = useStore((state) => state.search);
+
+  const { user: currentUser } = useAuth();
 
   // fetch users
   useEffect(() => {
@@ -31,9 +34,25 @@ const UserList = () => {
   }, [users, search]);
 
   // handle new chat click
-  async function handleClick(user: User) {
+  async function handleClick(otherUser: User) {
     try {
-      setCurrentChat(user);
+      const newChatName = `${currentUser?.name}-${otherUser.name}`;
+      const newChatPhoto = `${currentUser?.photo} ${otherUser.photo}`;
+
+      console.log("newChatName", newChatName);
+      let chatExists = false;
+
+      // check if chat already exists
+      chats.forEach((chat) => {
+        if (chat.name === newChatName && chat.photo === newChatPhoto) {
+          chatExists = true;
+          setCurrentChat(chat);
+          setChatModalType("chat");
+        }
+      });
+
+      if (chatExists) return;
+      setCurrentChat(otherUser);
       setChatModalType("chat");
     } catch (error: any) {
       console.error("error creating chat", error.message);
@@ -54,18 +73,23 @@ const UserList = () => {
     <>
       {filteredUsers.length ? (
         filteredUsers.map((user) => {
+          const isCurrentUser = currentUser?._id === user._id;
           return (
-            <div
-              onClick={() => handleClick(user)}
-              key={user._id}
-              className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
-            >
-              <ProfilePhoto src={user.photo} />
-              <div>
-                <p>{user.name}</p>
-                <p className="opacity-50 text-sm italic">{user.description}</p>
+            !isCurrentUser && (
+              <div
+                onClick={() => handleClick(user)}
+                key={user._id}
+                className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
+              >
+                <ProfilePhoto src={user.photo} />
+                <div>
+                  <p>{user.name}</p>
+                  <p className="opacity-50 text-sm italic">
+                    {user.description}
+                  </p>
+                </div>
               </div>
-            </div>
+            )
           );
         })
       ) : (

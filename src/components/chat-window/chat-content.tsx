@@ -2,7 +2,6 @@
 
 import { useStore } from "@/lib/zustand";
 import { useEffect, useRef, useState } from "react";
-import { Message } from "@/lib/types";
 import useFetchMessages from "@/hooks/useFetchMessages";
 import { Loader2 } from "lucide-react";
 import { useMessage } from "@/context/message-provider";
@@ -16,6 +15,8 @@ const ChatContent = () => {
   const message = useMessage();
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const { user: currentUser } = useAuth();
+
+  console.log("currentChat", currentChat);
 
   useEffect(() => {
     if (message.chat !== currentChat?._id) return;

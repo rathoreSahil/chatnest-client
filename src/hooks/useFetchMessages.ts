@@ -1,5 +1,4 @@
 import { Fetch } from "@/lib/fetch";
-import { Message } from "@/lib/types";
 import { useState, useCallback } from "react";
 
 const useFetchMessages = (): [

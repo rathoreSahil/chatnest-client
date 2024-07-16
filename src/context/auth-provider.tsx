@@ -1,6 +1,5 @@
 "use client";
 import { Fetch } from "@/lib/fetch";
-import { User } from "@/lib/types";
 import {
   Dispatch,
   SetStateAction,
