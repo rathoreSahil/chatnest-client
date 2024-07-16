@@ -13,7 +13,7 @@ const Menubar = () => {
 
   if (chatModalType === "chat") {
     return (
-      <div className="flex items-center justify-between p-3 bg-black border">
+      <div className="flex items-center justify-between p-3 bg-slate-800 border">
         <div onClick={() => setChatModalType("profile")}>
           <ProfilePhoto
             className="cursor-pointer h-10 w-10"

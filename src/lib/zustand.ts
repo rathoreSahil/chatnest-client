@@ -3,6 +3,7 @@ import { create } from "zustand";
 type Store = {
   chats: Chat[];
   chatModalType: "chat" | "new-chat" | "new-group-chat" | "profile";
+  isRightPanelOpen: boolean;
   currentChat: Chat | User | null;
   search: string;
 
@@ -10,6 +11,7 @@ type Store = {
   setChatModalType: (
     type: "chat" | "new-chat" | "new-group-chat" | "profile"
   ) => void;
+  setIsRightPanelOpen: (isOpen: boolean) => void;
   setCurrentChat: (newChat: Chat | User) => void;
   setSearch: (search: string) => void;
 };
@@ -17,6 +19,7 @@ type Store = {
 const useStore = create<Store>()((set) => ({
   chats: [],
   chatModalType: "chat",
+  isRightPanelOpen: false,
   currentChat: null,
   search: "",
 
@@ -24,6 +27,7 @@ const useStore = create<Store>()((set) => ({
   setChatModalType: (
     type: "chat" | "new-chat" | "new-group-chat" | "profile"
   ) => set({ chatModalType: type }),
+  setIsRightPanelOpen: (isOpen: boolean) => set({ isRightPanelOpen: isOpen }),
   setCurrentChat: (newChat: Chat | User) => set({ currentChat: newChat }),
   setSearch: (search: string) => set({ search }),
 }));

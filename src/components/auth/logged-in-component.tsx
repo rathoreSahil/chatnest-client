@@ -8,8 +8,12 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import RightPanel from "@/components/right-panel/right-panel";
+import { useStore } from "@/lib/zustand";
 
 const LoggedInComponent = () => {
+  const isRightPanelOpen = useStore((state) => state.isRightPanelOpen);
+
   return (
     <MessageContextProvider>
       <ResizablePanelGroup direction="horizontal">
@@ -20,6 +24,14 @@ const LoggedInComponent = () => {
         <ResizablePanel defaultSize={70}>
           <Chat />
         </ResizablePanel>
+        {isRightPanelOpen && (
+          <>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={40}>
+              <RightPanel />
+            </ResizablePanel>
+          </>
+        )}
       </ResizablePanelGroup>
     </MessageContextProvider>
   );
