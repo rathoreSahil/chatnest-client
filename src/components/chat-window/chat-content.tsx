@@ -16,7 +16,7 @@ const ChatContent = () => {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const { user: currentUser } = useAuth();
 
-  console.log("currentChat", currentChat);
+  
 
   useEffect(() => {
     if (message.chat !== currentChat?._id) return;

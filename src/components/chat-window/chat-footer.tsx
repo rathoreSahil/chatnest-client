@@ -9,6 +9,7 @@ import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
 import { addMessageToDB } from "@/lib/utils";
 import { Fetch } from "@/lib/fetch";
+import { EmojiPicker } from "./emoji-picker";
 
 const ChatFooter = () => {
   const [messageContent, setMessageContent] = useState("");
@@ -73,6 +74,9 @@ const ChatFooter = () => {
 
   return (
     <form onSubmit={handleSend} className="flex gap-4 p-4 bg-slate-800 border">
+      <EmojiPicker
+        onChange={(value) => setMessageContent((prev) => prev + value)}
+      />
       <Input
         value={messageContent}
         onChange={(event) => setMessageContent(event.target.value)}

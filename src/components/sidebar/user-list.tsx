@@ -39,7 +39,7 @@ const UserList = () => {
       const newChatName = `${currentUser?.name}-${otherUser.name}`;
       const newChatPhoto = `${currentUser?.photo} ${otherUser.photo}`;
 
-      console.log("newChatName", newChatName);
+      
       let chatExists = false;
 
       // check if chat already exists
