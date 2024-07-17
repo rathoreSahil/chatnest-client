@@ -38,8 +38,10 @@ const Menubar = () => {
   let title = "";
   if (chatModalType === "new-chat") {
     title = "New Chat";
-  } else if (chatModalType === "new-group-chat") {
-    title = "New Group Chat";
+  } else if (chatModalType === "select-group-members") {
+    title = "Add Group Members";
+  } else if (chatModalType === "group-details") {
+    title = "New Group";
   } else if (chatModalType === "profile") {
     title = "Profile";
   }

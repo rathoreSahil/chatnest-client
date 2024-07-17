@@ -51,13 +51,13 @@ const ChatList = () => {
   }, [chats, search]);
 
   // loading state
-  if (loading) {
-    return (
-      <div className="flex-1">
-        <Loader2 className="animate-spin w-full" />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex-1">
+  //       <Loader2 className="animate-spin w-full" />
+  //     </div>
+  //   );
+  // }
 
   // render chats
   return (

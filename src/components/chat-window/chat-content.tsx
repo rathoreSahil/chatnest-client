@@ -16,8 +16,6 @@ const ChatContent = () => {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const { user: currentUser } = useAuth();
 
-  
-
   useEffect(() => {
     if (message.chat !== currentChat?._id) return;
     setMessages((prevMessages) => [...prevMessages, message]);
@@ -40,13 +38,13 @@ const ChatContent = () => {
     };
   }, [currentChat, fetchMessagesByChatId]);
 
-  if (loading) {
-    return (
-      <div className="flex-1">
-        <Loader2 className="animate-spin w-full" />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex-1">
+  //       <Loader2 className="animate-spin w-full" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="px-10 flex-1 overflow-y-auto" ref={chatContainerRef}>

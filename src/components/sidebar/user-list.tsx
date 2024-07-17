@@ -1,19 +1,16 @@
 import useFetchUsers from "@/hooks/useFetchUsers";
 import { useStore } from "@/lib/zustand";
-import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
 import { useAuth } from "@/context/auth-provider";
 
-const UserList = () => {
-  const [users, setUsers] = useState<User[]>([]);
+const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, fetchUsers] = useFetchUsers();
-  const chats = useStore((state) => state.chats);
-  const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setChatModalType = useStore((state) => state.setChatModalType);
-  const search = useStore((state) => state.search);
 
+  const users = useStore((state) => state.users);
+  const setUsers = useStore((state) => state.setUsers);
+  const search = useStore((state) => state.search);
   const { user: currentUser } = useAuth();
 
   // fetch users
@@ -21,7 +18,7 @@ const UserList = () => {
     fetchUsers().then((data) => {
       setUsers(data);
     });
-  }, [fetchUsers]);
+  }, [fetchUsers, setUsers]);
 
   // filter users based on search
   useEffect(() => {
@@ -33,44 +30,9 @@ const UserList = () => {
     setFilteredUsers(results);
   }, [users, search]);
 
-  // handle new chat click
-  async function handleClick(otherUser: User) {
-    try {
-      const newChatName = `${currentUser?.name}-${otherUser.name}`;
-      const newChatPhoto = `${currentUser?.photo} ${otherUser.photo}`;
-
-      
-      let chatExists = false;
-
-      // check if chat already exists
-      chats.forEach((chat) => {
-        if (chat.name === newChatName && chat.photo === newChatPhoto) {
-          chatExists = true;
-          setCurrentChat(chat);
-          setChatModalType("chat");
-        }
-      });
-
-      if (chatExists) return;
-      setCurrentChat(otherUser);
-      setChatModalType("chat");
-    } catch (error: any) {
-      console.error("error creating chat", error.message);
-    }
-  }
-
-  // loading state
-  if (loading) {
-    return (
-      <div className="flex-1">
-        <Loader2 className="animate-spin w-full" />
-      </div>
-    );
-  }
-
   // render users
   return (
-    <>
+    <div>
       {filteredUsers.length ? (
         filteredUsers.map((user) => {
           const isCurrentUser = currentUser?._id === user._id;
@@ -95,7 +57,7 @@ const UserList = () => {
       ) : (
         <div className="text-center mt-10">User list will appear here...</div>
       )}
-    </>
+    </div>
   );
 };
 

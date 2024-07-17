@@ -17,7 +17,9 @@ const Dropdown = () => {
         <FaEllipsisVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => setChatModalType("new-group-chat")}>
+        <DropdownMenuItem
+          onClick={() => setChatModalType("select-group-members")}
+        >
           New Group
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setChatModalType("profile")}>
