@@ -12,7 +12,8 @@ const GroupUserList = () => {
   const setUsers = useStore((state) => state.setUsers);
   const setChatModalType = useStore((state) => state.setChatModalType);
 
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const selectedUsers = useStore((state) => state.selectedUsers);
+  const setSelectedUsers = useStore((state) => state.setSelectedUsers);
 
   const handleClick = (user: User) => {
     setUsers(users.filter((u) => u._id !== user._id));
@@ -22,10 +23,7 @@ const GroupUserList = () => {
   return (
     <div className="h-full flex flex-col justify-between">
       <div className="space-y-6">
-        <SelectedUsers
-          selectedUsers={selectedUsers}
-          setSelectedUsers={setSelectedUsers}
-        />
+        <SelectedUsers />
         <UserList handleClick={handleClick} />
       </div>
       {selectedUsers.length > 0 && (

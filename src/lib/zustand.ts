@@ -3,6 +3,7 @@ import { create } from "zustand";
 type Store = {
   chats: Chat[];
   users: User[];
+  selectedUsers: User[];
   chatModalType:
     | "chat"
     | "new-chat"
@@ -15,6 +16,7 @@ type Store = {
 
   setChats: (chats: Chat[]) => void;
   setUsers: (users: User[]) => void;
+  setSelectedUsers: (selectedUsers: User[]) => void;
   setChatModalType: (
     type:
       | "chat"
@@ -31,6 +33,7 @@ type Store = {
 const useStore = create<Store>()((set) => ({
   chats: [],
   users: [],
+  selectedUsers: [],
   chatModalType: "chat",
   isRightPanelOpen: false,
   currentChat: null,
@@ -38,6 +41,7 @@ const useStore = create<Store>()((set) => ({
 
   setChats: (chats: Chat[]) => set({ chats }),
   setUsers: (users: User[]) => set({ users }),
+  setSelectedUsers: (selectedUsers: User[]) => set({ selectedUsers }),
   setChatModalType: (
     type:
       | "chat"

@@ -3,17 +3,12 @@ import ProfilePhoto from "../profile/profile-photo";
 import { X } from "lucide-react";
 import { useStore } from "@/lib/zustand";
 
-type SelectedUsersProps = {
-  selectedUsers: User[];
-  setSelectedUsers: React.Dispatch<React.SetStateAction<User[]>>;
-};
-
-const SelectedUsers = ({
-  selectedUsers,
-  setSelectedUsers,
-}: SelectedUsersProps) => {
+const SelectedUsers = () => {
   const users = useStore((state) => state.users);
   const setUsers = useStore((state) => state.setUsers);
+
+  const selectedUsers = useStore((state) => state.selectedUsers);
+  const setSelectedUsers = useStore((state) => state.setSelectedUsers);
 
   function removeSelectedUser(user: User) {
     setUsers([...users, user]);
