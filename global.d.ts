@@ -22,7 +22,7 @@ declare global {
 
   type Message = {
     chat: string;
-    sender: string;
+    sender: string | { _id: string; name: string };
     content: string;
     createdAt: Date;
   };

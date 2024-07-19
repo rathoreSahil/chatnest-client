@@ -6,7 +6,7 @@ import { useAuth } from "@/context/auth-provider";
 import ChatListSkeleton from "../skeleton/chat-list-skeleton";
 
 const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([{} as User]);
   const [loading, fetchUsers] = useFetchUsers();
 
   const users = useStore((state) => state.users);
@@ -41,6 +41,8 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
     <div>
       {filteredUsers.length ? (
         filteredUsers.map((user) => {
+          if (!user._id) return;
+
           const isCurrentUser = currentUser?._id === user._id;
           return (
             !isCurrentUser && (

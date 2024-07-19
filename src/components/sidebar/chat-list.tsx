@@ -4,14 +4,13 @@ import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
 import useFetchChats from "@/hooks/useFetchChats";
 import { useStore } from "@/lib/zustand";
-import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
 import ChatListSkeleton from "../skeleton/chat-list-skeleton";
 
 const ChatList = () => {
   const [loading, fetchChats] = useFetchChats();
-  const [filteredChats, setFilteredChats] = useState<Chat[]>([]);
+  const [filteredChats, setFilteredChats] = useState<Chat[]>([{} as Chat]);
 
   const chats = useStore((state) => state.chats);
   const search = useStore((state) => state.search);
@@ -61,6 +60,7 @@ const ChatList = () => {
     <>
       {filteredChats.length ? (
         filteredChats.map((chat) => {
+          if (!chat.name) return;
           const displayName = chat.name
             .split("-")
             .filter((name) => name !== user?.name)[0];

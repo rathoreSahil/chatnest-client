@@ -52,7 +52,7 @@ const ChatFooter = () => {
 
       message = {
         chat: newChat!._id,
-        sender: currentUser!._id,
+        sender: { _id: currentUser!._id, name: currentUser!.name },
         content: messageContent,
         createdAt: new Date(),
       };
@@ -61,7 +61,7 @@ const ChatFooter = () => {
     } else {
       message = {
         chat: currentChat!._id,
-        sender: currentUser!._id,
+        sender: { _id: currentUser!._id, name: currentUser!.name },
         content: messageContent,
         createdAt: new Date(),
       };
