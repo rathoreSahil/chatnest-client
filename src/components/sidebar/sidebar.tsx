@@ -12,7 +12,7 @@ const Sidebar = () => {
     <div className="flex flex-col border-x h-full">
       <Menubar />
       {chatModalType !== "profile" && <Search />}
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <SidebarContent />
       </div>
     </div>

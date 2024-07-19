@@ -1,4 +1,5 @@
 import { Fetch } from "@/lib/fetch";
+import { wait } from "@/lib/utils";
 import { useState, useCallback } from "react";
 
 const useFetchMessages = (): [
@@ -11,6 +12,7 @@ const useFetchMessages = (): [
     async (chatId: string): Promise<Message[]> => {
       try {
         setLoading(true);
+        await wait(5000);
         const resJson = await Fetch.GET(`/messages/${chatId}`);
         return resJson.data;
       } catch (error: any) {

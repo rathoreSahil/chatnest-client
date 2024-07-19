@@ -1,4 +1,5 @@
 import { Fetch } from "@/lib/fetch";
+import { wait } from "@/lib/utils";
 import { useState, useCallback } from "react";
 
 const useFetchChats = (): [boolean, () => Promise<Chat[]>] => {

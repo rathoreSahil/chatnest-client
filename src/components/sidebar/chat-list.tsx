@@ -7,6 +7,7 @@ import { useStore } from "@/lib/zustand";
 import { Loader2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
+import ChatListSkeleton from "../skeleton/chat-list-skeleton";
 
 const ChatList = () => {
   const [loading, fetchChats] = useFetchChats();
@@ -51,13 +52,9 @@ const ChatList = () => {
   }, [chats, search]);
 
   // loading state
-  // if (loading) {
-  //   return (
-  //     <div className="flex-1">
-  //       <Loader2 className="animate-spin w-full" />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return <ChatListSkeleton length={8} />;
+  }
 
   // render chats
   return (

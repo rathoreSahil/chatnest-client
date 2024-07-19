@@ -3,10 +3,10 @@
 import { useStore } from "@/lib/zustand";
 import { useEffect, useRef, useState } from "react";
 import useFetchMessages from "@/hooks/useFetchMessages";
-import { Loader2 } from "lucide-react";
 import { useMessage } from "@/context/message-provider";
 import { useAuth } from "@/context/auth-provider";
 import { cn } from "@/lib/utils";
+import MessageSkeleton from "../skeleton/messages-skeleton";
 
 const ChatContent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -19,12 +19,20 @@ const ChatContent = () => {
   useEffect(() => {
     if (message.chat !== currentChat?._id) return;
     setMessages((prevMessages) => [...prevMessages, message]);
+
+    return () => {
+      setMessages([]);
+    };
   }, [message, currentChat]);
 
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
     if (!chatContainer) return;
     chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    return () => {
+      chatContainer.scrollTop = 0;
+    };
   }, [messages]);
 
   useEffect(() => {
@@ -38,13 +46,14 @@ const ChatContent = () => {
     };
   }, [currentChat, fetchMessagesByChatId]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex-1">
-  //       <Loader2 className="animate-spin w-full" />
-  //     </div>
-  //   );
-  // }
+  // loading state
+  if (loading) {
+    return (
+      <div className="px-10 flex-1 overflow-y-auto">
+        <MessageSkeleton length={8} />
+      </div>
+    );
+  }
 
   return (
     <div className="px-10 flex-1 overflow-y-auto" ref={chatContainerRef}>
@@ -54,7 +63,7 @@ const ChatContent = () => {
           <div
             key={index}
             className={cn(
-              "py-3 flex",
+              "my-3 flex",
               isMyMessage ? "justify-end" : "justify-start"
             )}
           >

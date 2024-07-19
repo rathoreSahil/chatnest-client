@@ -3,6 +3,7 @@ import { useStore } from "@/lib/zustand";
 import { useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
 import { useAuth } from "@/context/auth-provider";
+import ChatListSkeleton from "../skeleton/chat-list-skeleton";
 
 const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -30,6 +31,11 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
     setFilteredUsers(results);
   }, [users, search]);
 
+  // loading state
+  if (loading) {
+    return <ChatListSkeleton length={8} />;
+  }
+
   // render users
   return (
     <div>
@@ -55,7 +61,7 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
           );
         })
       ) : (
-        <div className="text-center mt-10">User list will appear here...</div>
+        <div className="text-center mt-10">Users will appear here...</div>
       )}
     </div>
   );

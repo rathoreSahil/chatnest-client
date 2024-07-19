@@ -22,9 +22,9 @@ const RightPanel = () => {
 
   return (
     <>
-      <div className="p-3 flex items-center justify-start bg-slate-800">
+      <div className="p-3 h-[66px] flex items-center justify-start bg-slate-800">
         <Button variant="base" onClick={() => setIsRightPanelOpen(false)}>
-          <X />
+          <X className="text-xl" />
         </Button>
         <span className="text-xl">Chat Info</span>
       </div>

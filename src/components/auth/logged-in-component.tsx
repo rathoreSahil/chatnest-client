@@ -13,21 +13,22 @@ import { useStore } from "@/lib/zustand";
 
 const LoggedInComponent = () => {
   const isRightPanelOpen = useStore((state) => state.isRightPanelOpen);
+  const arr = isRightPanelOpen ? [30, 40, 30] : [30, 70];
 
   return (
     <MessageContextProvider>
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={30}>
+        <ResizablePanel order={1} id="left" defaultSize={arr[0]}>
           <Sidebar />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={70}>
+        <ResizablePanel order={2} id="middle" defaultSize={arr[1]}>
           <Chat />
         </ResizablePanel>
         {isRightPanelOpen && (
           <>
             <ResizableHandle />
-            <ResizablePanel defaultSize={40}>
+            <ResizablePanel order={3} id="right" defaultSize={arr[2]}>
               <RightPanel />
             </ResizablePanel>
           </>
