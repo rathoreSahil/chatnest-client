@@ -26,8 +26,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const resJson = await Fetch.GET("/users/is-logged-in");
         setUser(resJson.data.user);
-      } catch (error) {
-        console.error("An unexpected error occurred:", error);
+      } catch (error: any) {
+        console.log(error.message);
         setUser(null);
       }
     }

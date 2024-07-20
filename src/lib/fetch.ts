@@ -27,7 +27,7 @@ export class Fetch {
 
   static async POST(
     url: string,
-    reqBody: RequestBody | FormData,
+    reqBody: RequestBody,
     reqHeaders?: RequestHeaders
   ) {
     return this.requestFn(url, Request.POST, reqBody, reqHeaders);
@@ -35,7 +35,7 @@ export class Fetch {
 
   static async PATCH(
     url: string,
-    reqBody: RequestBody | FormData,
+    reqBody: RequestBody,
     reqHeaders?: RequestHeaders
   ) {
     return this.requestFn(url, Request.PATCH, reqBody, reqHeaders);
@@ -43,7 +43,7 @@ export class Fetch {
 
   static async PUT(
     url: string,
-    reqBody: RequestBody | FormData,
+    reqBody: RequestBody,
     reqHeaders?: RequestHeaders
   ) {
     return this.requestFn(url, Request.PUT, reqBody, reqHeaders);
@@ -56,7 +56,7 @@ export class Fetch {
   private static async requestFn(
     url: string,
     method: RequestMethod,
-    reqBody?: RequestBody | FormData,
+    reqBody?: RequestBody,
     reqHeaders?: RequestHeaders
   ) {
     const reqContent: RequestContent = {
@@ -66,10 +66,8 @@ export class Fetch {
       },
       credentials: "include",
     };
-    if (reqBody) {
-      const isFormData = reqBody instanceof FormData;
-      reqContent.body = isFormData ? reqBody : JSON.stringify(reqBody);
-    }
+
+    if (reqBody) reqContent.body = JSON.stringify(reqBody);
 
     const resp = await fetch(`${API_URL}${url}`, reqContent);
     const data = await resp.json();

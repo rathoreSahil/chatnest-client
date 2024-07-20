@@ -97,7 +97,9 @@ const ChatContent = () => {
                 </div>
               )}
               <div className="flex gap-3">
-                <p className="flex-1 self-center">{message.content}</p>
+                <p className="flex-1 text-wrap break-words self-center">
+                  {message.content}
+                </p>
                 <div className="text-[12px] opacity-70 text-right w-min self-end">
                   {messageCreatedAt.getHours().toString().padStart(2, "0")}:
                   {messageCreatedAt.getMinutes().toString().padStart(2, "0")}

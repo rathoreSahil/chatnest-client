@@ -11,7 +11,12 @@ const ProfilePhoto = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("rounded-full overflow-hidden h-12 w-12", className)}>
+    <div
+      className={cn(
+        "rounded-full overflow-hidden h-12 w-12 cursor-pointer",
+        className
+      )}
+    >
       <Image
         src={src || "/default.webp"}
         alt="profile photo"

@@ -27,7 +27,6 @@ const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   passwordConfirm: z.string().min(8),
-  profilePhoto: z.instanceof(File).optional(),
 });
 
 export function SignupForm() {
@@ -41,21 +40,12 @@ export function SignupForm() {
       email: "",
       password: "",
       passwordConfirm: "",
-      profilePhoto: undefined,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData();
-
-    formData.append("name", values.name);
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-    formData.append("passwordConfirm", values.passwordConfirm);
-    formData.append("image", values.profilePhoto as File);
-
     try {
-      const responseJson = await Fetch.POST("/users/signup", formData, {});
+      const responseJson = await Fetch.POST("/users/signup", values);
       setUser(responseJson.data);
       toast.success("Signed Up successfully!");
       router.push("/");
@@ -112,25 +102,6 @@ export function SignupForm() {
               <FormItem>
                 <FormControl>
                   <Input placeholder="confirm password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="profilePhoto"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="file"
-                    {...field}
-                    value={undefined}
-                    onChange={(e) => {
-                      field.onChange(e.target.files?.[0]);
-                    }}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
