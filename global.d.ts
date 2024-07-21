@@ -5,8 +5,9 @@ declare global {
     name: string;
     email: string;
     description?: string;
-    photo: string;
-    role: "user" | "admin";
+    photo?: string;
+    photoPublicId?: string;
+    role?: "user" | "admin";
     createdAt: Date;
   };
 
@@ -14,7 +15,8 @@ declare global {
     _id: string;
     name: string;
     description?: string;
-    photo: string;
+    photo?: string;
+    photoPublicId?: string;
     isGroupChat: boolean;
     participantCount: number;
     createdAt: Date;

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openFileInput = () => {
@@ -28,17 +28,23 @@ const Profile = () => {
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      Fetch.DELETE("/users/photo");
+      if (user?.photoPublicId) {
+        Fetch.DELETE("/users/photo");
+      }
 
       const formData = new FormData();
       formData.append("photo", file);
 
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const profilePhoto = await fetch(`${API_URL}/users/photo`, {
+      const res = await fetch(`${API_URL}/users/photo`, {
         method: "PATCH",
         body: formData,
         credentials: "include",
       });
+
+      const resJson = await res.json();
+      console.log(resJson);
+      setUser(resJson.user);
     }
   };
 
