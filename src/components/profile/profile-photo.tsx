@@ -6,12 +6,15 @@ import Image from "next/image";
 const ProfilePhoto = ({
   src,
   className,
+  onClick,
 }: {
   src: string | undefined;
   className?: string;
+  onClick?: () => void;
 }) => {
   return (
     <div
+      onClick={onClick}
       className={cn(
         "rounded-full overflow-hidden h-12 w-12 cursor-pointer",
         className
@@ -20,8 +23,8 @@ const ProfilePhoto = ({
       <Image
         src={src || "/default.webp"}
         alt="profile photo"
-        width={400}
-        height={400}
+        width={500}
+        height={500}
       />
     </div>
   );

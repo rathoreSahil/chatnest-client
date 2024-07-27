@@ -16,11 +16,14 @@ import {
 import { useStore } from "@/lib/zustand";
 import useUploadPhoto from "@/hooks/useUploadPhoto";
 import useDeletePhoto from "@/hooks/useDeletePhoto";
+import { useDisclosure } from "@nextui-org/react";
+import PhotoModal from "../profile/photo-modal";
 
 const Profile = () => {
   const { authUser, setAuthUser } = useAuth();
   const [uploadLoading, uploadPhoto] = useUploadPhoto();
   const [deleteLoading, deletePhoto] = useDeletePhoto();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const setChatModalType = useStore((state) => state.setChatModalType);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -40,8 +43,6 @@ const Profile = () => {
     }
   };
 
-  const handleViewPhoto = () => {};
-
   const dropdownItemClass = "hover:bg-slate-900";
 
   return (
@@ -52,21 +53,13 @@ const Profile = () => {
         className="hidden"
         onChange={(e) => handleFileChange(e)}
       />
-      {/* <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal> */}
+
+      <PhotoModal
+        src={authUser?.photo}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
+
       <DropdownMenu>
         <div className="group h-48 w-48 relative rouded-full overflow-hidden mx-auto">
           <DropdownMenuTrigger className=" focus:outline-none">
@@ -75,18 +68,17 @@ const Profile = () => {
               className="h-48 w-48 group-hover:opacity-40"
             />
           </DropdownMenuTrigger>
-          {uploadLoading || deleteLoading ? (
-            <Loader2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
+          {!(uploadLoading || deleteLoading) ? (
+            <div>
+              <Loader2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 " />
+            </div>
           ) : (
             <Camera className="h-5 w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block" />
           )}
         </div>
 
         <DropdownMenuContent className="bg-slate-800 border-0 absolute top-0 left-0">
-          <DropdownMenuItem
-            className={dropdownItemClass}
-            onClick={handleViewPhoto}
-          >
+          <DropdownMenuItem className={dropdownItemClass} onClick={onOpen}>
             View Photo
           </DropdownMenuItem>
           <DropdownMenuItem

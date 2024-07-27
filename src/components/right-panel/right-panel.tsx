@@ -2,15 +2,16 @@ import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/zustand";
 import { X } from "lucide-react";
 import ProfilePhoto from "@/components/profile/profile-photo";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-provider";
+import { useDisclosure } from "@nextui-org/modal";
+import PhotoModal from "../profile/photo-modal";
 
 const RightPanel = () => {
   const currentChat = useStore((state) => state.currentChat)!;
   const setIsRightPanelOpen = useStore((state) => state.setIsRightPanelOpen);
 
   const authUser = useAuth().authUser!;
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const isGroupChat = "participantCount" in currentChat;
   let displayName;
@@ -30,6 +31,11 @@ const RightPanel = () => {
 
   return (
     <>
+      <PhotoModal
+        src={displayPhoto}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
       <div className="p-3 h-[66px] flex items-center justify-start bg-slate-800">
         <Button variant="base" onClick={() => setIsRightPanelOpen(false)}>
           <X className="text-xl" />
@@ -38,6 +44,7 @@ const RightPanel = () => {
       </div>
       <div className="text-center">
         <ProfilePhoto
+          onClick={onOpen}
           src={displayPhoto}
           className="h-48 w-48 mx-auto mt-12 mb-6 "
         />
