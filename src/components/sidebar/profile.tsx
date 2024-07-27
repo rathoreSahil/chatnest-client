@@ -68,9 +68,9 @@ const Profile = () => {
               className="h-48 w-48 group-hover:opacity-40"
             />
           </DropdownMenuTrigger>
-          {!(uploadLoading || deleteLoading) ? (
-            <div>
-              <Loader2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 " />
+          {uploadLoading || deleteLoading ? (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+              <Loader2 className="animate-spin" />
             </div>
           ) : (
             <Camera className="h-5 w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block" />
