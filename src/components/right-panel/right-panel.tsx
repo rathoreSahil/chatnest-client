@@ -7,18 +7,26 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-provider";
 
 const RightPanel = () => {
-  const currentChat = useStore((state) => state.currentChat);
+  const currentChat = useStore((state) => state.currentChat)!;
   const setIsRightPanelOpen = useStore((state) => state.setIsRightPanelOpen);
 
-  const { user } = useAuth();
+  const authUser = useAuth().authUser!;
 
-  const displayName = currentChat?.name
-    .split("-")
-    .filter((name) => name !== user?.name)[0];
+  const isGroupChat = "participantCount" in currentChat;
+  let displayName;
+  let displayPhoto;
+  if (isGroupChat) {
+    displayName = currentChat.name;
+    displayPhoto = currentChat.photo;
+  } else {
+    const otherUser =
+      authUser._id === currentChat.user1._id
+        ? currentChat.user2
+        : currentChat.user1;
 
-  const chatPhoto = currentChat?.photo
-    .split(" ")
-    .filter((photo) => photo !== user?.photo)[0];
+    displayName = otherUser.name;
+    displayPhoto = otherUser.photo;
+  }
 
   return (
     <>
@@ -30,7 +38,7 @@ const RightPanel = () => {
       </div>
       <div className="text-center">
         <ProfilePhoto
-          src={chatPhoto}
+          src={displayPhoto}
           className="h-48 w-48 mx-auto mt-12 mb-6 "
         />
         <p className="text-2xl ">{displayName}</p>

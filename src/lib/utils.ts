@@ -10,8 +10,8 @@ export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export async function addMessageToDB(message: Message) {
   try {
-    await Fetch.POST(`/messages`, { message });
+    await Fetch.POST("/messages", { message });
   } catch (error: any) {
-    console.error("error adding message to DB", error.message);
+    console.error("Error saving message to DB", error.message);
   }
 }

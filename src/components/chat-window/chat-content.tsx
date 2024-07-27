@@ -1,12 +1,12 @@
 "use client";
 
-import { useStore } from "@/lib/zustand";
-import { useEffect, useRef, useState } from "react";
-import useFetchMessages from "@/hooks/useFetchMessages";
-import { useMessage } from "@/context/message-provider";
-import { useAuth } from "@/context/auth-provider";
 import { cn } from "@/lib/utils";
-import MessageSkeleton from "../skeleton/messages-skeleton";
+import { useAuth } from "@/context/auth-provider";
+import { useStore } from "@/lib/zustand";
+import { useMessage } from "@/context/message-provider";
+import { MessageSkeleton } from "../skeleton/messages-skeleton";
+import { useFetchMessages } from "@/hooks/useFetchMessages";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const ChatContent = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -15,16 +15,22 @@ const ChatContent = () => {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const message = useMessage();
-  const { user: currentUser } = useAuth();
+  const { authUser } = useAuth();
 
-  const currentChat = useStore((state) => state.currentChat);
+  const currentChat = useStore((state) => state.currentChat)!;
+  const isGroupChat = useMemo(
+    () => "participantCount" in currentChat,
+    [currentChat]
+  );
 
   // update messages
   useEffect(() => {
-    if (message.chat !== currentChat?._id) return;
+    if (!message) return;
+    if (isGroupChat && message.groupChat !== currentChat._id) return;
+    if (!isGroupChat && message.directChat !== currentChat._id) return;
 
     setMessages((prevMessages) => [...prevMessages, message]);
-  }, [message, currentChat]);
+  }, [currentChat._id, isGroupChat, message]);
 
   // scroll to bottom
   useEffect(() => {
@@ -39,7 +45,7 @@ const ChatContent = () => {
 
   // fetch messages by chat id
   useEffect(() => {
-    if (!currentChat) return;
+    if (!currentChat || !currentChat._id) return;
     fetchMessagesByChatId(currentChat._id).then((data) => {
       setMessages(data);
     });
@@ -73,10 +79,10 @@ const ChatContent = () => {
   return (
     <div className="px-10 flex-1 overflow-y-auto" ref={chatContainerRef}>
       {messages.map((message, index) => {
-        // console.log(message.sender);
-        const isMyMessage = (message.sender as User)._id === currentUser?._id;
+        const isMyMessage = message.sender._id === authUser!._id;
         const randomColor = colors[Math.round(Math.random() * colors.length)];
         const messageCreatedAt = new Date(message.createdAt);
+
         return (
           <div
             key={index}
@@ -91,9 +97,9 @@ const ChatContent = () => {
                 isMyMessage ? "bg-purple-800" : "bg-gray-800"
               )}
             >
-              {(currentChat as Chat).isGroupChat && !isMyMessage && (
+              {isGroupChat && !isMyMessage && (
                 <div className={`text-sm ${randomColor}`}>
-                  {(message.sender as User).name}
+                  {message.sender.name}
                 </div>
               )}
               <div className="flex gap-3">

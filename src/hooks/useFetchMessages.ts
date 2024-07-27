@@ -1,8 +1,7 @@
 import { Fetch } from "@/lib/fetch";
-import { wait } from "@/lib/utils";
 import { useState, useCallback } from "react";
 
-const useFetchMessages = (): [
+export const useFetchMessages = (): [
   boolean,
   (chatId: string) => Promise<Message[]>
 ] => {
@@ -20,7 +19,7 @@ const useFetchMessages = (): [
         clearTimeout(timeout);
         return resJson.data;
       } catch (error: any) {
-        console.error("error fetching chats", error.messages);
+        console.error("Error fetching messages", error.messages);
         return [];
       } finally {
         setLoading(false);
@@ -31,5 +30,3 @@ const useFetchMessages = (): [
 
   return [loading, fetchMessagesByChatId];
 };
-
-export default useFetchMessages;

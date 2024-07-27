@@ -8,13 +8,13 @@ import LoggedInComponent from "@/components/auth/logged-in-component";
 import LoggedOutComponent from "@/components/auth/logged-out-component";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { authUser } = useAuth();
   const socket = useSocket();
 
   useEffect(() => {
     if (!socket) return;
 
-    if (user) {
+    if (authUser) {
       socket.connect();
     } else {
       socket.disconnect();
@@ -22,7 +22,7 @@ export default function Home() {
     return () => {
       socket.disconnect();
     };
-  }, [user, socket]);
+  }, [authUser, socket]);
 
-  return <>{user ? <LoggedInComponent /> : <LoggedOutComponent />}</>;
+  return <>{authUser ? <LoggedInComponent /> : <LoggedOutComponent />}</>;
 }

@@ -1,31 +1,37 @@
 export {};
 declare global {
-  type User = {
+  interface User {
     _id: string;
     name: string;
     email: string;
     description?: string;
     photo?: string;
     photoPublicId?: string;
-    role?: "user" | "admin";
     createdAt: Date;
-  };
+  }
 
-  type Chat = {
+  interface GroupChat {
     _id: string;
     name: string;
     description?: string;
     photo?: string;
     photoPublicId?: string;
-    isGroupChat: boolean;
     participantCount: number;
     createdAt: Date;
-  };
+  }
 
-  type Message = {
-    chat: string;
-    sender: string | { _id: string; name: string };
+  interface DirectChat {
+    _id: string;
+    user1: User;
+    user2: User;
+    createdAt: Date;
+  }
+
+  interface Message {
+    groupChat?: string;
+    directChat?: string;
+    sender: User;
     content: string;
     createdAt: Date;
-  };
+  }
 }

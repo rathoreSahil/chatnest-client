@@ -7,19 +7,19 @@ const NewChat = () => {
   const setCurrentChat = useStore((state) => state.setCurrentChat);
   const setChatModalType = useStore((state) => state.setChatModalType);
 
-  const { user: currentUser } = useAuth();
+  const authUser = useAuth().authUser!;
 
   // handle new chat click
   async function handleClick(otherUser: User) {
     try {
-      const newChatName = `${currentUser?.name}-${otherUser.name}`;
-      const newChatPhoto = `${currentUser?.photo} ${otherUser.photo}`;
-
-      let chatExists = false;
-
       // check if chat already exists
+      let chatExists = false;
       chats.forEach((chat) => {
-        if (chat.name === newChatName && chat.photo === newChatPhoto) {
+        const isGroupChat = "participantCount" in chat;
+        if (
+          !isGroupChat &&
+          (chat.user1._id === otherUser._id || chat.user2._id === otherUser._id)
+        ) {
           chatExists = true;
           setCurrentChat(chat);
           setChatModalType("chat");
@@ -27,7 +27,8 @@ const NewChat = () => {
       });
 
       if (chatExists) return;
-      setCurrentChat(otherUser);
+
+      setCurrentChat({ user1: authUser, user2: otherUser } as DirectChat);
       setChatModalType("chat");
     } catch (error: any) {
       console.error("error creating chat", error.message);

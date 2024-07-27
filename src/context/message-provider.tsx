@@ -3,14 +3,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSocket } from "@/context/socket-provider";
 
-const MessageContext = createContext<Message>({} as Message);
+const MessageContext = createContext<Message | null>(null);
 
 const MessageContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [message, setMessage] = useState<Message>({} as Message);
+  const [message, setMessage] = useState<Message | null>(null);
   const socket = useSocket();
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
-const MessageSkeleton = ({ length }: { length: number }) => {
+export const MessageSkeleton = ({ length }: { length: number }) => {
   const width = [
     "w-[100px]",
     "w-[150px]",
@@ -27,5 +27,3 @@ const MessageSkeleton = ({ length }: { length: number }) => {
     </>
   );
 };
-
-export default MessageSkeleton;

@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
-import useFetchChats from "@/hooks/useFetchChats";
+import { useFetchChats } from "@/hooks/useFetchChats";
 import { useStore } from "@/lib/zustand";
 import { useCallback, useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
@@ -10,7 +10,7 @@ import ChatListSkeleton from "../skeleton/chat-list-skeleton";
 
 const ChatList = () => {
   const [loading, fetchChats] = useFetchChats();
-  const [filteredChats, setFilteredChats] = useState<Chat[]>([{} as Chat]);
+  const [filteredChats, setFilteredChats] = useState<typeof chats>([]);
 
   const chats = useStore((state) => state.chats);
   const search = useStore((state) => state.search);
@@ -18,7 +18,7 @@ const ChatList = () => {
   const setCurrentChat = useStore((state) => state.setCurrentChat);
 
   const socket = useSocket();
-  const { user } = useAuth();
+  const authUser = useAuth().authUser!;
 
   // fetch chats by user id
   const updateChatList = useCallback(() => {
@@ -38,17 +38,30 @@ const ChatList = () => {
     socket?.on("refresh", () => {
       updateChatList();
     });
+
+    return () => {
+      socket?.off("refresh");
+    };
   }, [socket, updateChatList]);
 
   // filter chats based on search
   useEffect(() => {
     if (!chats.length) return;
-    const results = chats.filter((chat) =>
-      chat.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const results = chats.filter((chat) => {
+      const isGroupChat = "participantCount" in chat;
+      let chatName = "";
+      if (isGroupChat) {
+        chatName = chat.name;
+      } else {
+        chatName =
+          authUser._id === chat.user1._id ? chat.user2.name : chat.user1.name;
+      }
+
+      return chatName.toLowerCase().includes(search.toLowerCase());
+    });
 
     setFilteredChats(results);
-  }, [chats, search]);
+  }, [authUser._id, chats, search]);
 
   // loading state
   if (loading) {
@@ -60,21 +73,27 @@ const ChatList = () => {
     <>
       {filteredChats.length ? (
         filteredChats.map((chat) => {
-          if (!chat.name) return;
-          const displayName = chat.name
-            .split("-")
-            .filter((name) => name !== user?.name)[0];
+          const isGroupChat = "participantCount" in chat;
+          let displayName;
+          let displayPhoto;
+          if (isGroupChat) {
+            displayName = chat.name;
+            displayPhoto = chat.photo;
+          } else {
+            const otherUser =
+              authUser._id === chat.user1._id ? chat.user2 : chat.user1;
 
-          const chatPhoto = chat.photo
-            .split(" ")
-            .filter((photo) => photo !== user?.photo)[0];
+            displayName = otherUser.name;
+            displayPhoto = otherUser.photo;
+          }
+
           return (
             <div
               onClick={() => setCurrentChat(chat)}
               key={chat._id}
               className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
             >
-              <ProfilePhoto src={chatPhoto} />
+              <ProfilePhoto src={displayPhoto} />
               {displayName}
             </div>
           );

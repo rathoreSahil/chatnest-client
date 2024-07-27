@@ -4,9 +4,8 @@ import { useAuth } from "@/context/auth-provider";
 import ProfilePhoto from "@/components/profile/profile-photo";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Camera } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import { ChangeEvent, useRef } from "react";
-import { Fetch } from "@/lib/fetch";
 
 import {
   DropdownMenu,
@@ -14,9 +13,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useStore } from "@/lib/zustand";
+import useUploadPhoto from "@/hooks/useUploadPhoto";
+import useDeletePhoto from "@/hooks/useDeletePhoto";
 
 const Profile = () => {
-  const { user, setUser } = useAuth();
+  const { authUser, setAuthUser } = useAuth();
+  const [uploadLoading, uploadPhoto] = useUploadPhoto();
+  const [deleteLoading, deletePhoto] = useDeletePhoto();
+  const setChatModalType = useStore((state) => state.setChatModalType);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openFileInput = () => {
@@ -28,25 +33,14 @@ const Profile = () => {
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (user?.photoPublicId) {
-        Fetch.DELETE("/users/photo");
-      }
-
-      const formData = new FormData();
-      formData.append("photo", file);
-
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${API_URL}/users/photo`, {
-        method: "PATCH",
-        body: formData,
-        credentials: "include",
-      });
-
-      const resJson = await res.json();
-      console.log(resJson);
-      setUser(resJson.user);
+      const user = await uploadPhoto(file);
+      if (!user) return;
+      setAuthUser(user);
+      setChatModalType("chat");
     }
   };
+
+  const handleViewPhoto = () => {};
 
   const dropdownItemClass = "hover:bg-slate-900";
 
@@ -58,19 +52,41 @@ const Profile = () => {
         className="hidden"
         onChange={(e) => handleFileChange(e)}
       />
+      {/* <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal> */}
       <DropdownMenu>
         <div className="group h-48 w-48 relative rouded-full overflow-hidden mx-auto">
           <DropdownMenuTrigger className=" focus:outline-none">
             <ProfilePhoto
-              src={user?.photo}
+              src={authUser?.photo}
               className="h-48 w-48 group-hover:opacity-40"
             />
           </DropdownMenuTrigger>
-          <Camera className="h-5 w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block" />
+          {uploadLoading || deleteLoading ? (
+            <Loader2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
+          ) : (
+            <Camera className="h-5 w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block" />
+          )}
         </div>
 
         <DropdownMenuContent className="bg-slate-800 border-0 absolute top-0 left-0">
-          <DropdownMenuItem className={dropdownItemClass}>
+          <DropdownMenuItem
+            className={dropdownItemClass}
+            onClick={handleViewPhoto}
+          >
             View Photo
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -84,8 +100,11 @@ const Profile = () => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className={dropdownItemClass}
-            onClick={() => {
-              Fetch.DELETE("/users/photo");
+            onClick={async () => {
+              const user = await deletePhoto();
+              if (!user) return;
+              setAuthUser(user);
+              setChatModalType("chat");
             }}
           >
             Remove Photo
@@ -100,7 +119,7 @@ const Profile = () => {
         <Input
           className="border-0 text-md focus-visible:border-b focus-visible:border-white"
           id="name"
-          value={user?.name}
+          value={authUser?.name}
           readOnly
         />
       </div>
@@ -111,7 +130,7 @@ const Profile = () => {
         <Input
           className="border-0 text-md text-wrap break-words focus-visible:border-b focus-visible:border-white"
           id="description"
-          value={user?.description}
+          value={authUser?.description}
           readOnly
         />
       </div>

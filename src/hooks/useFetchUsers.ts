@@ -1,7 +1,7 @@
 import { Fetch } from "@/lib/fetch";
 import { useState, useCallback } from "react";
 
-const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
+export const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchUsers = useCallback(async (): Promise<User[]> => {
@@ -14,7 +14,7 @@ const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
       clearTimeout(timeout);
       return resJson.data;
     } catch (error: any) {
-      console.error("error fetching users", error.message);
+      console.error("Error fetching users", error.message);
       return [];
     } finally {
       setLoading(false);
@@ -23,5 +23,3 @@ const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
 
   return [loading, fetchUsers];
 };
-
-export default useFetchUsers;

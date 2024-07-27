@@ -1,21 +1,33 @@
 import { Fetch } from "@/lib/fetch";
-import { wait } from "@/lib/utils";
 import { useState, useCallback } from "react";
 
-const useFetchChats = (): [boolean, () => Promise<Chat[]>] => {
+export const useFetchChats = (): [
+  boolean,
+  () => Promise<(GroupChat | DirectChat)[]>
+] => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchChats = useCallback(async (): Promise<Chat[]> => {
+  const fetchChats = useCallback(async (): Promise<
+    (GroupChat | DirectChat)[]
+  > => {
     try {
       const timeout = setTimeout(() => {
         setLoading(true);
       }, 100);
-      const resJson = await Fetch.GET("/chats");
+      const groupChatPromise = Fetch.GET("/chats/group");
+      const directChatPromise = Fetch.GET("/chats/direct");
+
+      const resJson = await Promise.all([groupChatPromise, directChatPromise]);
+
+      const groupChats = resJson[0].data;
+      const directChats = resJson[1].data;
+
+      const allChats = [...groupChats, ...directChats];
 
       clearTimeout(timeout);
-      return resJson.data;
+      return allChats;
     } catch (error: any) {
-      console.error("error fetching chats", error.message);
+      console.error("Error fetching chats", error.message);
       return [];
     } finally {
       setLoading(false);
@@ -24,5 +36,3 @@ const useFetchChats = (): [boolean, () => Promise<Chat[]>] => {
 
   return [loading, fetchChats];
 };
-
-export default useFetchChats;

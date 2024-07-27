@@ -1,11 +1,10 @@
 "use client";
 
-import { useStore } from "@/lib/zustand";
-import SelectedUsers from "./selected-users";
-import UserList from "./user-list";
-import { useState } from "react";
 import { Button } from "../ui/button";
+import { useStore } from "@/lib/zustand";
 import { ArrowRight } from "lucide-react";
+import UserList from "./user-list";
+import SelectedUsers from "./selected-users";
 
 const GroupUserList = () => {
   const users = useStore((state) => state.users);

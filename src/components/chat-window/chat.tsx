@@ -7,8 +7,8 @@ import ChatHeader from "@/components/chat-window/chat-header";
 import { useAuth } from "@/context/auth-provider";
 
 const Chat = () => {
+  const authUser = useAuth().authUser!;
   const currentChat = useStore((state) => state.currentChat);
-  const { user } = useAuth();
 
   return (
     <div className="flex flex-col bg-gray-950 h-full">
@@ -20,7 +20,7 @@ const Chat = () => {
         </>
       ) : (
         <div className="text-center my-auto">
-          <p className="text-6xl pb-6 text-green-400">{user?.name}</p>
+          <p className="text-6xl pb-6 text-green-400">{authUser.name}</p>
           <p>
             Welcome to Chatnest. <br />
             Select a chat to start chatting!

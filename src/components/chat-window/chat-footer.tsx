@@ -13,10 +13,12 @@ import { EmojiPicker } from "./emoji-picker";
 
 const ChatFooter = () => {
   const [messageContent, setMessageContent] = useState("");
-  const socket = useSocket();
-  const currentChat = useStore((state) => state.currentChat);
+
+  const currentChat = useStore((state) => state.currentChat)!;
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const { user: currentUser } = useAuth();
+
+  const authUser = useAuth().authUser!;
+  const socket = useSocket();
 
   async function handleSend(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,47 +26,39 @@ const ChatFooter = () => {
     if (!socket) return;
     if (!messageContent) return;
 
-    let message: Message = {} as Message;
-    if ("email" in currentChat!) {
-      const otherUser = JSON.parse(JSON.stringify(currentChat));
+    let message: Message = {
+      sender: authUser,
+      content: messageContent,
+      createdAt: new Date(),
+    };
 
-      // create new chat
+    if ("_id" in currentChat === false) {
+      // create new direct chat
       const newChatDetails = {
-        name: `${currentUser?.name}-${otherUser.name}`,
-        photo: `${currentUser?.photo} ${otherUser.photo}`,
+        user1: (currentChat as DirectChat).user1._id,
+        user2: (currentChat as DirectChat).user2._id,
       };
-      const res = await Fetch.POST("/chats", newChatDetails);
-      const newChat = res.data;
-      const newChatId = res.data._id;
 
-      // create 2 participants for the chat - currentUser and user
-      const newParticipantsData = {
-        participants: [
-          { chat: newChatId, user: currentUser?._id },
-          { chat: newChatId, user: otherUser._id },
-        ],
-      };
-      await Fetch.POST("/participants", newParticipantsData);
+      const res = await Fetch.POST("/chats/direct", newChatDetails);
+      const newChat = res.data;
 
       // trigger refresh event to update chat list
-      socket?.emit("refresh", currentUser?._id);
-      socket?.emit("refresh", otherUser._id);
+      socket?.emit("refresh", newChat.user1);
+      socket?.emit("refresh", newChat.user2);
 
-      message = {
-        chat: newChat!._id,
-        sender: { _id: currentUser!._id, name: currentUser!.name },
-        content: messageContent,
-        createdAt: new Date(),
-      };
+      message.directChat = newChat._id;
 
-      setCurrentChat(newChat);
+      const { data: newChatPopulated } = await Fetch.GET(
+        `/chats/direct/${newChat._id}`
+      );
+      setCurrentChat(newChatPopulated);
     } else {
-      message = {
-        chat: currentChat!._id,
-        sender: { _id: currentUser!._id, name: currentUser!.name },
-        content: messageContent,
-        createdAt: new Date(),
-      };
+      const isGroupChat = "participantCount" in currentChat;
+      if (isGroupChat) {
+        message.groupChat = currentChat._id;
+      } else {
+        message.directChat = currentChat._id;
+      }
     }
 
     addMessageToDB(message);

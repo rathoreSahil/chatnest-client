@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setAuthUser } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,7 +39,7 @@ export function LoginForm() {
     try {
       const responseJson = await Fetch.POST("/users/login", values);
 
-      setUser(responseJson.data);
+      setAuthUser(responseJson.data);
       toast.success("Logged in successfully!");
       router.push("/");
     } catch (error: any) {

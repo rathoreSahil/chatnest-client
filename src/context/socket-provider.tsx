@@ -8,22 +8,22 @@ const SocketContext = createContext<Socket | null>(null);
 
 const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { user } = useAuth();
+  const { authUser } = useAuth();
 
   // create socket connection
   useEffect(() => {
-    if (!user) return;
+    if (!authUser) return;
 
     const newSocket = io("http://localhost:3182", {
       autoConnect: false,
       query: {
-        userId: user._id,
+        userId: authUser._id,
       },
     });
 
     newSocket.on("connect", () => {
       console.log("socket connected: ", newSocket.id);
-      console.log("user connected: ", user.name);
+      console.log("user connected: ", authUser.name);
     });
 
     newSocket.on("disconnect", () => {
@@ -31,7 +31,7 @@ const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     setSocket(newSocket);
-  }, [user]);
+  }, [authUser]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

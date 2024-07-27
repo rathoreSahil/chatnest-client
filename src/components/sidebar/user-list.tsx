@@ -1,4 +1,4 @@
-import useFetchUsers from "@/hooks/useFetchUsers";
+import { useFetchUsers } from "@/hooks/useFetchUsers";
 import { useStore } from "@/lib/zustand";
 import { useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
@@ -12,7 +12,7 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
   const users = useStore((state) => state.users);
   const setUsers = useStore((state) => state.setUsers);
   const search = useStore((state) => state.search);
-  const { user: currentUser } = useAuth();
+  const authUser = useAuth().authUser!;
 
   // fetch users
   useEffect(() => {
@@ -24,8 +24,8 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
   // filter users based on search
   useEffect(() => {
     if (!users.length) return;
-    const results = users.filter((chat) =>
-      chat.name.toLowerCase().includes(search.toLowerCase())
+    const results = users.filter((user) =>
+      user.name.toLowerCase().includes(search.toLowerCase())
     );
 
     setFilteredUsers(results);
@@ -42,8 +42,8 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
       {filteredUsers.length ? (
         filteredUsers.map((user) => {
           if (!user._id) return;
+          const isCurrentUser = authUser._id === user._id;
 
-          const isCurrentUser = currentUser?._id === user._id;
           return (
             !isCurrentUser && (
               <div

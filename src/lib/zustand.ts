@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 type Store = {
-  chats: Chat[];
+  chats: (GroupChat | DirectChat)[];
   users: User[];
   selectedUsers: User[];
   chatModalType:
@@ -11,10 +11,10 @@ type Store = {
     | "group-details"
     | "profile";
   isRightPanelOpen: boolean;
-  currentChat: Chat | User | null;
+  currentChat: GroupChat | DirectChat | null;
   search: string;
 
-  setChats: (chats: Chat[]) => void;
+  setChats: (chats: (GroupChat | DirectChat)[]) => void;
   setUsers: (users: User[]) => void;
   setSelectedUsers: (selectedUsers: User[]) => void;
   setChatModalType: (
@@ -26,7 +26,7 @@ type Store = {
       | "profile"
   ) => void;
   setIsRightPanelOpen: (isOpen: boolean) => void;
-  setCurrentChat: (newChat: Chat | User) => void;
+  setCurrentChat: (newChat: GroupChat | DirectChat) => void;
   setSearch: (search: string) => void;
 };
 
@@ -39,7 +39,7 @@ const useStore = create<Store>()((set) => ({
   currentChat: null,
   search: "",
 
-  setChats: (chats: Chat[]) => set({ chats }),
+  setChats: (chats: (GroupChat | DirectChat)[]) => set({ chats }),
   setUsers: (users: User[]) => set({ users }),
   setSelectedUsers: (selectedUsers: User[]) => set({ selectedUsers }),
   setChatModalType: (
@@ -51,7 +51,8 @@ const useStore = create<Store>()((set) => ({
       | "profile"
   ) => set({ chatModalType: type }),
   setIsRightPanelOpen: (isOpen: boolean) => set({ isRightPanelOpen: isOpen }),
-  setCurrentChat: (newChat: Chat | User) => set({ currentChat: newChat }),
+  setCurrentChat: (newChat: GroupChat | DirectChat) =>
+    set({ currentChat: newChat }),
   setSearch: (search: string) => set({ search }),
 }));
 

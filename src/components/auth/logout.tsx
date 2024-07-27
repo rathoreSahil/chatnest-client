@@ -7,12 +7,12 @@ import toast from "react-hot-toast";
 
 const Logout = () => {
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setAuthUser } = useAuth();
 
   async function handleLogout() {
     try {
       await Fetch.GET("/users/logout");
-      setUser(null);
+      setAuthUser(null);
       toast.success("Logged out successfully!");
     } catch (error: any) {
       toast.error(error.message);

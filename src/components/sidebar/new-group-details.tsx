@@ -1,13 +1,13 @@
 import { Check } from "lucide-react";
-import ProfilePhoto from "../profile/profile-photo";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Fetch } from "@/lib/fetch";
+import { Button } from "../ui/button";
+import { useAuth } from "@/context/auth-provider";
 import { useStore } from "@/lib/zustand";
 import { useState } from "react";
-import { Fetch } from "@/lib/fetch";
-import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
+import ProfilePhoto from "../profile/profile-photo";
 
 const NewGroupDetails = () => {
   const [groupName, setGroupName] = useState("");
@@ -18,36 +18,35 @@ const NewGroupDetails = () => {
   const setChatModalType = useStore((state) => state.setChatModalType);
 
   const socket = useSocket();
-  const { user: currentUser } = useAuth();
+  const authUser = useAuth().authUser!;
 
   // handle create new group
   async function createNewGroup() {
-    // create new chat
     const newChatDetails = {
       name: groupName,
       description: groupDescription,
       photo: "/default-group.png",
-      isGroupChat: true,
+      photoPublicId: "default-group",
       participantCount: selectedUsers.length + 1,
     };
 
-    const res = await Fetch.POST("/chats", newChatDetails);
+    const res = await Fetch.POST("/chats/group", newChatDetails);
     const newChat = res.data;
-    const newChatId = res.data._id;
+    const newChatId = newChat._id;
 
     // create new participants
     const tempData = selectedUsers.map((user) => {
-      return { user: user._id, chat: newChatId };
+      return { user: user._id, group: newChatId };
     });
 
     const newParticipantsData = {
-      participants: [...tempData, { user: currentUser!._id, chat: newChatId }],
+      participants: [...tempData, { user: authUser._id, group: newChatId }],
     };
 
     await Fetch.POST("/participants", newParticipantsData);
 
     // trigger refresh event to update chat list of all participants
-    socket?.emit("refresh", currentUser!._id);
+    socket?.emit("refresh", authUser._id);
     selectedUsers.forEach((user) => {
       socket?.emit("refresh", user._id);
     });

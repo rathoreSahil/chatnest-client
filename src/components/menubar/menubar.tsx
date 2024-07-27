@@ -9,7 +9,7 @@ import { useAuth } from "@/context/auth-provider";
 const Menubar = () => {
   const chatModalType = useStore((state) => state.chatModalType);
   const setChatModalType = useStore((state) => state.setChatModalType);
-  const { user } = useAuth();
+  const authUser = useAuth().authUser!;
 
   if (chatModalType === "chat") {
     return (
@@ -17,7 +17,7 @@ const Menubar = () => {
         <div onClick={() => setChatModalType("profile")}>
           <ProfilePhoto
             className="cursor-pointer h-10 w-10"
-            src={user?.photo}
+            src={authUser.photo}
           />
         </div>
         <div>

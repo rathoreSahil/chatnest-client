@@ -10,8 +10,8 @@ import {
 } from "react";
 
 type AuthContextType = {
-  user: User | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
+  authUser: User | null;
+  setAuthUser: Dispatch<SetStateAction<User | null>>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -19,16 +19,15 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(null as User | null);
+  const [authUser, setAuthUser] = useState(null as User | null);
 
   useEffect(() => {
     async function checkLoggedIn() {
       try {
         const resJson = await Fetch.GET("/users/is-logged-in");
-        setUser(resJson.data.user);
+        setAuthUser(resJson.data.user);
       } catch (error: any) {
-        console.log(error.message);
-        setUser(null);
+        setAuthUser(null);
       }
     }
 
@@ -36,7 +35,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ authUser, setAuthUser }}>
       {children}
     </AuthContext.Provider>
   );
