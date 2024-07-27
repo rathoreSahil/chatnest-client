@@ -15,3 +15,12 @@ export async function addMessageToDB(message: Message) {
     console.error("Error saving message to DB", error.message);
   }
 }
+
+export async function getLoggedInParticipantDetails(groupId: string) {
+  try {
+    const res = await Fetch.GET(`/participants/${groupId}`);
+    return res.participant;
+  } catch (error: any) {
+    console.error("Error fetching participant details", error.message);
+  }
+}

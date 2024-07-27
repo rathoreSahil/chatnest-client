@@ -16,7 +16,7 @@ import {
 import { useStore } from "@/lib/zustand";
 import useUploadPhoto from "@/hooks/useUploadPhoto";
 import useDeletePhoto from "@/hooks/useDeletePhoto";
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/modal";
 import PhotoModal from "../profile/photo-modal";
 
 const Profile = () => {
@@ -25,8 +25,8 @@ const Profile = () => {
   const [deleteLoading, deletePhoto] = useDeletePhoto();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const setChatModalType = useStore((state) => state.setChatModalType);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInput = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();

@@ -40,7 +40,10 @@ const NewGroupDetails = () => {
     });
 
     const newParticipantsData = {
-      participants: [...tempData, { user: authUser._id, group: newChatId }],
+      participants: [
+        ...tempData,
+        { user: authUser._id, group: newChatId, isAdmin: true },
+      ],
     };
 
     await Fetch.POST("/participants", newParticipantsData);

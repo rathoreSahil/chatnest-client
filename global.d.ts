@@ -10,6 +10,14 @@ declare global {
     createdAt: Date;
   }
 
+  interface Participant {
+    _id: string;
+    user: User;
+    group: GroupChat;
+    isAdmin: boolean;
+    createdAt: Date;
+  }
+
   interface GroupChat {
     _id: string;
     name: string;

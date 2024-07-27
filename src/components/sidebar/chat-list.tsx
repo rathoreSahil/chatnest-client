@@ -15,6 +15,7 @@ const ChatList = () => {
   const chats = useStore((state) => state.chats);
   const search = useStore((state) => state.search);
   const setChats = useStore((state) => state.setChats);
+  const currentChat = useStore((state) => state.currentChat);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
 
   const socket = useSocket();
