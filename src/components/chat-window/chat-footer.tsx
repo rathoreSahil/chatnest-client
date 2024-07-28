@@ -7,12 +7,14 @@ import { SendHorizontal } from "lucide-react";
 import { useState } from "react";
 import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
-import { addMessageToDB } from "@/lib/utils";
-import { Fetch } from "@/lib/fetch";
+import { addMessageToDB, updateChat } from "@/lib/utils";
 import { EmojiPicker } from "./emoji-picker";
+import useCreateDirectChat from "@/hooks/useCreateDirectChat";
+import toast from "react-hot-toast";
 
 const ChatFooter = () => {
   const [messageContent, setMessageContent] = useState("");
+  const { loading, createDirectChat } = useCreateDirectChat();
 
   const currentChat = useStore((state) => state.currentChat)!;
   const setCurrentChat = useStore((state) => state.setCurrentChat);
@@ -32,28 +34,33 @@ const ChatFooter = () => {
       createdAt: new Date(),
     };
 
+    let chatId = currentChat._id;
+    let isGroupChat = false;
+
     if ("_id" in currentChat === false) {
-      // create new direct chat
-      const newChatDetails = {
-        user1: (currentChat as DirectChat).user1._id,
-        user2: (currentChat as DirectChat).user2._id,
-      };
+      try {
+        // Create a new chat
+        const newDirectChat = await createDirectChat(message.content);
+        if (!newDirectChat) return;
 
-      const res = await Fetch.POST("/chats/direct", newChatDetails);
-      const newChat = res.data;
+        chatId = newDirectChat._id;
+        isGroupChat = false;
+        // trigger refresh event to update chat list
+        const otherUserId =
+          newDirectChat.user1._id === authUser._id
+            ? newDirectChat.user2._id
+            : newDirectChat.user1._id;
+        socket.emit("new-chat", otherUserId, newDirectChat);
+        socket.emit("new-chat-self", newDirectChat);
 
-      // trigger refresh event to update chat list
-      socket?.emit("refresh", newChat.user1);
-      socket?.emit("refresh", newChat.user2);
-
-      message.directChat = newChat._id;
-
-      const { data: newChatPopulated } = await Fetch.GET(
-        `/chats/direct/${newChat._id}`
-      );
-      setCurrentChat(newChatPopulated);
+        message.directChat = newDirectChat._id;
+        setCurrentChat(newDirectChat);
+      } catch (error: any) {
+        toast.error(error.message);
+        console.error(error.message);
+      }
     } else {
-      const isGroupChat = "participantCount" in currentChat;
+      isGroupChat = "participantCount" in currentChat;
       if (isGroupChat) {
         message.groupChat = currentChat._id;
       } else {
@@ -61,9 +68,16 @@ const ChatFooter = () => {
       }
     }
 
-    addMessageToDB(message);
-    socket.emit("message", message);
-    setMessageContent("");
+    try {
+      await addMessageToDB(message);
+      updateChat(chatId, isGroupChat, { lastMessage: message.content });
+      socket.emit("message", message);
+    } catch (error: any) {
+      toast.error(error.message);
+      console.error(error.message);
+    } finally {
+      setMessageContent("");
+    }
   }
 
   return (
@@ -77,7 +91,7 @@ const ChatFooter = () => {
         placeholder="Type a message..."
         className="rounded-xl"
       />
-      <Button type="submit" size="icon">
+      <Button disabled={loading} type="submit" size="icon">
         <SendHorizontal />
       </Button>
     </form>

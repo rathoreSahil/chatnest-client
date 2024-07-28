@@ -14,7 +14,9 @@ type Store = {
   currentChat: GroupChat | DirectChat | null;
   search: string;
 
+  addNewChat: (newChat: GroupChat | DirectChat) => void;
   setChats: (chats: (GroupChat | DirectChat)[]) => void;
+  reorderChats: (id: string, messageContent: string) => void;
   setUsers: (users: User[]) => void;
   setSelectedUsers: (selectedUsers: User[]) => void;
   setChatModalType: (
@@ -30,7 +32,7 @@ type Store = {
   setSearch: (search: string) => void;
 };
 
-const useStore = create<Store>()((set) => ({
+const useStore = create<Store>()((set, get) => ({
   chats: [],
   users: [],
   selectedUsers: [],
@@ -39,7 +41,19 @@ const useStore = create<Store>()((set) => ({
   currentChat: null,
   search: "",
 
+  addNewChat: (newChat: GroupChat | DirectChat) =>
+    set((state) => ({ chats: [...state.chats, newChat] })),
   setChats: (chats: (GroupChat | DirectChat)[]) => set({ chats }),
+  reorderChats: (id: string, messageContent: string) => {
+    const chats = get().chats;
+
+    const removed = chats.find((chat) => chat._id === id);
+    if (!removed) return;
+    const filteredChats = chats.filter((chat) => chat._id !== id);
+
+    removed.lastMessage = messageContent;
+    set({ chats: [removed, ...filteredChats] });
+  },
   setUsers: (users: User[]) => set({ users }),
   setSelectedUsers: (selectedUsers: User[]) => set({ selectedUsers }),
   setChatModalType: (

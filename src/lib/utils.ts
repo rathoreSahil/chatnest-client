@@ -13,6 +13,7 @@ export async function addMessageToDB(message: Message) {
     await Fetch.POST("/messages", { message });
   } catch (error: any) {
     console.error("Error saving message to DB", error.message);
+    throw new Error("Error saving message to DB");
   }
 }
 
@@ -22,5 +23,23 @@ export async function getLoggedInParticipantDetails(groupId: string) {
     return res.participant;
   } catch (error: any) {
     console.error("Error fetching participant details", error.message);
+    throw new Error("Error fetching participant details");
+  }
+}
+
+export async function updateChat(
+  chatId: string,
+  isGroupChat: boolean,
+  chatDetails: any
+) {
+  try {
+    const resJson = isGroupChat
+      ? await Fetch.PATCH(`/chats/group/${chatId}`, chatDetails)
+      : await Fetch.PATCH(`/chats/direct/${chatId}`, chatDetails);
+
+    return resJson.data;
+  } catch (error: any) {
+    console.error("Error updating chat", error.message);
+    throw new Error("Error updating chat");
   }
 }

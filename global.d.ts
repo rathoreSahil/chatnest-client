@@ -25,14 +25,18 @@ declare global {
     photo?: string;
     photoPublicId?: string;
     participantCount: number;
+    lastMessage?: string;
     createdAt: Date;
+    updatedAt: Date;
   }
 
   interface DirectChat {
     _id: string;
     user1: User;
     user2: User;
+    lastMessage?: string;
     createdAt: Date;
+    updatedAt: Date;
   }
 
   interface Message {

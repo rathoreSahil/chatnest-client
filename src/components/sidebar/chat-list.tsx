@@ -4,46 +4,52 @@ import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
 import { useFetchChats } from "@/hooks/useFetchChats";
 import { useStore } from "@/lib/zustand";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProfilePhoto from "../profile/profile-photo";
 import ChatListSkeleton from "../skeleton/chat-list-skeleton";
+import { useMessage } from "@/context/message-provider";
 
 const ChatList = () => {
   const [loading, fetchChats] = useFetchChats();
   const [filteredChats, setFilteredChats] = useState<typeof chats>([]);
 
-  const chats = useStore((state) => state.chats);
-  const search = useStore((state) => state.search);
-  const setChats = useStore((state) => state.setChats);
-  const currentChat = useStore((state) => state.currentChat);
-  const setCurrentChat = useStore((state) => state.setCurrentChat);
+  const { chats, search, setChats, addNewChat, reorderChats, setCurrentChat } =
+    useStore((state) => state);
 
   const socket = useSocket();
+  const message = useMessage();
   const authUser = useAuth().authUser!;
 
   // fetch chats by user id
-  const updateChatList = useCallback(() => {
-    fetchChats().then((data) => {
-      setChats(data);
-
+  useEffect(() => {
+    fetchChats().then((chats) => {
       if (!socket) return;
-      data.map((chat) => {
+      chats.map((chat) => {
         socket.emit("join-room", chat._id);
       });
+      setChats(chats);
     });
   }, [fetchChats, setChats, socket]);
 
-  // update chat list
   useEffect(() => {
-    updateChatList();
-    socket?.on("refresh", () => {
-      updateChatList();
+    if (!message) return;
+
+    const chatIdToRemove = message.directChat || message.groupChat || "";
+    reorderChats(chatIdToRemove, message.content);
+  }, [message, reorderChats]);
+
+  // New chat handle logic
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("new-chat", (newChat) => {
+      socket.emit("join-room", newChat._id);
+      addNewChat(newChat);
     });
 
     return () => {
-      socket?.off("refresh");
+      socket.off("new-chat");
     };
-  }, [socket, updateChatList]);
+  }, [addNewChat, socket]);
 
   // filter chats based on search
   useEffect(() => {
@@ -57,7 +63,6 @@ const ChatList = () => {
         chatName =
           authUser._id === chat.user1._id ? chat.user2.name : chat.user1.name;
       }
-
       return chatName.toLowerCase().includes(search.toLowerCase());
     });
 
@@ -95,7 +100,12 @@ const ChatList = () => {
               className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
             >
               <ProfilePhoto src={displayPhoto} />
-              {displayName}
+              <div className=" w-9/12">
+                <p>{displayName}</p>
+                <p className="text-sm opacity-60 truncate ">
+                  {chat.lastMessage}
+                </p>
+              </div>
             </div>
           );
         })

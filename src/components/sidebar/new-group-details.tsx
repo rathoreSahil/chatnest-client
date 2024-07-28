@@ -49,9 +49,10 @@ const NewGroupDetails = () => {
     await Fetch.POST("/participants", newParticipantsData);
 
     // trigger refresh event to update chat list of all participants
-    socket?.emit("refresh", authUser._id);
+    if (!socket) return;
+    socket.emit("new-chat-self", newChat);
     selectedUsers.forEach((user) => {
-      socket?.emit("refresh", user._id);
+      socket.emit("new-chat", user._id, newChat);
     });
 
     setCurrentChat(newChat);

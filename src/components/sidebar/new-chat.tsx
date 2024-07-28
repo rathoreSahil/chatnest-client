@@ -32,6 +32,7 @@ const NewChat = () => {
       setChatModalType("chat");
     } catch (error: any) {
       console.error("error creating chat", error.message);
+      throw new Error("Error creating chat", error.message);
     }
   }
   return <UserList handleClick={handleClick} />;

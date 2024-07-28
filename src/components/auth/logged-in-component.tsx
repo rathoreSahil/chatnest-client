@@ -18,7 +18,13 @@ const LoggedInComponent = () => {
   return (
     <MessageContextProvider>
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel order={1} id="left" defaultSize={arr[0]}>
+        <ResizablePanel
+          maxSize={40}
+          minSize={25}
+          order={1}
+          id="left"
+          defaultSize={arr[0]}
+        >
           <Sidebar />
         </ResizablePanel>
         <ResizableHandle />
@@ -28,7 +34,13 @@ const LoggedInComponent = () => {
         {isRightPanelOpen && (
           <>
             <ResizableHandle />
-            <ResizablePanel order={3} id="right" defaultSize={arr[2]}>
+            <ResizablePanel
+              maxSize={40}
+              minSize={25}
+              order={3}
+              id="right"
+              defaultSize={arr[2]}
+            >
               <RightPanel />
             </ResizablePanel>
           </>

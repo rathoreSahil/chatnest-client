@@ -26,11 +26,10 @@ const ChatContent = () => {
   // update messages
   useEffect(() => {
     if (!message) return;
-    if (isGroupChat && message.groupChat !== currentChat._id) return;
-    if (!isGroupChat && message.directChat !== currentChat._id) return;
+    if ((message.groupChat || message.directChat) !== currentChat._id) return;
 
     setMessages((prevMessages) => [...prevMessages, message]);
-  }, [currentChat._id, isGroupChat, message]);
+  }, [currentChat._id, message]);
 
   // scroll to bottom
   useEffect(() => {
