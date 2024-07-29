@@ -5,7 +5,7 @@ import UserList from "./user-list";
 const NewChat = () => {
   const chats = useStore((state) => state.chats);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setChatModalType = useStore((state) => state.setChatModalType);
+  const setSidebarType = useStore((state) => state.setSidebarType);
 
   const authUser = useAuth().authUser!;
 
@@ -22,14 +22,14 @@ const NewChat = () => {
         ) {
           chatExists = true;
           setCurrentChat(chat);
-          setChatModalType("chat");
+          setSidebarType("chat");
         }
       });
 
       if (chatExists) return;
 
       setCurrentChat({ user1: authUser, user2: otherUser } as DirectChat);
-      setChatModalType("chat");
+      setSidebarType("chat");
     } catch (error: any) {
       console.error("error creating chat", error.message);
       throw new Error("Error creating chat", error.message);

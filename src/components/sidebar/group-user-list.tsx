@@ -9,7 +9,7 @@ import SelectedUsers from "./selected-users";
 const GroupUserList = () => {
   const users = useStore((state) => state.users);
   const setUsers = useStore((state) => state.setUsers);
-  const setChatModalType = useStore((state) => state.setChatModalType);
+  const setSidebarType = useStore((state) => state.setSidebarType);
 
   const selectedUsers = useStore((state) => state.selectedUsers);
   const setSelectedUsers = useStore((state) => state.setSelectedUsers);
@@ -29,7 +29,7 @@ const GroupUserList = () => {
         <Button
           variant="secondary"
           className="mx-auto my-8 rounded-full overflow-hidden h-16 w-16 p-0"
-          onClick={() => setChatModalType("group-details")}
+          onClick={() => setSidebarType("group-details")}
         >
           <ArrowRight />
         </Button>

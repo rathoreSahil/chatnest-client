@@ -1,18 +1,28 @@
 import { useStore } from "@/lib/zustand";
-import ChatList from "./chat-list";
-import GroupUserList from "./group-user-list";
-import Profile from "./profile";
-import NewChat from "./new-chat";
-import NewGroupDetails from "./new-group-details";
+
+import Profile from "@/components/sidebar/profile";
+import NewChat from "@/components/sidebar/new-chat";
+import ChatList from "@/components/sidebar/chat-list";
+import GroupUserList from "@/components/sidebar/group-user-list";
+import NewGroupDetails from "@/components/sidebar/new-group-details";
 
 const SidebarContent = () => {
-  const chatModalType = useStore((state) => state.chatModalType);
+  const sidebarType = useStore((state) => state.sidebarType);
 
-  if (chatModalType === "chat") return <ChatList />;
-  if (chatModalType === "new-chat") return <NewChat />;
-  if (chatModalType === "select-group-members") return <GroupUserList />;
-  if (chatModalType === "group-details") return <NewGroupDetails />;
-  if (chatModalType === "profile") return <Profile />;
+  switch (sidebarType) {
+    case "chat":
+      return <ChatList />;
+    case "new-chat":
+      return <NewChat />;
+    case "select-group-members":
+      return <GroupUserList />;
+    case "group-details":
+      return <NewGroupDetails />;
+    case "profile":
+      return <Profile />;
+    default:
+      return <p>Oops! Something went wrong</p>;
+  }
 };
 
 export default SidebarContent;

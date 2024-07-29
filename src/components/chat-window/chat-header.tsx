@@ -31,7 +31,7 @@ const ChatHeader = () => {
   return (
     <div
       onClick={() => setIsRightPanelOpen(true)}
-      className="p-3 cursor-pointer text-xl bg-slate-800 border flex gap-4 items-center"
+      className="p-3 cursor-pointer text-xl  border flex gap-4 items-center"
     >
       <ProfilePhoto className="h-10 w-10" src={displayPhoto} />
       {displayName}

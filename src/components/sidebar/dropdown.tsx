@@ -10,7 +10,7 @@ import Logout from "@/components/auth/logout";
 import { useStore } from "@/lib/zustand";
 
 const Dropdown = () => {
-  const setChatModalType = useStore((state) => state.setChatModalType);
+  const setSidebarType = useStore((state) => state.setSidebarType);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus-visible:outline-none outline-none">
@@ -18,11 +18,11 @@ const Dropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
-          onClick={() => setChatModalType("select-group-members")}
+          onClick={() => setSidebarType("select-group-members")}
         >
           New Group
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setChatModalType("profile")}>
+        <DropdownMenuItem onClick={() => setSidebarType("profile")}>
           Profile
         </DropdownMenuItem>
         <DropdownMenuItem>

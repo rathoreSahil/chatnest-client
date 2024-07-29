@@ -1,20 +1,21 @@
 "use client";
 
-import Search from "@/components/sidebar/search";
-import Menubar from "@/components/menubar/menubar";
+import { cn } from "@/lib/utils";
+import { SidebarProps } from "@/types";
 import { useStore } from "@/lib/zustand";
+
+import Search from "@/components/sidebar/search";
+import SidebarHeader from "@/components/sidebar/sidebar-header";
 import SidebarContent from "@/components/sidebar/sidebar-content";
 
-const Sidebar = () => {
-  const chatModalType = useStore((state) => state.chatModalType);
+const Sidebar = ({ className }: SidebarProps) => {
+  const { sidebarType } = useStore();
 
   return (
-    <div className="flex flex-col border-x h-full">
-      <Menubar />
-      {chatModalType !== "profile" && <Search />}
-      <div className="flex-1 overflow-y-auto">
-        <SidebarContent />
-      </div>
+    <div className={cn("", className)}>
+      <SidebarHeader />
+      {sidebarType !== "profile" && <Search />}
+      <SidebarContent />
     </div>
   );
 };

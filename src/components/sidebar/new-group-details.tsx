@@ -15,7 +15,7 @@ const NewGroupDetails = () => {
 
   const selectedUsers = useStore((state) => state.selectedUsers);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setChatModalType = useStore((state) => state.setChatModalType);
+  const setSidebarType = useStore((state) => state.setSidebarType);
 
   const socket = useSocket();
   const authUser = useAuth().authUser!;
@@ -56,7 +56,7 @@ const NewGroupDetails = () => {
     });
 
     setCurrentChat(newChat);
-    setChatModalType("chat");
+    setSidebarType("chat");
   }
 
   return (
@@ -67,7 +67,7 @@ const NewGroupDetails = () => {
           className="h-52 w-52 opacity-90 mx-auto mb-16"
         />
         <div className="pb-6">
-          <Label className="pl-3 pb-3 text-green-400" htmlFor="name">
+          <Label className="pl-3 pb-3" htmlFor="name">
             Group Title
           </Label>
           <Input
@@ -78,7 +78,7 @@ const NewGroupDetails = () => {
           />
         </div>
         <div>
-          <Label className="pl-3 pb-3 text-green-400" htmlFor="description">
+          <Label className="pl-3 pb-3" htmlFor="description">
             Description
           </Label>
           <Input

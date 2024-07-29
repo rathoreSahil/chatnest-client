@@ -13,14 +13,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { getLoggedInParticipantDetails } from "@/lib/utils";
+import { cn, getLoggedInParticipantDetails } from "@/lib/utils";
 import useUploadGroupPhoto from "@/hooks/useUploadGroupPhoto";
 import useDeleteGroupPhoto from "@/hooks/useDeleteGroupPhoto";
+import { RightPanelProps } from "@/types";
 
-const RightPanel = () => {
+const RightPanel = ({ className }: RightPanelProps) => {
   const currentChat = useStore((state) => state.currentChat)!;
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setChatModalType = useStore((state) => state.setChatModalType);
+  const setSidebarType = useStore((state) => state.setSidebarType);
   const setIsRightPanelOpen = useStore((state) => state.setIsRightPanelOpen);
 
   const [uploadLoading, uploadGroupPhoto] = useUploadGroupPhoto();
@@ -67,14 +68,12 @@ const RightPanel = () => {
       const groupChat = await uploadGroupPhoto(currentChat as GroupChat, file);
       if (!groupChat) return;
       setCurrentChat(groupChat);
-      setChatModalType("chat");
+      setSidebarType("chat");
     }
   };
 
-  const dropdownItemClass = "hover:bg-slate-900";
-
   return (
-    <>
+    <div className={cn("", className)}>
       <input
         type="file"
         ref={fileInputRef}
@@ -86,8 +85,8 @@ const RightPanel = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       />
-      <div className="p-3 h-[66px] flex items-center justify-start bg-slate-800">
-        <Button variant="base" onClick={() => setIsRightPanelOpen(false)}>
+      <div className="p-3 h-[66px] flex items-center justify-start">
+        <Button onClick={() => setIsRightPanelOpen(false)}>
           <X className="text-xl" />
         </Button>
         <span className="text-xl">Chat Info</span>
@@ -117,26 +116,18 @@ const RightPanel = () => {
               )}
             </div>
 
-            <DropdownMenuContent className="bg-slate-800 border-0 absolute top-0 left-0">
-              <DropdownMenuItem className={dropdownItemClass} onClick={onOpen}>
-                View Photo
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className={dropdownItemClass}
-                onClick={openFileInput}
-              >
+            <DropdownMenuContent className="border-0 absolute top-0 left-0">
+              <DropdownMenuItem onClick={onOpen}>View Photo</DropdownMenuItem>
+              <DropdownMenuItem onClick={openFileInput}>
                 Upload Photo
               </DropdownMenuItem>
-              <DropdownMenuItem className={dropdownItemClass}>
-                Take Photo
-              </DropdownMenuItem>
+              <DropdownMenuItem>Take Photo</DropdownMenuItem>
               <DropdownMenuItem
-                className={dropdownItemClass}
                 onClick={async () => {
                   const groupChat = await deleteGroupPhoto(currentChat);
                   if (!groupChat) return;
                   setCurrentChat(groupChat);
-                  setChatModalType("chat");
+                  setSidebarType("chat");
                 }}
               >
                 Remove Photo
@@ -146,7 +137,7 @@ const RightPanel = () => {
         )}
         <p className="pt-6 text-2xl ">{displayName}</p>
       </div>
-    </>
+    </div>
   );
 };
 

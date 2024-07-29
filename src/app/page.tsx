@@ -1,15 +1,15 @@
 "use client";
 
-import { useAuth } from "@/context/auth-provider";
 import { useEffect } from "react";
-
+import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
-import LoggedInComponent from "@/components/auth/logged-in-component";
-import LoggedOutComponent from "@/components/auth/logged-out-component";
+
+import LoggedInComponent from "@/components/main/logged-in-component";
+import LoggedOutComponent from "@/components/main/logged-out-component";
 
 export default function Home() {
-  const { authUser } = useAuth();
   const socket = useSocket();
+  const { authUser } = useAuth();
 
   useEffect(() => {
     if (!socket) return;

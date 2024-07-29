@@ -24,7 +24,7 @@ const Profile = () => {
   const [uploadLoading, uploadPhoto] = useUploadPhoto();
   const [deleteLoading, deletePhoto] = useDeletePhoto();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const setChatModalType = useStore((state) => state.setChatModalType);
+  const setSidebarType = useStore((state) => state.setSidebarType);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInput = () => {
@@ -39,11 +39,9 @@ const Profile = () => {
       const user = await uploadPhoto(file);
       if (!user) return;
       setAuthUser(user);
-      setChatModalType("chat");
+      setSidebarType("chat");
     }
   };
-
-  const dropdownItemClass = "hover:bg-slate-900";
 
   return (
     <div className="p-10 space-y-8">
@@ -77,26 +75,18 @@ const Profile = () => {
           )}
         </div>
 
-        <DropdownMenuContent className="bg-slate-800 border-0 absolute top-0 left-0">
-          <DropdownMenuItem className={dropdownItemClass} onClick={onOpen}>
-            View Photo
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className={dropdownItemClass}
-            onClick={openFileInput}
-          >
+        <DropdownMenuContent className="border-0 absolute top-0 left-0">
+          <DropdownMenuItem onClick={onOpen}>View Photo</DropdownMenuItem>
+          <DropdownMenuItem onClick={openFileInput}>
             Upload Photo
           </DropdownMenuItem>
-          <DropdownMenuItem className={dropdownItemClass}>
-            Take Photo
-          </DropdownMenuItem>
+          <DropdownMenuItem>Take Photo</DropdownMenuItem>
           <DropdownMenuItem
-            className={dropdownItemClass}
             onClick={async () => {
               const user = await deletePhoto();
               if (!user) return;
               setAuthUser(user);
-              setChatModalType("chat");
+              setSidebarType("chat");
             }}
           >
             Remove Photo

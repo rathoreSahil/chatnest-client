@@ -4,7 +4,7 @@ type Store = {
   chats: (GroupChat | DirectChat)[];
   users: User[];
   selectedUsers: User[];
-  chatModalType:
+  sidebarType:
     | "chat"
     | "new-chat"
     | "select-group-members"
@@ -19,7 +19,7 @@ type Store = {
   reorderChats: (id: string, messageContent: string) => void;
   setUsers: (users: User[]) => void;
   setSelectedUsers: (selectedUsers: User[]) => void;
-  setChatModalType: (
+  setSidebarType: (
     type:
       | "chat"
       | "new-chat"
@@ -36,7 +36,7 @@ const useStore = create<Store>()((set, get) => ({
   chats: [],
   users: [],
   selectedUsers: [],
-  chatModalType: "chat",
+  sidebarType: "chat",
   isRightPanelOpen: false,
   currentChat: null,
   search: "",
@@ -56,14 +56,14 @@ const useStore = create<Store>()((set, get) => ({
   },
   setUsers: (users: User[]) => set({ users }),
   setSelectedUsers: (selectedUsers: User[]) => set({ selectedUsers }),
-  setChatModalType: (
+  setSidebarType: (
     type:
       | "chat"
       | "new-chat"
       | "select-group-members"
       | "group-details"
       | "profile"
-  ) => set({ chatModalType: type }),
+  ) => set({ sidebarType: type }),
   setIsRightPanelOpen: (isOpen: boolean) => set({ isRightPanelOpen: isOpen }),
   setCurrentChat: (newChat: GroupChat | DirectChat) =>
     set({ currentChat: newChat }),

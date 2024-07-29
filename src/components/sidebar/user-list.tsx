@@ -49,7 +49,7 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
               <div
                 onClick={() => handleClick(user)}
                 key={user._id}
-                className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
+                className="p-4 cursor-pointer flex gap-4 items-center"
               >
                 <ProfilePhoto src={user.photo} />
                 <div>

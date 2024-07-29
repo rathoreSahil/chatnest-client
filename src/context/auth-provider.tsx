@@ -14,9 +14,7 @@ type AuthContextType = {
   setAuthUser: Dispatch<SetStateAction<User | null>>;
 };
 
-export const AuthContext = createContext<AuthContextType>(
-  {} as AuthContextType
-);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [authUser, setAuthUser] = useState(null as User | null);
@@ -41,8 +39,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export default AuthContextProvider;
+export { AuthContextProvider, useAuth };

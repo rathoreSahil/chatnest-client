@@ -28,10 +28,9 @@ const ChatFooter = () => {
     if (!socket) return;
     if (!messageContent) return;
 
-    let message: Message = {
+    let message = {
       sender: authUser,
       content: messageContent,
-      createdAt: new Date(),
     };
 
     let chatId = currentChat._id;
@@ -81,7 +80,7 @@ const ChatFooter = () => {
   }
 
   return (
-    <form onSubmit={handleSend} className="flex gap-4 p-4 bg-slate-800 border">
+    <form onSubmit={handleSend} className="flex gap-4 p-4 border">
       <EmojiPicker
         onChange={(value) => setMessageContent((prev) => prev + value)}
       />

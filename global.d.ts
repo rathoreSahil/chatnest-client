@@ -40,6 +40,7 @@ declare global {
   }
 
   interface Message {
+    _id: string;
     groupChat?: string;
     directChat?: string;
     sender: User;

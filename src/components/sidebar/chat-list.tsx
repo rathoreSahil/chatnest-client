@@ -97,7 +97,7 @@ const ChatList = () => {
             <div
               onClick={() => setCurrentChat(chat)}
               key={chat._id}
-              className="p-4 cursor-pointer hover:bg-slate-900 flex gap-4 items-center"
+              className="p-4 cursor-pointer flex gap-4 items-center"
             >
               <ProfilePhoto src={displayPhoto} />
               <div className=" w-9/12">
