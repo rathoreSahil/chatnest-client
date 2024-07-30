@@ -1,5 +1,4 @@
 import { useStore } from "@/lib/zustand";
-import { Button } from "@/components/ui/button";
 import { IoArrowBackSharp } from "react-icons/io5";
 
 const SidebarTitleHeader = () => {
@@ -24,11 +23,12 @@ const SidebarTitleHeader = () => {
   }
 
   return (
-    <div className="flex items-center justify-start gap-2">
-      <Button onClick={() => setSidebarType("chat")}>
-        <IoArrowBackSharp className="text-xl " />
-      </Button>
-      <span className="text-xl">{title}</span>
+    <div className="flex items-center justify-start gap-4 text-xl  px-5 py-3">
+      <IoArrowBackSharp
+        className="cursor-pointer"
+        onClick={() => setSidebarType("chat")}
+      />
+      <p>{title}</p>
     </div>
   );
 };

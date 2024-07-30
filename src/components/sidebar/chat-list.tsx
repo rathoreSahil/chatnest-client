@@ -1,41 +1,32 @@
 "use client";
 
+import { useStore } from "@/lib/zustand";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
 import { useFetchChats } from "@/hooks/useFetchChats";
-import { useStore } from "@/lib/zustand";
-import { useEffect, useState } from "react";
-import ProfilePhoto from "../profile/profile-photo";
-import ChatListSkeleton from "../skeleton/chat-list-skeleton";
 import { useMessage } from "@/context/message-provider";
 
+import ProfilePhoto from "@/components/profile/profile-photo";
+import ChatListSkeleton from "@/components/skeleton/chat-list-skeleton";
+
 const ChatList = () => {
-  const [loading, fetchChats] = useFetchChats();
+  const { loading } = useFetchChats();
   const [filteredChats, setFilteredChats] = useState<typeof chats>([]);
 
-  const { chats, search, setChats, addNewChat, reorderChats, setCurrentChat } =
-    useStore((state) => state);
+  const { chats, search, addNewChat, reorderChats, setCurrentChat } =
+    useStore();
 
   const socket = useSocket();
   const message = useMessage();
   const authUser = useAuth().authUser!;
 
-  // fetch chats by user id
-  useEffect(() => {
-    fetchChats().then((chats) => {
-      if (!socket) return;
-      chats.map((chat) => {
-        socket.emit("join-room", chat._id);
-      });
-      setChats(chats);
-    });
-  }, [fetchChats, setChats, socket]);
-
+  // Reorder chats based on new message
   useEffect(() => {
     if (!message) return;
 
-    const chatIdToRemove = message.directChat || message.groupChat || "";
-    reorderChats(chatIdToRemove, message.content);
+    const chatIdToShift = message.directChat || message.groupChat || "";
+    reorderChats(chatIdToShift, message.content);
   }, [message, reorderChats]);
 
   // New chat handle logic

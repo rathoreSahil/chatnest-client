@@ -16,7 +16,7 @@ const ProfilePhoto = ({
     <div
       onClick={onClick}
       className={cn(
-        "rounded-full overflow-hidden h-12 flex-shrink-0 w-12 cursor-pointer ",
+        "rounded-full overflow-hidden h-12 w-12 cursor-pointer",
         className
       )}
     >

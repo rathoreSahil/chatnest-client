@@ -7,7 +7,7 @@ import GroupUserList from "@/components/sidebar/group-user-list";
 import NewGroupDetails from "@/components/sidebar/new-group-details";
 
 const SidebarContent = () => {
-  const sidebarType = useStore((state) => state.sidebarType);
+  const { sidebarType } = useStore();
 
   switch (sidebarType) {
     case "chat":

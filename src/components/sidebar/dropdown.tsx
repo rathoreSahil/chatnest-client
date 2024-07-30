@@ -1,20 +1,23 @@
+import { useStore } from "@/lib/zustand";
+import { FaEllipsisVertical } from "react-icons/fa6";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { FaEllipsisVertical } from "react-icons/fa6";
+import { Button } from "@/components/ui/button";
 import Logout from "@/components/auth/logout";
-import { useStore } from "@/lib/zustand";
 
 const Dropdown = () => {
-  const setSidebarType = useStore((state) => state.setSidebarType);
+  const { setSidebarType } = useStore();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus-visible:outline-none outline-none">
-        <FaEllipsisVertical />
+      <DropdownMenuTrigger>
+        <Button size={"icon"} variant={"ghost"} className="rounded-full">
+          <FaEllipsisVertical />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem

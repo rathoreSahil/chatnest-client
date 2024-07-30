@@ -3,10 +3,7 @@ import { Input } from "@/components/ui/input";
 import { useStore } from "@/lib/zustand";
 
 const Search = () => {
-  const { search, setSearch } = useStore((state) => ({
-    search: state.search,
-    setSearch: state.setSearch,
-  }));
+  const { search, setSearch } = useStore();
 
   return (
     <div className="p-4">

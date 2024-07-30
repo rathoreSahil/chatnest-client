@@ -1,10 +1,10 @@
 import { Fetch } from "@/lib/fetch";
 import { useState, useCallback } from "react";
 
-export const useFetchChats = (): [
-  boolean,
-  () => Promise<(GroupChat | DirectChat)[]>
-] => {
+export const useFetchChats = (): {
+  loading: boolean;
+  fetchChats: () => Promise<(GroupChat | DirectChat)[]>;
+} => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchChats = useCallback(async (): Promise<
@@ -34,5 +34,5 @@ export const useFetchChats = (): [
     }
   }, []);
 
-  return [loading, fetchChats];
+  return { loading, fetchChats };
 };

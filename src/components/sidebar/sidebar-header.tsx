@@ -7,9 +7,9 @@ const SidebarHeader = () => {
   const { sidebarType } = useStore();
 
   return (
-    <div className="p-3">
+    <>
       {sidebarType === "chat" ? <SidebarChatHeader /> : <SidebarTitleHeader />}
-    </div>
+    </>
   );
 };
 

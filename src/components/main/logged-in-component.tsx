@@ -12,11 +12,9 @@ const LoggedInComponent = () => {
 
   return (
     <MessageContextProvider>
-      <div className="flex h-full w-full">
-        <Sidebar className="basis-[28%]" />
-        <Chat className="flex-1" />
-        {isRightPanelOpen && <RightPanel className="basis-[28%]" />}
-      </div>
+      <Sidebar className="w-[27%]" />
+      <Chat className="flex-1" />
+      {isRightPanelOpen && <RightPanel className="w-[27%]" />}
     </MessageContextProvider>
   );
 };

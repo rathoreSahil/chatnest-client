@@ -1,12 +1,10 @@
 "use client";
 
-import { useAuth } from "@/context/auth-provider";
-import { Fetch } from "@/lib/fetch";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Fetch } from "@/lib/fetch";
+import { useAuth } from "@/context/auth-provider";
 
 const Logout = () => {
-  const router = useRouter();
   const { setAuthUser } = useAuth();
 
   async function handleLogout() {

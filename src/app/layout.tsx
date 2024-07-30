@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { AuthContextProvider } from "@/context/auth-provider";
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, "flex")}>
         <AuthContextProvider>
           <SocketContextProvider>
             {children}

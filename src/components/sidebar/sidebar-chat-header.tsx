@@ -11,10 +11,10 @@ const SidebarChatHeader = () => {
   const { setSidebarType } = useStore();
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between px-5 py-3">
       <ProfilePhoto
         onClick={() => setSidebarType("profile")}
-        className="cursor-pointer h-10 w-10"
+        className="h-10 w-10"
         src={authUser.photo}
       />
       <div>
@@ -26,7 +26,9 @@ const SidebarChatHeader = () => {
         >
           <FaPlus />
         </Button>
-        <Dropdown />
+        
+          <Dropdown />
+        
       </div>
     </div>
   );
