@@ -1,34 +1,19 @@
-import { useAuth } from "@/context/auth-provider";
 import { useStore } from "@/lib/zustand";
-import UserList from "./user-list";
+import { checkIfChatExists } from "@/lib/utils";
+import { useAuth } from "@/context/auth-provider";
+import UserList from "@/components/sidebar/user-list";
 
 const NewChat = () => {
-  const chats = useStore((state) => state.chats);
-  const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setSidebarType = useStore((state) => state.setSidebarType);
-
   const authUser = useAuth().authUser!;
+  const { chats, setCurrentChat, setSidebarType } = useStore();
 
   // handle new chat click
   async function handleClick(otherUser: User) {
     try {
       // check if chat already exists
-      let chatExists = false;
-      chats.forEach((chat) => {
-        const isGroupChat = "participantCount" in chat;
-        if (
-          !isGroupChat &&
-          (chat.user1._id === otherUser._id || chat.user2._id === otherUser._id)
-        ) {
-          chatExists = true;
-          setCurrentChat(chat);
-          setSidebarType("chat");
-        }
-      });
+      const existingChat = checkIfChatExists(chats, otherUser._id);
+      if (existingChat) setCurrentChat(existingChat);
 
-      if (chatExists) return;
-
-      setCurrentChat({ user1: authUser, user2: otherUser } as DirectChat);
       setSidebarType("chat");
     } catch (error: any) {
       console.error("error creating chat", error.message);

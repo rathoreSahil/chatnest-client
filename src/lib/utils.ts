@@ -43,3 +43,49 @@ export async function updateChat(
     throw new Error("Error updating chat");
   }
 }
+
+export function isGroupChat(chat: DirectChat | GroupChat): chat is GroupChat {
+  return (chat as GroupChat).participantCount !== undefined;
+}
+
+export const getChatName = (
+  chat: GroupChat | DirectChat,
+  authUserId: string
+) => {
+  const chatName = isGroupChat(chat)
+    ? chat.name
+    : authUserId === chat.user1._id
+    ? chat.user2.name
+    : chat.user1.name;
+
+  return chatName;
+};
+
+export const getChatPhoto = (
+  chat: GroupChat | DirectChat,
+  authUserId: string
+) => {
+  const chatPhoto = isGroupChat(chat)
+    ? chat.photo
+    : authUserId === chat.user1._id
+    ? chat.user2.photo
+    : chat.user1.photo;
+
+  return chatPhoto;
+};
+
+export const checkIfChatExists = (
+  chats: (GroupChat | DirectChat)[],
+  userId: string
+): DirectChat | null => {
+  chats.forEach((chat) => {
+    if (
+      !isGroupChat(chat) &&
+      [chat.user1._id, chat.user2._id].includes(userId)
+    ) {
+      return chat;
+    }
+  });
+
+  return null;
+};

@@ -1,67 +1,44 @@
-import { useFetchUsers } from "@/hooks/useFetchUsers";
 import { useStore } from "@/lib/zustand";
 import { useEffect, useState } from "react";
-import ProfilePhoto from "../profile/profile-photo";
 import { useAuth } from "@/context/auth-provider";
-import ChatListSkeleton from "../skeleton/chat-list-skeleton";
+import { useFetchUsers } from "@/hooks/useFetchUsers";
+
+import ChatListSkeleton from "@/components/skeleton/chat-list-skeleton";
 
 const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([{} as User]);
   const [loading, fetchUsers] = useFetchUsers();
+  const { users, search, setUsers } = useStore();
+  const [filteredUsers, setFilteredUsers] = useState<User[]>();
 
-  const users = useStore((state) => state.users);
-  const setUsers = useStore((state) => state.setUsers);
-  const search = useStore((state) => state.search);
   const authUser = useAuth().authUser!;
 
   // fetch users
   useEffect(() => {
-    fetchUsers().then((data) => {
-      setUsers(data);
+    fetchUsers().then((users) => {
+      setUsers(users);
     });
   }, [fetchUsers, setUsers]);
 
   // filter users based on search
   useEffect(() => {
     if (!users.length) return;
-    const results = users.filter((user) =>
-      user.name.toLowerCase().includes(search.toLowerCase())
+    const results = users.filter(
+      (user) =>
+        authUser._id !== user._id &&
+        user.name.toLowerCase().includes(search.toLowerCase())
     );
 
     setFilteredUsers(results);
-  }, [users, search]);
+  }, [users, search, authUser._id]);
 
   // loading state
-  if (loading) {
-    return <ChatListSkeleton length={8} />;
-  }
+  if (loading) return <ChatListSkeleton length={8} />;
 
   // render users
   return (
     <div>
-      {filteredUsers.length ? (
-        filteredUsers.map((user) => {
-          if (!user._id) return;
-          const isCurrentUser = authUser._id === user._id;
-
-          return (
-            !isCurrentUser && (
-              <div
-                onClick={() => handleClick(user)}
-                key={user._id}
-                className="p-4 cursor-pointer flex gap-4 items-center"
-              >
-                <ProfilePhoto src={user.photo} />
-                <div>
-                  <p>{user.name}</p>
-                  <p className="opacity-50 text-sm italic">
-                    {user.description}
-                  </p>
-                </div>
-              </div>
-            )
-          );
-        })
+      {filteredUsers ? (
+        filteredUsers.map((user) => )
       ) : (
         <div className="text-center mt-10">Users will appear here...</div>
       )}

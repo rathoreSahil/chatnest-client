@@ -46,11 +46,9 @@ const useStore = create<Store>()((set, get) => ({
   setChats: (chats: (GroupChat | DirectChat)[]) => set({ chats }),
   reorderChats: (id: string, messageContent: string) => {
     const chats = get().chats;
-
     const removed = chats.find((chat) => chat._id === id);
     if (!removed) return;
     const filteredChats = chats.filter((chat) => chat._id !== id);
-
     removed.lastMessage = messageContent;
     set({ chats: [removed, ...filteredChats] });
   },

@@ -3,15 +3,13 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-const ProfilePhoto = ({
-  src,
-  className,
-  onClick,
-}: {
+type ProfilePhotoProps = {
   src: string | undefined;
   className?: string;
   onClick?: () => void;
-}) => {
+};
+
+const ProfilePhoto = ({ src, className, onClick }: ProfilePhotoProps) => {
   return (
     <div
       onClick={onClick}

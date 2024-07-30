@@ -1,14 +1,16 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { useStore } from "@/lib/zustand";
 import { io, Socket } from "socket.io-client";
 import { useAuth } from "@/context/auth-provider";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const SocketContext = createContext<Socket | null>(null);
 
 const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
   const { authUser } = useAuth();
+  const { addNewChat } = useStore();
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   // create socket connection
   useEffect(() => {
@@ -26,12 +28,17 @@ const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("user connected: ", authUser.name);
     });
 
+    newSocket.on("new-chat", (newChat) => {
+      newSocket.emit("join-room", newChat._id);
+      addNewChat(newChat);
+    });
+
     newSocket.on("disconnect", () => {
       console.log("socket disconnected");
     });
 
     setSocket(newSocket);
-  }, [authUser]);
+  }, [addNewChat, authUser]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
