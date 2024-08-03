@@ -26,9 +26,7 @@ const SidebarChatHeader = () => {
         >
           <FaPlus />
         </Button>
-        
-          <Dropdown />
-        
+        <Dropdown />
       </div>
     </div>
   );

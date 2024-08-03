@@ -12,7 +12,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   const { sidebarType } = useStore();
 
   return (
-    <div className={cn("", className)}>
+    <div className={cn("flex flex-col", className)}>
       <SidebarHeader />
       {sidebarType !== "profile" && <Search />}
       <SidebarContent />

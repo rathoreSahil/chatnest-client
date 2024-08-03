@@ -14,10 +14,10 @@ const Dropdown = () => {
   const { setSidebarType } = useStore();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button size={"icon"} variant={"ghost"} className="rounded-full">
-          <FaEllipsisVertical />
-        </Button>
+      <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
+        {/* <Button size={"icon"} variant={"ghost"} className="rounded-full"> */}
+        <FaEllipsisVertical />
+        {/* </Button> */}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem

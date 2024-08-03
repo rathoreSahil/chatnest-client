@@ -1,10 +1,8 @@
 import { useStore } from "@/lib/zustand";
 import { checkIfChatExists } from "@/lib/utils";
-import { useAuth } from "@/context/auth-provider";
 import UserList from "@/components/sidebar/user-list";
 
 const NewChat = () => {
-  const authUser = useAuth().authUser!;
   const { chats, setCurrentChat, setSidebarType } = useStore();
 
   // handle new chat click

@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const ChatListSkeleton = ({ length }: { length: number }) => {
+const SidebarListSkeleton = ({ length }: { length: number }) => {
   return (
     <>
       {Array.from({ length }).map((_, idx) => {
@@ -18,4 +18,4 @@ const ChatListSkeleton = ({ length }: { length: number }) => {
   );
 };
 
-export default ChatListSkeleton;
+export default SidebarListSkeleton;

@@ -1,21 +1,20 @@
 import { Check } from "lucide-react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Fetch } from "@/lib/fetch";
-import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useStore } from "@/lib/zustand";
 import { useState } from "react";
 import { useSocket } from "@/context/socket-provider";
-import ProfilePhoto from "../profile/profile-photo";
+import ProfilePhoto from "@/components/profile/profile-photo";
+import useCreateGroupChat from "@/hooks/useCreateGroupChat";
+import toast from "react-hot-toast";
 
 const NewGroupDetails = () => {
   const [groupName, setGroupName] = useState("");
+  const { loading, createGroupChat } = useCreateGroupChat();
   const [groupDescription, setGroupDescription] = useState("");
-
-  const selectedUsers = useStore((state) => state.selectedUsers);
-  const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setSidebarType = useStore((state) => state.setSidebarType);
+  const { selectedUsers, setCurrentChat, setSidebarType } = useStore();
 
   const socket = useSocket();
   const authUser = useAuth().authUser!;
@@ -30,37 +29,30 @@ const NewGroupDetails = () => {
       participantCount: selectedUsers.length + 1,
     };
 
-    const res = await Fetch.POST("/chats/group", newChatDetails);
-    const newChat = res.data;
-    const newChatId = newChat._id;
+    try {
+      // create new chat
+      const newChat = await createGroupChat(
+        newChatDetails,
+        selectedUsers,
+        authUser
+      );
 
-    // create new participants
-    const tempData = selectedUsers.map((user) => {
-      return { user: user._id, group: newChatId };
-    });
+      // trigger refresh event to update chat list of all participants
+      if (!socket) return;
+      socket.emit("new-chat-self", newChat);
+      selectedUsers.forEach((user) => {
+        socket.emit("new-chat", user._id, newChat);
+      });
 
-    const newParticipantsData = {
-      participants: [
-        ...tempData,
-        { user: authUser._id, group: newChatId, isAdmin: true },
-      ],
-    };
-
-    await Fetch.POST("/participants", newParticipantsData);
-
-    // trigger refresh event to update chat list of all participants
-    if (!socket) return;
-    socket.emit("new-chat-self", newChat);
-    selectedUsers.forEach((user) => {
-      socket.emit("new-chat", user._id, newChat);
-    });
-
-    setCurrentChat(newChat);
-    setSidebarType("chat");
+      setCurrentChat(newChat);
+      setSidebarType("chat");
+    } catch (error: any) {
+      toast.error("Error creating group chat", error.message);
+    }
   }
 
   return (
-    <div className="p-10 h-full flex flex-col justify-between">
+    <div className="p-10 flex flex-1 bg-red-500 flex-col justify-between">
       <div>
         <ProfilePhoto
           src="/default-group.png"

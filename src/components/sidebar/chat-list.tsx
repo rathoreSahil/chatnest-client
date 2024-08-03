@@ -7,7 +7,7 @@ import { useFetchChats } from "@/hooks/useFetchChats";
 import { useMessage } from "@/context/message-provider";
 import { getChatName } from "@/lib/utils";
 
-import ChatListSkeleton from "@/components/skeleton/chat-list-skeleton";
+import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
 import ChatListItem from "@/components/sidebar/chat-list-item";
 
 const ChatList = () => {
@@ -37,7 +37,7 @@ const ChatList = () => {
   }, [authUser._id, chats, search]);
 
   // loading state
-  if (loading) return <ChatListSkeleton length={8} />;
+  if (loading) return <SidebarListSkeleton length={8} />;
 
   // render chats
   return (

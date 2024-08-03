@@ -10,25 +10,12 @@ const useCreateDirectChat = (): {
   const currentChat = useStore((state) => state.currentChat);
 
   const createDirectChat = useCallback(
-    async (messageContent: string): Promise<DirectChat | undefined> => {
+    async (messageContent: string) => {
       try {
         setLoading(true);
 
         // create new direct chat
-        const newChatDetails = {
-          user1: (currentChat as DirectChat).user1._id,
-          user2: (currentChat as DirectChat).user2._id,
-          lastMessage: messageContent,
-        };
-
-        const res = await Fetch.POST("/chats/direct", newChatDetails);
-        const newChat = res.data;
-
-        const { data: newChatPopulated } = await Fetch.GET(
-          `/chats/direct/${newChat._id}`
-        );
-
-        return newChatPopulated;
+        return currentChat;
       } catch (error) {
         throw new Error("Error creating direct chat");
       } finally {

@@ -16,7 +16,7 @@ const MessageContainer = ({ message }: MessageContainerProps) => {
       <div
         className={cn(
           "max-w-[60%] text-wrap break-words rounded-lg px-3 py-2",
-          isMyMessage ? "bg-purple-800" : "bg-gray-800"
+          isMyMessage ? "bg-purple-300" : "bg-gray-400"
         )}
       >
         {message.groupChat && !isMyMessage && (

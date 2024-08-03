@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
 
-import ChatListSkeleton from "@/components/skeleton/chat-list-skeleton";
+import UserListItem from "@/components/sidebar/user-list-item";
+import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
 
-const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
+type UserListProps = {
+  handleClick: (user: User) => void;
+};
+
+const UserList = ({ handleClick }: UserListProps) => {
+  const authUser = useAuth().authUser!;
   const [loading, fetchUsers] = useFetchUsers();
   const { users, search, setUsers } = useStore();
   const [filteredUsers, setFilteredUsers] = useState<User[]>();
-
-  const authUser = useAuth().authUser!;
 
   // fetch users
   useEffect(() => {
@@ -32,13 +36,15 @@ const UserList = ({ handleClick }: { handleClick: (user: User) => void }) => {
   }, [users, search, authUser._id]);
 
   // loading state
-  if (loading) return <ChatListSkeleton length={8} />;
+  if (loading) return <SidebarListSkeleton length={8} />;
 
   // render users
   return (
     <div>
       {filteredUsers ? (
-        filteredUsers.map((user) => )
+        filteredUsers.map((user) => (
+          <UserListItem key={user._id} user={user} handleClick={handleClick} />
+        ))
       ) : (
         <div className="text-center mt-10">Users will appear here...</div>
       )}
