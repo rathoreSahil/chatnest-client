@@ -1,16 +1,14 @@
-import { Check } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useStore } from "@/lib/zustand";
 import { useState } from "react";
 import { useSocket } from "@/context/socket-provider";
-import SyncLoader from "react-spinners/SyncLoader";
 
 import toast from "react-hot-toast";
-import ProfilePhoto from "@/components/profile/profile-photo";
+import SyncLoader from "react-spinners/SyncLoader";
+import InputBox from "@/components/sidebar/misc/input-box";
 import useCreateGroupChat from "@/hooks/useCreateGroupChat";
+import ProfilePhoto from "@/components/profile/profile-photo";
+import CheckButton from "@/components/sidebar/footer/check-button";
 
 const NewGroupDetails = () => {
   const [groupName, setGroupName] = useState("");
@@ -65,42 +63,28 @@ const NewGroupDetails = () => {
   }
 
   return (
-    <div className="p-10 flex flex-1 flex-col justify-between">
-      <div>
+    <div className="p-10 flex flex-1 flex-col">
+      <div className="flex-1">
         <ProfilePhoto
           src="/default-group.png"
           className="h-52 w-52 opacity-90 mx-auto mb-16"
         />
-        <div className="pb-6">
-          <Label className="pl-3 pb-3" htmlFor="name">
-            Group Title
-          </Label>
-          <Input
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-            className=""
-            id="name"
-          />
-        </div>
-        <div>
-          <Label className="pl-3 pb-3" htmlFor="description">
-            Description
-          </Label>
-          <Input
-            value={groupDescription}
-            onChange={(e) => setGroupDescription(e.target.value)}
-            className="text-wrap break-words "
-            id="description"
-          />
-        </div>
+        <InputBox
+          id="name"
+          label="Group Title"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
+          readOnly={false}
+        />
+        <InputBox
+          id="description"
+          label="Description"
+          value={groupDescription}
+          onChange={(e) => setGroupDescription(e.target.value)}
+          readOnly={false}
+        />
       </div>
-      <Button
-        variant="secondary"
-        className="mx-auto rounded-full overflow-hidden h-16 w-16"
-        onClick={() => createNewGroup()}
-      >
-        <Check />
-      </Button>
+      <CheckButton onClickHandler={createNewGroup} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
 
-import UserListItem from "@/components/sidebar/user-list-item";
+import UserListItem from "@/components/sidebar/misc/user-list-item";
 import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
 
 type UserListProps = {

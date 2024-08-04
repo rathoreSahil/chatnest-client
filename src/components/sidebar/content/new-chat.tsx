@@ -1,6 +1,6 @@
 import { useStore } from "@/lib/zustand";
 import { checkIfChatExists } from "@/lib/utils";
-import UserList from "@/components/sidebar/user-list";
+import UserList from "@/components/sidebar/content/user-list";
 
 const NewChat = () => {
   const { chats, setCurrentChat, setSidebarType } = useStore();

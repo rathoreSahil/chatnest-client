@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/auth-provider";
-import InputBox from "@/components/sidebar/input-box";
-import PhotoActions from "@/components/sidebar/photo-actions";
+import InputBox from "@/components/sidebar/misc/input-box";
+import PhotoActions from "@/components/sidebar/misc/photo-actions";
 
 const Profile = () => {
   const authUser = useAuth().authUser!;

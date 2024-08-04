@@ -1,14 +1,14 @@
 "use client";
 
 import { useStore } from "@/lib/zustand";
+import { getChatName } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useFetchChats } from "@/hooks/useFetchChats";
 import { useMessage } from "@/context/message-provider";
-import { getChatName } from "@/lib/utils";
 
+import ChatListItem from "@/components/sidebar/misc/chat-list-item";
 import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
-import ChatListItem from "@/components/sidebar/chat-list-item";
 
 const ChatList = () => {
   const { loading } = useFetchChats();

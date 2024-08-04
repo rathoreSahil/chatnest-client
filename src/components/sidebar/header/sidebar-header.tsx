@@ -1,7 +1,7 @@
 import { useStore } from "@/lib/zustand";
 
-import SidebarChatHeader from "@/components/sidebar/sidebar-chat-header";
-import SidebarTitleHeader from "@/components/sidebar/sidebar-title-header";
+import SidebarChatHeader from "@/components/sidebar/header/sidebar-chat-header";
+import SidebarTitleHeader from "@/components/sidebar/header/sidebar-title-header";
 
 const SidebarHeader = () => {
   const { sidebarType } = useStore();

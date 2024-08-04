@@ -2,11 +2,10 @@
 
 import { useEffect } from "react";
 import { useStore } from "@/lib/zustand";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-import UserList from "@/components/sidebar/user-list";
-import SelectedUsers from "@/components/sidebar/selected-users";
+import UserList from "@/components/sidebar/content/user-list";
+import SelectedUsers from "@/components/sidebar/content/selected-users";
+import ArrowRightButton from "@/components/sidebar/footer/arrow-right-button";
 
 const GroupUserList = () => {
   const { users, setUsers, setSidebarType, selectedUsers, setSelectedUsers } =
@@ -23,19 +22,22 @@ const GroupUserList = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-between">
-      <div className="space-y-6">
+    <div className="flex flex-1 flex-col">
+      <div className="flex-1 space-y-6 ">
         <SelectedUsers />
         <UserList handleClick={handleClick} />
       </div>
       {selectedUsers.length > 0 && (
-        <Button
-          variant={"outline"}
-          className="mx-auto my-8 rounded-full overflow-hidden h-16 w-16"
-          onClick={() => setSidebarType("group-details")}
-        >
-          <ArrowRight />
-        </Button>
+        // <Button
+        //   variant={"outline"}
+        //   className="mx-auto my-8 rounded-full overflow-hidden h-16 w-16"
+        //   onClick={() => setSidebarType("group-details")}
+        // >
+        //   <ArrowRight />
+        // </Button>
+        <ArrowRightButton
+          onClickHandler={() => setSidebarType("group-details")}
+        />
       )}
     </div>
   );

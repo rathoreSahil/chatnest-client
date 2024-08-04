@@ -3,7 +3,7 @@ import { useStore } from "@/lib/zustand";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 
-import Dropdown from "@/components/sidebar/dropdown";
+import Dropdown from "@/components/sidebar/header/dropdown";
 import ProfilePhoto from "@/components/profile/profile-photo";
 
 const SidebarChatHeader = () => {
