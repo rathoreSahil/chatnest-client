@@ -3,20 +3,20 @@ import { checkIfChatExists } from "@/lib/utils";
 import UserList from "@/components/sidebar/content/user-list";
 
 const NewChat = () => {
-  const { chats, setCurrentChat, setSidebarType } = useStore();
+  const { chats, setCurrentChat, setSidebarType, setTempChat } = useStore();
 
   // handle new chat click
   async function handleClick(otherUser: User) {
-    try {
-      // check if chat already exists
-      const existingChat = checkIfChatExists(chats, otherUser._id);
-      if (existingChat) setCurrentChat(existingChat);
-
-      setSidebarType("chat");
-    } catch (error: any) {
-      console.error("error creating chat", error.message);
-      throw new Error("Error creating chat", error.message);
+    // check if chat already exists
+    const existingChat = checkIfChatExists(chats, otherUser._id);
+    if (existingChat) {
+      setCurrentChat(existingChat);
+      setTempChat(null);
+    } else {
+      setTempChat(otherUser);
     }
+
+    setSidebarType("chat");
   }
   return <UserList handleClick={handleClick} />;
 };

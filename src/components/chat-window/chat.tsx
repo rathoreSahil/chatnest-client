@@ -8,14 +8,20 @@ import Greeting from "@/components/utils/greeting";
 import ChatHeader from "@/components/chat-window/chat-header";
 import ChatContent from "@/components/chat-window/chat-content";
 import ChatFooter from "@/components/chat-window/chat-footer";
+import TempChat from "@/components/chat-window/temp-chat";
 
 const Chat = ({ className }: { className: string }) => {
   const authUser = useAuth().authUser!;
-  const { currentChat } = useStore();
+  const { currentChat, tempChat } = useStore();
+
+  console.log("currentChat", currentChat);
+  console.log("tempChat", tempChat);
 
   return (
     <div className={cn("flex flex-col bg-red-500/20", className)}>
-      {currentChat ? (
+      {tempChat ? (
+        <TempChat user={tempChat} />
+      ) : currentChat ? (
         <>
           <ChatHeader />
           <ChatContent />

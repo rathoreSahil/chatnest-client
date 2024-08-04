@@ -3,7 +3,7 @@
 import { useStore } from "@/lib/zustand";
 import { useMessage } from "@/context/message-provider";
 import { useFetchMessages } from "@/hooks/useFetchMessages";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import MessageContainer from "@/components/utils/message-container";
 import MessageSkeleton from "@/components/skeleton/messages-skeleton";
@@ -20,8 +20,6 @@ const ChatContent = () => {
   useEffect(() => {
     if (!message) return;
     if ((message.groupChat || message.directChat) !== currentChat._id) return;
-
-    console.log("message", { message });
     setMessages((prevMessages) => [...prevMessages, message]);
   }, [currentChat._id, message]);
 

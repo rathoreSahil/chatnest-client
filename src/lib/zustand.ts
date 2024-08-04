@@ -13,6 +13,7 @@ type Store = {
   isRightPanelOpen: boolean;
   currentChat: GroupChat | DirectChat | null;
   search: string;
+  tempChat: User | null;
 
   addNewChat: (newChat: GroupChat | DirectChat) => void;
   setChats: (chats: (GroupChat | DirectChat)[]) => void;
@@ -30,6 +31,7 @@ type Store = {
   setIsRightPanelOpen: (isOpen: boolean) => void;
   setCurrentChat: (newChat: GroupChat | DirectChat) => void;
   setSearch: (search: string) => void;
+  setTempChat: (user: User | null) => void;
 };
 
 const useStore = create<Store>()((set, get) => ({
@@ -40,6 +42,7 @@ const useStore = create<Store>()((set, get) => ({
   isRightPanelOpen: false,
   currentChat: null,
   search: "",
+  tempChat: null,
 
   addNewChat: (newChat: GroupChat | DirectChat) =>
     set((state) => ({ chats: [...state.chats, newChat] })),
@@ -66,6 +69,7 @@ const useStore = create<Store>()((set, get) => ({
   setCurrentChat: (newChat: GroupChat | DirectChat) =>
     set({ currentChat: newChat }),
   setSearch: (search: string) => set({ search }),
+  setTempChat: (user: User | null) => set({ tempChat: user }),
 }));
 
 export { useStore };

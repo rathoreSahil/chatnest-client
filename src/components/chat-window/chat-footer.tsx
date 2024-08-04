@@ -3,13 +3,10 @@
 import { useState } from "react";
 import { MessageType } from "@/types";
 import { useStore } from "@/lib/zustand";
-import { SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useSocket } from "@/context/socket-provider";
 import { EmojiPicker } from "@/components/utils/emoji-picker";
-import { useCreateDirectChat } from "@/hooks/useCreateDirectChat";
 import { addMessageToDB, isGroupChat, updateChat } from "@/lib/utils";
 
 import toast from "react-hot-toast";

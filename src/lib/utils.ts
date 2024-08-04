@@ -80,14 +80,14 @@ export const checkIfChatExists = (
   chats: (GroupChat | DirectChat)[],
   userId: string
 ): DirectChat | null => {
-  chats.forEach((chat) => {
+  for (const chat of chats) {
     if (
       !isGroupChat(chat) &&
       [chat.user1._id, chat.user2._id].includes(userId)
     ) {
       return chat;
     }
-  });
+  }
 
   return null;
 };

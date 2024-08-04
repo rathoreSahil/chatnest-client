@@ -4,25 +4,34 @@ import { useCallback, useState } from "react";
 
 export const useCreateDirectChat = (): {
   loading: boolean;
-  createDirectChat: (messageContent: string) => Promise<DirectChat | undefined>;
+  createDirectChat: (
+    messageContent: string,
+    otherUserId: string
+  ) => Promise<DirectChat>;
 } => {
   const [loading, setLoading] = useState<boolean>(false);
-  const currentChat = useStore((state) => state.currentChat);
 
   const createDirectChat = useCallback(
-    async (messageContent: string) => {
+    async (
+      messageContent: string,
+      otherUserId: string
+    ): Promise<DirectChat> => {
       try {
         setLoading(true);
-
-        // create new direct chat
-        return currentChat;
-      } catch (error) {
-        throw new Error("Error creating direct chat");
+        const newChatDetails = {
+          user2: otherUserId,
+          lastMessage: messageContent,
+        };
+        const resJson = await Fetch.POST("/chats/direct", newChatDetails);
+        return resJson.data;
+      } catch (error: any) {
+        console.error(error);
+        throw new Error("Error creating new chat", error.message);
       } finally {
         setLoading(false);
       }
     },
-    [currentChat]
+    []
   );
 
   return { loading, createDirectChat };
