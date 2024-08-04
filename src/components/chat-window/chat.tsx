@@ -1,20 +1,20 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/zustand";
+import { useAuth } from "@/context/auth-provider";
+
+import Greeting from "@/components/utils/greeting";
+import ChatHeader from "@/components/chat-window/chat-header";
 import ChatContent from "@/components/chat-window/chat-content";
 import ChatFooter from "@/components/chat-window/chat-footer";
-import ChatHeader from "@/components/chat-window/chat-header";
-import { useAuth } from "@/context/auth-provider";
-import Greeting from "../utils/greeting";
-import { cn } from "@/lib/utils";
-import { ChatProps } from "@/types";
 
-const Chat = ({ className }: ChatProps) => {
+const Chat = ({ className }: { className: string }) => {
   const authUser = useAuth().authUser!;
-  const currentChat = useStore((state) => state.currentChat);
+  const { currentChat } = useStore();
 
   return (
-    <div className={cn("flex flex-col h-full", className)}>
+    <div className={cn("flex flex-col bg-red-500/20", className)}>
       {currentChat ? (
         <>
           <ChatHeader />

@@ -1,12 +1,13 @@
-import { colors } from "@/constants";
-import { useAuth } from "@/context/auth-provider";
 import { cn } from "@/lib/utils";
-import { MessageContainerProps } from "@/types";
+import { useAuth } from "@/context/auth-provider";
+
+type MessageContainerProps = {
+  message: Message;
+};
 
 const MessageContainer = ({ message }: MessageContainerProps) => {
   const authUser = useAuth().authUser!;
   const isMyMessage = message.sender._id === authUser!._id;
-  const randomColor = colors[Math.round(Math.random() * colors.length)];
   const messageCreatedAt = new Date(message.createdAt);
 
   return (
@@ -15,12 +16,12 @@ const MessageContainer = ({ message }: MessageContainerProps) => {
     >
       <div
         className={cn(
-          "max-w-[60%] text-wrap break-words rounded-lg px-3 py-2",
-          isMyMessage ? "bg-purple-300" : "bg-gray-400"
+          "max-w-[60%] rounded-lg px-3 py-2",
+          isMyMessage ? "bg-purple-400" : "bg-gray-400"
         )}
       >
         {message.groupChat && !isMyMessage && (
-          <div className={`text-sm ${randomColor}`}>{message.sender.name}</div>
+          <p className={`text-sm text-black`}>{message.sender.name}</p>
         )}
         <div className="flex gap-3">
           <p className="flex-1 text-wrap break-words self-center">

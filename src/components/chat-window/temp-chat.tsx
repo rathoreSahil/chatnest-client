@@ -1,4 +1,4 @@
-const TempChat = () => {
+const TempChat = (user: User) => {
   return <div></div>;
 };
 

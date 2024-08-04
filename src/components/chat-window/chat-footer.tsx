@@ -1,86 +1,60 @@
 "use client";
 
-import { useSocket } from "@/context/socket-provider";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { SendHorizontal } from "lucide-react";
 import { useState } from "react";
+import { MessageType } from "@/types";
 import { useStore } from "@/lib/zustand";
+import { SendHorizontal } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
-import { addMessageToDB, updateChat } from "@/lib/utils";
-import { EmojiPicker } from "./emoji-picker";
-import useCreateDirectChat from "@/hooks/useCreateDirectChat";
+import { useSocket } from "@/context/socket-provider";
+import { EmojiPicker } from "@/components/utils/emoji-picker";
+import { useCreateDirectChat } from "@/hooks/useCreateDirectChat";
+import { addMessageToDB, isGroupChat, updateChat } from "@/lib/utils";
+
 import toast from "react-hot-toast";
 
 const ChatFooter = () => {
-  const [messageContent, setMessageContent] = useState("");
-  const { loading, createDirectChat } = useCreateDirectChat();
-
-  const currentChat = useStore((state) => state.currentChat)!;
-  const setCurrentChat = useStore((state) => state.setCurrentChat);
-
-  const authUser = useAuth().authUser!;
   const socket = useSocket();
+  const authUser = useAuth().authUser!;
+
+  const { currentChat } = useStore();
+  const [messageContent, setMessageContent] = useState("");
 
   async function handleSend(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const chatId = currentChat!._id;
+    const isGroup = isGroupChat(currentChat!);
 
-    if (!socket) return;
-    if (!messageContent) return;
-
-    let message = {
-      sender: authUser,
+    const messageData: MessageType = {
       content: messageContent,
+      groupChat: undefined,
+      directChat: undefined,
     };
 
-    let chatId = currentChat._id;
-    let isGroupChat = false;
-
-    if ("_id" in currentChat === false) {
-      try {
-        // Create a new chat
-        const newDirectChat = await createDirectChat(message.content);
-        if (!newDirectChat) return;
-
-        chatId = newDirectChat._id;
-        isGroupChat = false;
-        // trigger refresh event to update chat list
-        const otherUserId =
-          newDirectChat.user1._id === authUser._id
-            ? newDirectChat.user2._id
-            : newDirectChat.user1._id;
-        socket.emit("new-chat", otherUserId, newDirectChat);
-        socket.emit("new-chat-self", newDirectChat);
-
-        message.directChat = newDirectChat._id;
-        setCurrentChat(newDirectChat);
-      } catch (error: any) {
-        toast.error(error.message);
-        console.error(error.message);
-      }
-    } else {
-      isGroupChat = "participantCount" in currentChat;
-      if (isGroupChat) {
-        message.groupChat = currentChat._id;
-      } else {
-        message.directChat = currentChat._id;
-      }
-    }
+    isGroup
+      ? (messageData.groupChat = chatId)
+      : (messageData.directChat = chatId);
 
     try {
-      await addMessageToDB(message);
-      updateChat(chatId, isGroupChat, { lastMessage: message.content });
-      socket.emit("message", message);
+      const addMessage = addMessageToDB(messageData);
+      const updateChatLastMessage = updateChat(chatId, isGroup, {
+        lastMessage: messageData.content,
+      });
+      const [message] = await Promise.all([addMessage, updateChatLastMessage]);
+      if (!socket) throw new Error("Socket not connected");
+
+      const populatedMessage: Message = { ...message, sender: authUser };
+      socket.emit("message", populatedMessage);
     } catch (error: any) {
-      toast.error(error.message);
-      console.error(error.message);
+      toast.error("Error sending message", error.message);
     } finally {
       setMessageContent("");
     }
   }
 
   return (
-    <form onSubmit={handleSend} className="flex gap-4 p-4 border">
+    <form onSubmit={handleSend} className="flex gap-4 p-4">
       <EmojiPicker
         onChange={(value) => setMessageContent((prev) => prev + value)}
       />
@@ -90,9 +64,6 @@ const ChatFooter = () => {
         placeholder="Type a message..."
         className="rounded-xl"
       />
-      <Button disabled={loading} type="submit" size="icon">
-        <SendHorizontal />
-      </Button>
     </form>
   );
 };

@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Fetch } from "./fetch";
+import { MessageType } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -8,9 +9,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-export async function addMessageToDB(message: Message) {
+export async function addMessageToDB(message: MessageType) {
   try {
-    await Fetch.POST("/messages", { message });
+    const resJson = await Fetch.POST("/messages", { message });
+    return resJson.data;
   } catch (error: any) {
     console.error("Error saving message to DB", error.message);
     throw new Error("Error saving message to DB");
