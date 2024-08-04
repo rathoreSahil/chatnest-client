@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import { useStore } from "@/lib/zustand";
+import { Input } from "@/components/ui/input";
 
 const Search = () => {
   const { search, setSearch } = useStore();

@@ -3,8 +3,6 @@ import { useStore } from "@/lib/zustand";
 import { Camera, Loader2, X } from "lucide-react";
 import ProfilePhoto from "@/components/profile/profile-photo";
 import { useAuth } from "@/context/auth-provider";
-import { useDisclosure } from "@nextui-org/modal";
-import PhotoModal from "../profile/photo-modal";
 
 import {
   DropdownMenu,

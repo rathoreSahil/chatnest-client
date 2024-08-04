@@ -1,14 +1,9 @@
-import { useState } from "react";
-import ProfilePhoto from "../profile/profile-photo";
 import { X } from "lucide-react";
 import { useStore } from "@/lib/zustand";
+import ProfilePhoto from "@/components/profile/profile-photo";
 
 const SelectedUsers = () => {
-  const users = useStore((state) => state.users);
-  const setUsers = useStore((state) => state.setUsers);
-
-  const selectedUsers = useStore((state) => state.selectedUsers);
-  const setSelectedUsers = useStore((state) => state.setSelectedUsers);
+  const { users, setUsers, selectedUsers, setSelectedUsers } = useStore();
 
   function removeSelectedUser(user: User) {
     setUsers([...users, user]);
@@ -16,7 +11,7 @@ const SelectedUsers = () => {
   }
 
   return (
-    <div className="flex gap-2 px-3">
+    <div className="flex flex-wrap gap-2 px-3">
       {selectedUsers.map((user) => {
         return (
           <div

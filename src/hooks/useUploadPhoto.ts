@@ -1,15 +1,16 @@
-import { useAuth } from "@/context/auth-provider";
 import { Fetch } from "@/lib/fetch";
+import { useAuth } from "@/context/auth-provider";
 import { useCallback, useState } from "react";
 
-const useUploadPhoto = (): [
-  boolean,
-  (file: File) => Promise<User | undefined>
-] => {
-  const [loading, setLoading] = useState<boolean>(false);
+const useUploadPhoto = (): {
+  loading: boolean;
+  uploadPhoto: (file: File) => Promise<User>;
+} => {
   const authUser = useAuth().authUser!;
+  const [loading, setLoading] = useState<boolean>(false);
+
   const uploadPhoto = useCallback(
-    async (file: File): Promise<User | undefined> => {
+    async (file: File): Promise<User> => {
       try {
         setLoading(true);
         if (authUser.photoPublicId) {
@@ -30,6 +31,7 @@ const useUploadPhoto = (): [
         return resJson.user;
       } catch (error: any) {
         console.error("Error uploading photo", error.message);
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }
@@ -37,7 +39,7 @@ const useUploadPhoto = (): [
     [authUser.photoPublicId]
   );
 
-  return [loading, uploadPhoto];
+  return { loading, uploadPhoto };
 };
 
 export default useUploadPhoto;

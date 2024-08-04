@@ -6,9 +6,11 @@ import { useAuth } from "@/context/auth-provider";
 import { useStore } from "@/lib/zustand";
 import { useState } from "react";
 import { useSocket } from "@/context/socket-provider";
+import SyncLoader from "react-spinners/SyncLoader";
+
+import toast from "react-hot-toast";
 import ProfilePhoto from "@/components/profile/profile-photo";
 import useCreateGroupChat from "@/hooks/useCreateGroupChat";
-import toast from "react-hot-toast";
 
 const NewGroupDetails = () => {
   const [groupName, setGroupName] = useState("");
@@ -44,15 +46,26 @@ const NewGroupDetails = () => {
         socket.emit("new-chat", user._id, newChat);
       });
 
+      // set current chat and sidebar type
       setCurrentChat(newChat);
       setSidebarType("chat");
     } catch (error: any) {
       toast.error("Error creating group chat", error.message);
+      console.error("Error creating group chat", error.message);
     }
   }
 
+  if (loading) {
+    return (
+      <div className="text-center">
+        <SyncLoader size={10} className="my-10 mx-auto opacity-60" />
+        Creating New Group Chat...
+      </div>
+    );
+  }
+
   return (
-    <div className="p-10 flex flex-1 bg-red-500 flex-col justify-between">
+    <div className="p-10 flex flex-1 flex-col justify-between">
       <div>
         <ProfilePhoto
           src="/default-group.png"
@@ -65,7 +78,7 @@ const NewGroupDetails = () => {
           <Input
             value={groupName}
             onChange={(e) => setGroupName(e.target.value)}
-            className="border-0 text-md border-b border-white"
+            className=""
             id="name"
           />
         </div>
@@ -76,14 +89,14 @@ const NewGroupDetails = () => {
           <Input
             value={groupDescription}
             onChange={(e) => setGroupDescription(e.target.value)}
-            className="border-0 text-md text-wrap break-words border-b border-white"
+            className="text-wrap break-words "
             id="description"
           />
         </div>
       </div>
       <Button
         variant="secondary"
-        className="mx-auto mb-0 rounded-full overflow-hidden h-16 w-16 p-0"
+        className="mx-auto rounded-full overflow-hidden h-16 w-16"
         onClick={() => createNewGroup()}
       >
         <Check />

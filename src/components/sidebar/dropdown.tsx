@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import Logout from "@/components/auth/logout";
 
 const Dropdown = () => {
@@ -15,9 +14,7 @@ const Dropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
-        {/* <Button size={"icon"} variant={"ghost"} className="rounded-full"> */}
         <FaEllipsisVertical />
-        {/* </Button> */}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
