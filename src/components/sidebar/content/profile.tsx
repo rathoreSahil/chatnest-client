@@ -8,8 +8,8 @@ const Profile = () => {
   const authUser = useAuth().authUser!;
 
   return (
-    <div className="flex-1 p-10 space-y-8">
-      <PhotoActions photoSrc={authUser.photo || "/default.webp"} />
+    <div className="flex flex-col flex-1 gap-6 p-10">
+      <PhotoActions photoSrc={authUser.photo} />
 
       <InputBox id="name" label="Name" value={authUser.name} readOnly />
       <InputBox

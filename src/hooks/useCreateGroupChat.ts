@@ -18,7 +18,7 @@ type CreateGroupChatHookType = {
   ) => Promise<GroupChat>;
 };
 
-const useCreateGroupChat = (): CreateGroupChatHookType => {
+export const useCreateGroupChat = (): CreateGroupChatHookType => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const createGroupChat = useCallback(
@@ -60,5 +60,3 @@ const useCreateGroupChat = (): CreateGroupChatHookType => {
 
   return { loading, createGroupChat };
 };
-
-export default useCreateGroupChat;

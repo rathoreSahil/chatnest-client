@@ -1,7 +1,7 @@
 import { Fetch } from "@/lib/fetch";
 import { useCallback, useState } from "react";
 
-const useDeletePhoto = (): {
+export const useDeletePhoto = (): {
   loading: boolean;
   deletePhoto: () => Promise<User>;
 } => {
@@ -22,5 +22,3 @@ const useDeletePhoto = (): {
 
   return { loading, deletePhoto };
 };
-
-export default useDeletePhoto;

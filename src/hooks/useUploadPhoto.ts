@@ -2,7 +2,7 @@ import { Fetch } from "@/lib/fetch";
 import { useAuth } from "@/context/auth-provider";
 import { useCallback, useState } from "react";
 
-const useUploadPhoto = (): {
+export const useUploadPhoto = (): {
   loading: boolean;
   uploadPhoto: (file: File) => Promise<User>;
 } => {
@@ -41,5 +41,3 @@ const useUploadPhoto = (): {
 
   return { loading, uploadPhoto };
 };
-
-export default useUploadPhoto;

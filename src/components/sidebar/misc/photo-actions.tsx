@@ -14,20 +14,19 @@ import {
 
 import { useStore } from "@/lib/zustand";
 import { ChangeEvent, useRef } from "react";
-import { Camera, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/auth-provider";
+import { useUploadPhoto } from "@/hooks/useUploadPhoto";
+import { useDeletePhoto } from "@/hooks/useDeletePhoto";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import toast from "react-hot-toast";
-import useUploadPhoto from "@/hooks/useUploadPhoto";
-import useDeletePhoto from "@/hooks/useDeletePhoto";
 import ProfilePhoto from "@/components/profile/profile-photo";
 
 type PhotoActionsProps = {
-  photoSrc: string;
+  photoSrc?: string;
 };
 
-const PhotoActions = ({ photoSrc }: PhotoActionsProps) => {
+const PhotoActions = ({ photoSrc = "/default.webp" }: PhotoActionsProps) => {
   const { setAuthUser } = useAuth();
   const { setSidebarType } = useStore();
 
@@ -35,6 +34,12 @@ const PhotoActions = ({ photoSrc }: PhotoActionsProps) => {
 
   const { loading: uploadLoading, uploadPhoto } = useUploadPhoto();
   const { loading: deleteLoading, deletePhoto } = useDeletePhoto();
+
+  const openFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -49,9 +54,13 @@ const PhotoActions = ({ photoSrc }: PhotoActionsProps) => {
     }
   };
 
-  const openFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  const handleRemovePhoto = async () => {
+    try {
+      const user = await deletePhoto();
+      setAuthUser(user);
+      setSidebarType("chat");
+    } catch (error: any) {
+      toast.error("Error deleting photo", error.message);
     }
   };
 
@@ -66,22 +75,14 @@ const PhotoActions = ({ photoSrc }: PhotoActionsProps) => {
 
       <Dialog>
         <DropdownMenu>
-          <div className="group h-48 w-48 relative rouded-full overflow-hidden mx-auto">
-            <DropdownMenuTrigger className="focus:outline-none">
-              <ProfilePhoto
-                src={photoSrc}
-                className="h-48 w-48 group-hover:opacity-40"
-              />
-            </DropdownMenuTrigger>
-            {uploadLoading || deleteLoading ? (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <Loader2 className="animate-spin" />
-              </div>
-            ) : (
-              <Camera className="h-5 w-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:block" />
-            )}
-          </div>
-
+          <DropdownMenuTrigger className="mx-auto my-8 focus:outline-none">
+            <ProfilePhoto
+              src={photoSrc}
+              className="h-60 w-60"
+              loading={uploadLoading || deleteLoading}
+              hoverOverlay
+            />
+          </DropdownMenuTrigger>
           <DropdownMenuContent className="border-0 absolute top-0 left-0">
             <DialogTrigger asChild>
               <DropdownMenuItem>View Photo</DropdownMenuItem>
@@ -90,17 +91,7 @@ const PhotoActions = ({ photoSrc }: PhotoActionsProps) => {
               Upload Photo
             </DropdownMenuItem>
             <DropdownMenuItem>Take Photo</DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={async () => {
-                try {
-                  const user = await deletePhoto();
-                  setAuthUser(user);
-                  setSidebarType("chat");
-                } catch (error: any) {
-                  toast.error("Error deleting photo", error.message);
-                }
-              }}
-            >
+            <DropdownMenuItem onClick={handleRemovePhoto}>
               Remove Photo
             </DropdownMenuItem>
           </DropdownMenuContent>

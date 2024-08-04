@@ -1,17 +1,14 @@
 import { Fetch } from "@/lib/fetch";
 import { useCallback, useState } from "react";
 
-const useUploadGroupPhoto = (): [
-  boolean,
-  (groupChat: GroupChat, file: File) => Promise<GroupChat | undefined>
-] => {
+export const useUploadGroupPhoto = (): {
+  loading: boolean;
+  uploadGroupPhoto: (groupChat: GroupChat, file: File) => Promise<GroupChat>;
+} => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const uploadGroupPhoto = useCallback(
-    async (
-      groupChat: GroupChat,
-      file: File
-    ): Promise<GroupChat | undefined> => {
+    async (groupChat: GroupChat, file: File): Promise<GroupChat> => {
       try {
         setLoading(true);
 
@@ -36,6 +33,7 @@ const useUploadGroupPhoto = (): [
         return resJson.data;
       } catch (error: any) {
         console.error("Error uploading group photo", error.message);
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }
@@ -43,7 +41,5 @@ const useUploadGroupPhoto = (): [
     []
   );
 
-  return [loading, uploadGroupPhoto];
+  return { loading, uploadGroupPhoto };
 };
-
-export default useUploadGroupPhoto;

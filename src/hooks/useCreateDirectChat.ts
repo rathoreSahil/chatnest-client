@@ -2,7 +2,7 @@ import { Fetch } from "@/lib/fetch";
 import { useStore } from "@/lib/zustand";
 import { useCallback, useState } from "react";
 
-const useCreateDirectChat = (): {
+export const useCreateDirectChat = (): {
   loading: boolean;
   createDirectChat: (messageContent: string) => Promise<DirectChat | undefined>;
 } => {
@@ -27,5 +27,3 @@ const useCreateDirectChat = (): {
 
   return { loading, createDirectChat };
 };
-
-export default useCreateDirectChat;

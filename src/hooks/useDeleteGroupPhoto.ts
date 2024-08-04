@@ -1,7 +1,7 @@
 import { Fetch } from "@/lib/fetch";
 import { useCallback, useState } from "react";
 
-const useDeleteGroupPhoto = (): [
+export const useDeleteGroupPhoto = (): [
   boolean,
   (groupChat: GroupChat) => Promise<GroupChat | undefined>
 ] => {
@@ -26,5 +26,3 @@ const useDeleteGroupPhoto = (): [
 
   return [loading, deleteGroupPhoto];
 };
-
-export default useDeleteGroupPhoto;

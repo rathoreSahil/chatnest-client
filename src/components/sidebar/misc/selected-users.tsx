@@ -16,7 +16,7 @@ const SelectedUsers = () => {
         return (
           <div
             key={user._id}
-            className="flex gap-2 items-center justify-center p-2 border border-gray-500 rounded-full"
+            className="flex gap-2 items-center justify-center p-2 border border-black rounded-full"
           >
             <ProfilePhoto src={user.photo} className="h-4 w-4" />
             <p className="text-sm">{user.name}</p>

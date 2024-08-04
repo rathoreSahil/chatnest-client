@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useStore } from "@/lib/zustand";
 
 import UserList from "@/components/sidebar/content/user-list";
-import SelectedUsers from "@/components/sidebar/content/selected-users";
+import SelectedUsers from "@/components/sidebar/misc/selected-users";
 import ArrowRightButton from "@/components/sidebar/footer/arrow-right-button";
 
 const GroupUserList = () => {
@@ -28,13 +28,6 @@ const GroupUserList = () => {
         <UserList handleClick={handleClick} />
       </div>
       {selectedUsers.length > 0 && (
-        // <Button
-        //   variant={"outline"}
-        //   className="mx-auto my-8 rounded-full overflow-hidden h-16 w-16"
-        //   onClick={() => setSidebarType("group-details")}
-        // >
-        //   <ArrowRight />
-        // </Button>
         <ArrowRightButton
           onClickHandler={() => setSidebarType("group-details")}
         />
