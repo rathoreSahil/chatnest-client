@@ -1,14 +1,14 @@
 import { Fetch } from "@/lib/fetch";
 import { useCallback, useState } from "react";
 
-export const useDeleteGroupPhoto = (): [
-  boolean,
-  (groupChat: GroupChat) => Promise<GroupChat | undefined>
-] => {
+export const useDeleteGroupPhoto = (): {
+  loading: boolean;
+  deleteGroupPhoto: (groupChat: GroupChat) => Promise<GroupChat>;
+} => {
   const [loading, setLoading] = useState(false);
 
   const deleteGroupPhoto = useCallback(
-    async (groupChat: GroupChat): Promise<GroupChat | undefined> => {
+    async (groupChat: GroupChat): Promise<GroupChat> => {
       try {
         setLoading(true);
         const resJson = await Fetch.DELETE(
@@ -17,6 +17,7 @@ export const useDeleteGroupPhoto = (): [
         return resJson.data;
       } catch (error: any) {
         console.error("Error deleting group photo", error.message);
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }
@@ -24,5 +25,5 @@ export const useDeleteGroupPhoto = (): [
     []
   );
 
-  return [loading, deleteGroupPhoto];
+  return { loading, deleteGroupPhoto };
 };

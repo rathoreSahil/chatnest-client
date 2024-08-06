@@ -19,13 +19,13 @@ export async function addMessageToDB(message: MessageType) {
   }
 }
 
-export async function getLoggedInParticipantDetails(groupId: string) {
+export async function getAdminStatus(groupId: string): Promise<boolean> {
   try {
-    const res = await Fetch.GET(`/participants/${groupId}`);
-    return res.participant;
+    const resJson = await Fetch.GET(`/participants/${groupId}`);
+    return resJson.isAdmin;
   } catch (error: any) {
-    console.error("Error fetching participant details", error.message);
-    throw new Error("Error fetching participant details");
+    console.error("Error fetching admin status", error.message);
+    throw new Error(error.message);
   }
 }
 
@@ -33,7 +33,7 @@ export async function updateChat(
   chatId: string,
   isGroupChat: boolean,
   chatDetails: any
-) {
+): Promise<GroupChat | DirectChat> {
   try {
     const resJson = isGroupChat
       ? await Fetch.PATCH(`/chats/group/${chatId}`, chatDetails)
@@ -53,7 +53,7 @@ export function isGroupChat(chat: DirectChat | GroupChat): chat is GroupChat {
 export const getChatName = (
   chat: GroupChat | DirectChat,
   authUserId: string
-) => {
+): string => {
   const chatName = isGroupChat(chat)
     ? chat.name
     : authUserId === chat.user1._id
@@ -66,7 +66,7 @@ export const getChatName = (
 export const getChatPhoto = (
   chat: GroupChat | DirectChat,
   authUserId: string
-) => {
+): string | undefined => {
   const chatPhoto = isGroupChat(chat)
     ? chat.photo
     : authUserId === chat.user1._id

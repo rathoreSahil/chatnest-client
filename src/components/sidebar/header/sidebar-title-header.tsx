@@ -23,7 +23,7 @@ const SidebarTitleHeader = () => {
   }
 
   return (
-    <div className="flex items-center justify-start gap-4 text-xl  px-5 py-3">
+    <div className="flex items-center justify-start gap-4 text-xl px-5 py-3">
       <IoArrowBackSharp
         className="cursor-pointer"
         onClick={() => setSidebarType("chat")}

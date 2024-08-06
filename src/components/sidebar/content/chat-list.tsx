@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useFetchChats } from "@/hooks/useFetchChats";
 import { useMessage } from "@/context/message-provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 import ChatListItem from "@/components/sidebar/misc/chat-list-item";
 import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
@@ -41,13 +42,13 @@ const ChatList = () => {
 
   // render chats
   return (
-    <div>
+    <ScrollArea>
       {filteredChats ? (
         filteredChats.map((chat) => <ChatListItem key={chat._id} chat={chat} />)
       ) : (
         <p className="text-center mt-10">Your chats will appear here...</p>
       )}
-    </div>
+    </ScrollArea>
   );
 };
 

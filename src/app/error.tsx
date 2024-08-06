@@ -6,7 +6,7 @@ export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string };
+  error: any & { digest?: string };
   reset: () => void;
 }) {
   useEffect(() => {

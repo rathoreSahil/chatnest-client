@@ -14,9 +14,6 @@ const Chat = ({ className }: { className: string }) => {
   const authUser = useAuth().authUser!;
   const { currentChat, tempChat } = useStore();
 
-  console.log("currentChat", currentChat);
-  console.log("tempChat", tempChat);
-
   return (
     <div className={cn("flex flex-col bg-red-500/20", className)}>
       {tempChat ? (

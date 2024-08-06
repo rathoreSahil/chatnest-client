@@ -5,6 +5,7 @@ import { useFetchUsers } from "@/hooks/useFetchUsers";
 
 import UserListItem from "@/components/sidebar/misc/user-list-item";
 import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type UserListProps = {
   handleClick: (user: User) => void;
@@ -40,7 +41,7 @@ const UserList = ({ handleClick }: UserListProps) => {
 
   // render users
   return (
-    <div>
+    <ScrollArea>
       {filteredUsers ? (
         filteredUsers.map((user) => (
           <UserListItem key={user._id} user={user} handleClick={handleClick} />
@@ -48,7 +49,7 @@ const UserList = ({ handleClick }: UserListProps) => {
       ) : (
         <div className="text-center mt-10">Users will appear here...</div>
       )}
-    </div>
+    </ScrollArea>
   );
 };
 
