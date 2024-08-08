@@ -11,9 +11,9 @@ const Sidebar = ({ className }: { className: string }) => {
   const { sidebarType } = useSidebarStore();
 
   return (
-    <div className={cn("flex flex-col bg-green-500/50", className)}>
+    <div className={cn("flex flex-col", className)}>
       <SidebarHeader />
-      {sidebarType !== "profile" && <Search />}
+      {!["profile", "group-details"].includes(sidebarType) && <Search />}
       <SidebarContent />
     </div>
   );

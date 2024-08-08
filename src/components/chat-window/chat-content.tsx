@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ScrollArea } from "../ui/scroll-area";
 import { useChatStore } from "@/states/chatStates";
+import { useEffect, useRef, useState } from "react";
 import { useMessage } from "@/context/message-provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFetchMessages } from "@/hooks/useFetchMessages";
 
 import toast from "react-hot-toast";
@@ -13,6 +13,7 @@ import MessageSkeleton from "@/components/skeleton/messages-skeleton";
 const ChatContent = () => {
   const message = useMessage();
   const currentChat = useChatStore().currentChat!;
+  const chatWindowRef = useRef<HTMLDivElement>(null);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, fetchMessagesByChatId] = useFetchMessages();
@@ -39,8 +40,14 @@ const ChatContent = () => {
     };
   }, [currentChat, fetchMessagesByChatId]);
 
+  useEffect(() => {
+    const element = chatWindowRef.current;
+    if (!element) return;
+    element.scrollTop = element.scrollHeight;
+  }, [messages]);
+
   return (
-    <ScrollArea className="px-10 py-2 flex-1">
+    <ScrollArea ref={chatWindowRef} className="px-10 py-2 flex-1">
       {loading ? (
         <MessageSkeleton length={14} />
       ) : (

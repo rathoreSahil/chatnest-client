@@ -15,7 +15,7 @@ const Chat = ({ className }: { className: string }) => {
   const { currentChat, tempChat } = useChatStore();
 
   return (
-    <div className={cn("flex flex-col bg-red-500/20", className)}>
+    <div className={cn("flex flex-col", className)}>
       {tempChat ? (
         <TempChat user={tempChat} />
       ) : currentChat ? (

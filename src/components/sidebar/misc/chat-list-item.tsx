@@ -16,7 +16,7 @@ const ChatListItem = ({ chat }: ChatListItemProps) => {
   return (
     <div
       onClick={() => setCurrentChat(chat)}
-      className="px-4 py-3 cursor-pointer flex gap-4 items-center hover:bg-gray-100"
+      className="px-4 py-3 cursor-pointer flex gap-4 items-center hover:bg-accent"
     >
       <ProfilePhoto src={displayPhoto} />
       <div className=" w-9/12">

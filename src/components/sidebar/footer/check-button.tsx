@@ -8,7 +8,7 @@ type CheckButtonProps = {
 const CheckButton = ({ onClickHandler }: CheckButtonProps) => {
   return (
     <Button
-      variant="secondary"
+      variant={"outline"}
       className="mx-auto rounded-full overflow-hidden h-16 w-16"
       onClick={onClickHandler}
     >

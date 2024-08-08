@@ -9,7 +9,7 @@ const UserListItem = ({ user, handleClick }: UserListItemProps) => {
   return (
     <div
       onClick={() => handleClick(user)}
-      className="px-4 py-3 cursor-pointer flex gap-4 items-center hover:bg-gray-100"
+      className="px-4 py-3 cursor-pointer flex gap-4 items-center hover:bg-accent"
     >
       <ProfilePhoto src={user.photo} />
       <div>

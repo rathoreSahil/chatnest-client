@@ -21,14 +21,15 @@ const InputBox = ({
 }: InputBoxProps) => {
   return (
     <div>
-      <Label className="pl-3 pb-3" htmlFor={id}>
-        {label}
-      </Label>
+      <Label htmlFor={id}>{label}</Label>
       <Input
         id={id}
         value={value}
         onChange={onChange}
-        className={cn("", className)}
+        className={cn(
+          "focus:ring-0 focus-visible:ring-0 border-0 border-b border-b-white",
+          className
+        )}
         readOnly={readOnly}
       />
     </div>

@@ -59,7 +59,7 @@ const ChatFooter = () => {
         value={messageContent}
         onChange={(event) => setMessageContent(event.target.value)}
         placeholder="Type a message..."
-        className="rounded-xl"
+        className="rounded-xl focus:ring-0 focus-visible:ring-0"
       />
     </form>
   );

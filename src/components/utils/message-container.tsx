@@ -16,12 +16,14 @@ const MessageContainer = ({ message }: MessageContainerProps) => {
     >
       <div
         className={cn(
-          "max-w-[60%] rounded-lg px-3 py-2",
-          isMyMessage ? "bg-purple-400" : "bg-gray-400"
+          "max-w-[60%] rounded-lg px-3 py-2 ",
+          isMyMessage
+            ? "bg-primary text-primary-foreground"
+            : "bg-secondary text-secondary-foreground"
         )}
       >
         {message.groupChat && !isMyMessage && (
-          <p className={`text-sm text-black`}>{message.sender.name}</p>
+          <p className={`text-sm`}>{message.sender.name}</p>
         )}
         <div className="flex gap-3">
           <p className="flex-1 text-wrap break-words self-center">

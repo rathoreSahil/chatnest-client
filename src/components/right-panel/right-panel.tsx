@@ -4,7 +4,7 @@ import RightPanelContent from "@/components/right-panel/right-panel-content";
 
 const RightPanel = ({ className }: { className: string }) => {
   return (
-    <div className={cn("flex flex-col bg-blue-600/40", className)}>
+    <div className={cn("flex flex-col", className)}>
       <RightPanelHeader />
       <RightPanelContent />
     </div>

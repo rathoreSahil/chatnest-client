@@ -12,7 +12,7 @@ const Search = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search"
-        className="rounded-xl"
+        className="rounded-xl focus:ring-0 focus-visible:ring-0"
       />
     </div>
   );

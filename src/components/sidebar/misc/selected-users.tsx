@@ -17,14 +17,11 @@ const SelectedUsers = () => {
         return (
           <div
             key={user._id}
-            className="flex gap-2 items-center justify-center p-2 border border-black rounded-full"
+            className="flex gap-2 items-center justify-center cursor-pointer hover:bg-accent border shadow-md rounded-full p-2"
           >
             <ProfilePhoto src={user.photo} className="h-4 w-4" />
             <p className="text-sm">{user.name}</p>
-            <X
-              className="h-4 w-4 cursor-pointer"
-              onClick={() => removeSelectedUser(user)}
-            />
+            <X className="h-4 w-4" onClick={() => removeSelectedUser(user)} />
           </div>
         );
       })}
