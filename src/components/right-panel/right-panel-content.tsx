@@ -1,4 +1,3 @@
-import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
 import { ChangeEvent, useEffect, useState } from "react";
 
@@ -9,6 +8,8 @@ import {
   getChatPhoto,
 } from "@/lib/utils";
 
+import { useChatStore } from "@/states/chatStates";
+import { useSidebarStore } from "@/states/sidebarStates";
 import { useUploadGroupPhoto } from "@/hooks/useUploadGroupPhoto";
 import { useDeleteGroupPhoto } from "@/hooks/useDeleteGroupPhoto";
 
@@ -20,29 +21,29 @@ const RightPanelContent = () => {
   const authUser = useAuth().authUser!;
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const currentChat = useStore((state) => state.currentChat)!;
-  const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const setSidebarType = useStore((state) => state.setSidebarType);
+  const { setSidebarType } = useSidebarStore();
+  const { currentChat, setCurrentChat } = useChatStore();
 
   const { loading: uploadLoading, uploadGroupPhoto } = useUploadGroupPhoto();
   const { loading: deleteLoading, deleteGroupPhoto } = useDeleteGroupPhoto();
 
-  const isGroup = isGroupChat(currentChat);
-  const displayName = getChatName(currentChat, authUser._id);
-  const displayPhoto = getChatPhoto(currentChat, authUser._id);
+  const isGroup = isGroupChat(currentChat!);
+  const displayName = getChatName(currentChat!, authUser._id);
+  const displayPhoto = getChatPhoto(currentChat!, authUser._id);
 
   useEffect(() => {
     if (!isGroup) return;
     getAdminStatus(currentChat._id).then((status) => {
       setIsAdmin(status);
     });
-  }, [currentChat._id, isGroup]);
+  }, [currentChat, isGroup]);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
       const groupChat = await uploadGroupPhoto(currentChat as GroupChat, file);
+      toast.success("Photo uploaded successfully");
       setCurrentChat(groupChat);
       setSidebarType("chat");
     } catch (error: any) {
@@ -53,6 +54,7 @@ const RightPanelContent = () => {
   const handleRemovePhoto = async () => {
     try {
       const groupChat = await deleteGroupPhoto(currentChat as GroupChat);
+      toast.success("Photo removed successfully");
       setCurrentChat(groupChat);
       setSidebarType("chat");
     } catch (error: any) {
@@ -74,7 +76,7 @@ const RightPanelContent = () => {
           isDisabled={isPhotoActionDisabled}
         />
       )}
-      <p className="text-2xl text-center mt-2">{displayName}</p>
+      <p className="text-2xl text-center mt-4">{displayName}</p>
     </div>
   );
 };

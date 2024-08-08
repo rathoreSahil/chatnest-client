@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
+import { useChatStore } from "@/states/chatStates";
 
 import Greeting from "@/components/utils/greeting";
 import ChatHeader from "@/components/chat-window/chat-header";
@@ -12,7 +12,7 @@ import TempChat from "@/components/chat-window/temp-chat";
 
 const Chat = ({ className }: { className: string }) => {
   const authUser = useAuth().authUser!;
-  const { currentChat, tempChat } = useStore();
+  const { currentChat, tempChat } = useChatStore();
 
   return (
     <div className={cn("flex flex-col bg-red-500/20", className)}>

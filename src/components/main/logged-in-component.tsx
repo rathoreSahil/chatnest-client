@@ -1,6 +1,5 @@
 "use client";
-
-import { useStore } from "@/lib/zustand";
+import { useRightPanelStore } from "@/states/rightPanelStore";
 import { MessageContextProvider } from "@/context/message-provider";
 
 import Chat from "@/components/chat-window/chat";
@@ -8,7 +7,7 @@ import Sidebar from "@/components/sidebar/sidebar";
 import RightPanel from "@/components/right-panel/right-panel";
 
 const LoggedInComponent = () => {
-  const { isRightPanelOpen } = useStore();
+  const { isRightPanelOpen } = useRightPanelStore();
 
   return (
     <MessageContextProvider>

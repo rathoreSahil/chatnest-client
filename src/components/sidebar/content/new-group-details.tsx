@@ -1,7 +1,9 @@
-import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
+import { useChatStore } from "@/states/chatStates";
 import { useSocket } from "@/context/socket-provider";
 import { ChangeEvent, useRef, useState } from "react";
+import { useSidebarStore } from "@/states/sidebarStates";
+import { useUserListStore } from "@/states/userListStates";
 import { useCreateGroupChat } from "@/hooks/useCreateGroupChat";
 import { useUploadToCloudinary } from "@/hooks/useUploadToCloudinary";
 
@@ -19,7 +21,9 @@ const NewGroupDetails = () => {
     groupDescription: "",
   });
 
-  const { selectedUsers, setCurrentChat, setSidebarType } = useStore();
+  const { setCurrentChat } = useChatStore();
+  const { selectedUsers } = useUserListStore();
+  const { setSidebarType } = useSidebarStore();
   const { loading: createLoading, createGroupChat } = useCreateGroupChat();
   const { loading: uploadLoading, uploadToCloudinary } =
     useUploadToCloudinary();
@@ -80,9 +84,9 @@ const NewGroupDetails = () => {
     if (!file) return;
     try {
       const { secure_url, public_id } = await uploadToCloudinary(file);
-
       setGroupDetails((prev) => ({ ...prev, groupPhoto: secure_url }));
       setGroupDetails((prev) => ({ ...prev, groupPhotoPublicId: public_id }));
+      toast.success("Photo uploaded successfully");
     } catch (error: any) {
       toast.error("Error uploading photo", error.message);
     }

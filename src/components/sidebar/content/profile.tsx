@@ -1,10 +1,10 @@
 "use client";
 
 import { ChangeEvent } from "react";
-import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
 import { useUploadPhoto } from "@/hooks/useUploadPhoto";
 import { useDeletePhoto } from "@/hooks/useDeletePhoto";
+import { useSidebarStore } from "@/states/sidebarStates";
 
 import toast from "react-hot-toast";
 import InputBox from "@/components/sidebar/misc/input-box";
@@ -12,7 +12,7 @@ import PhotoActions from "@/components/sidebar/misc/photo-actions";
 
 const Profile = () => {
   const { authUser, setAuthUser } = useAuth();
-  const { setSidebarType } = useStore();
+  const { setSidebarType } = useSidebarStore();
 
   const { loading: uploadLoading, uploadPhoto } = useUploadPhoto();
   const { loading: deleteLoading, deletePhoto } = useDeletePhoto();
@@ -23,6 +23,7 @@ const Profile = () => {
 
     try {
       const user = await uploadPhoto(file);
+      toast.success("Photo uploaded successfully");
       setAuthUser(user);
       setSidebarType("chat");
     } catch (error: any) {
@@ -33,6 +34,7 @@ const Profile = () => {
   const handleRemovePhoto = async () => {
     try {
       const user = await deletePhoto();
+      toast.success("Photo removed successfully");
       setAuthUser(user);
       setSidebarType("chat");
     } catch (error: any) {

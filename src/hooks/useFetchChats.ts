@@ -28,7 +28,7 @@ export const useFetchChats = (): {
       return allChats;
     } catch (error: any) {
       console.error("Error fetching chats", error.message);
-      return [];
+      throw new Error(error.message);
     } finally {
       setLoading(false);
     }

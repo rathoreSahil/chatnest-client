@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { MessageType } from "@/types";
-import { useStore } from "@/lib/zustand";
 import { addMessageToDB } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-provider";
+import { useChatStore } from "@/states/chatStates";
 import { useSocket } from "@/context/socket-provider";
+import { useRightPanelStore } from "@/states/rightPanelStore";
 import { EmojiPicker } from "@/components/utils/emoji-picker";
 import { useCreateDirectChat } from "@/hooks/useCreateDirectChat";
 
@@ -17,7 +18,8 @@ const TempChat = ({ user }: { user: User }) => {
   const [messageContent, setMessageContent] = useState("");
 
   const { createDirectChat } = useCreateDirectChat();
-  const { setTempChat, setCurrentChat, setIsRightPanelOpen } = useStore();
+  const { setIsRightPanelOpen } = useRightPanelStore();
+  const { setTempChat, setCurrentChat } = useChatStore();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,7 +49,7 @@ const TempChat = ({ user }: { user: User }) => {
       socket.emit("new-chat-self", newChatPopulated);
       socket.emit("new-chat", user._id, newChatPopulated);
     } catch (error: any) {
-      toast.error("Something went wrong", error.message);
+      toast.error("Error creating new chat", error.message);
     }
   }
 

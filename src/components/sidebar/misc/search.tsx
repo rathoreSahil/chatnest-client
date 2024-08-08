@@ -1,9 +1,10 @@
 "use client";
-import { useStore } from "@/lib/zustand";
+
 import { Input } from "@/components/ui/input";
+import { useSidebarStore } from "@/states/sidebarStates";
 
 const Search = () => {
-  const { search, setSearch } = useStore();
+  const { search, setSearch } = useSidebarStore();
 
   return (
     <div className="p-4">

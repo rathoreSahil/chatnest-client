@@ -1,16 +1,17 @@
 "use client";
-
-import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
+import { useChatStore } from "@/states/chatStates";
 import { getChatName, getChatPhoto } from "@/lib/utils";
+import { useRightPanelStore } from "@/states/rightPanelStore";
 import ProfilePhoto from "@/components/profile/profile-photo";
 
 const ChatHeader = () => {
   const authUser = useAuth().authUser!;
-  const { currentChat, setIsRightPanelOpen } = useStore();
+  const currentChat = useChatStore().currentChat!;
+  const { setIsRightPanelOpen } = useRightPanelStore();
 
-  const displayName = getChatName(currentChat!, authUser._id);
-  const displayPhoto = getChatPhoto(currentChat!, authUser._id);
+  const displayName = getChatName(currentChat, authUser._id);
+  const displayPhoto = getChatPhoto(currentChat, authUser._id);
 
   return (
     <div

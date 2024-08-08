@@ -1,15 +1,15 @@
 "use client";
 
-import { useStore } from "@/lib/zustand";
 import { io, Socket } from "socket.io-client";
 import { useAuth } from "@/context/auth-provider";
+import { useChatListStore } from "@/states/chatListState";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const SocketContext = createContext<Socket | null>(null);
 
 const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { authUser } = useAuth();
-  const { addNewChat } = useStore();
+  const { addNewChat } = useChatListStore();
   const [socket, setSocket] = useState<Socket | null>(null);
 
   // create socket connection

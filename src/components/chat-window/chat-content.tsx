@@ -1,17 +1,18 @@
 "use client";
 
-import { useStore } from "@/lib/zustand";
+import { useEffect, useState } from "react";
+import { ScrollArea } from "../ui/scroll-area";
+import { useChatStore } from "@/states/chatStates";
 import { useMessage } from "@/context/message-provider";
 import { useFetchMessages } from "@/hooks/useFetchMessages";
-import { useEffect, useState } from "react";
 
+import toast from "react-hot-toast";
 import MessageContainer from "@/components/utils/message-container";
 import MessageSkeleton from "@/components/skeleton/messages-skeleton";
-import { ScrollArea } from "../ui/scroll-area";
 
 const ChatContent = () => {
   const message = useMessage();
-  const currentChat = useStore().currentChat!;
+  const currentChat = useChatStore().currentChat!;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, fetchMessagesByChatId] = useFetchMessages();
@@ -25,9 +26,13 @@ const ChatContent = () => {
 
   // fetch messages by chat id
   useEffect(() => {
-    fetchMessagesByChatId(currentChat._id).then((data) => {
-      setMessages(data);
-    });
+    fetchMessagesByChatId(currentChat._id)
+      .then((data) => {
+        setMessages(data);
+      })
+      .catch((error) => {
+        toast.error("Error fetching messages", error.message);
+      });
 
     return () => {
       setMessages([]);

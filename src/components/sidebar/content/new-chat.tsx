@@ -1,9 +1,13 @@
-import { useStore } from "@/lib/zustand";
 import { checkIfChatExists } from "@/lib/utils";
+import { useChatStore } from "@/states/chatStates";
+import { useSidebarStore } from "@/states/sidebarStates";
+import { useChatListStore } from "@/states/chatListState";
 import UserList from "@/components/sidebar/content/user-list";
 
 const NewChat = () => {
-  const { chats, setCurrentChat, setSidebarType, setTempChat } = useStore();
+  const { chats } = useChatListStore();
+  const { setSidebarType } = useSidebarStore();
+  const { setCurrentChat, setTempChat } = useChatStore();
 
   // handle new chat click
   async function handleClick(otherUser: User) {

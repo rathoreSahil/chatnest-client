@@ -20,7 +20,7 @@ export const useFetchMessages = (): [
         return resJson.data;
       } catch (error: any) {
         console.error("Error fetching messages", error.messages);
-        return [];
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }

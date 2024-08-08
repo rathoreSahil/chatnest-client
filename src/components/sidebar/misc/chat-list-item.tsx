@@ -1,5 +1,5 @@
-import { useStore } from "@/lib/zustand";
 import { useAuth } from "@/context/auth-provider";
+import { useChatStore } from "@/states/chatStates";
 import { getChatName, getChatPhoto } from "@/lib/utils";
 import ProfilePhoto from "@/components/profile/profile-photo";
 
@@ -8,7 +8,7 @@ type ChatListItemProps = {
 };
 
 const ChatListItem = ({ chat }: ChatListItemProps) => {
-  const { setCurrentChat } = useStore();
+  const { setCurrentChat } = useChatStore();
 
   const authUser = useAuth().authUser!;
   const displayName = getChatName(chat, authUser._id);

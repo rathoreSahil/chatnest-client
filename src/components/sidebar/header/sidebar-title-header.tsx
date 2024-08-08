@@ -1,8 +1,8 @@
-import { useStore } from "@/lib/zustand";
 import { IoArrowBackSharp } from "react-icons/io5";
+import { useSidebarStore } from "@/states/sidebarStates";
 
 const SidebarTitleHeader = () => {
-  const { sidebarType, setSidebarType } = useStore();
+  const { sidebarType, setSidebarType } = useSidebarStore();
 
   let title = "";
   switch (sidebarType) {

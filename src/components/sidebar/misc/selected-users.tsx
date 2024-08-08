@@ -1,9 +1,10 @@
 import { X } from "lucide-react";
-import { useStore } from "@/lib/zustand";
+import { useUserListStore } from "@/states/userListStates";
 import ProfilePhoto from "@/components/profile/profile-photo";
 
 const SelectedUsers = () => {
-  const { users, setUsers, selectedUsers, setSelectedUsers } = useStore();
+  const { users, setUsers, selectedUsers, setSelectedUsers } =
+    useUserListStore();
 
   function removeSelectedUser(user: User) {
     setUsers([...users, user]);

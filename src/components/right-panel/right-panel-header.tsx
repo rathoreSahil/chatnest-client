@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
-import { useStore } from "@/lib/zustand";
+import { useRightPanelStore } from "@/states/rightPanelStore";
 
 const RightPanelHeader = () => {
-  const setIsRightPanelOpen = useStore((state) => state.setIsRightPanelOpen);
+  const { setIsRightPanelOpen } = useRightPanelStore();
   return (
     <div className="flex items-center justify-start gap-4 text-xl px-5 py-3">
       <X

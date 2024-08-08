@@ -1,5 +1,5 @@
-import { useStore } from "@/lib/zustand";
 import { FaEllipsisVertical } from "react-icons/fa6";
+import { useSidebarStore } from "@/states/sidebarStates";
 
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import {
 import Logout from "@/components/auth/logout";
 
 const Dropdown = () => {
-  const { setSidebarType } = useStore();
+  const { setSidebarType } = useSidebarStore();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">

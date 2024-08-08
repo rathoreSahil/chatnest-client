@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { useStore } from "@/lib/zustand";
+import { useSidebarStore } from "@/states/sidebarStates";
+import { useUserListStore } from "@/states/userListStates";
 
 import UserList from "@/components/sidebar/content/user-list";
 import SelectedUsers from "@/components/sidebar/misc/selected-users";
 import ArrowRightButton from "@/components/sidebar/footer/arrow-right-button";
 
 const GroupUserList = () => {
-  const { users, setUsers, setSidebarType, selectedUsers, setSelectedUsers } =
-    useStore();
+  const { setSidebarType } = useSidebarStore();
+  const { users, setUsers, selectedUsers, setSelectedUsers } =
+    useUserListStore();
 
   // empty selected users on unmount
   useEffect(() => {

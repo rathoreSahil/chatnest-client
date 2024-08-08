@@ -1,19 +1,21 @@
 "use client";
-
-import { useStore } from "@/lib/zustand";
 import { getChatName } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useFetchChats } from "@/hooks/useFetchChats";
 import { useMessage } from "@/context/message-provider";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useSidebarStore } from "@/states/sidebarStates";
+import { useChatListStore } from "@/states/chatListState";
 
 import ChatListItem from "@/components/sidebar/misc/chat-list-item";
 import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
 
 const ChatList = () => {
   const { loading } = useFetchChats();
-  const { chats, search, reorderChats } = useStore();
+  const { search } = useSidebarStore();
+  const { chats, reorderChats } = useChatListStore();
+
   const [filteredChats, setFilteredChats] =
     useState<(GroupChat | DirectChat)[]>();
 

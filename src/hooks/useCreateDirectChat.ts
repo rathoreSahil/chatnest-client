@@ -1,5 +1,4 @@
 import { Fetch } from "@/lib/fetch";
-import { useStore } from "@/lib/zustand";
 import { useCallback, useState } from "react";
 
 export const useCreateDirectChat = (): {
@@ -26,7 +25,7 @@ export const useCreateDirectChat = (): {
         return resJson.data;
       } catch (error: any) {
         console.error(error);
-        throw new Error("Error creating new chat", error.message);
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }

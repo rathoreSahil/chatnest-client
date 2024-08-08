@@ -1,13 +1,13 @@
-import { useStore } from "@/lib/zustand";
-
 import Profile from "@/components/sidebar/content/profile";
 import NewChat from "@/components/sidebar/content/new-chat";
 import ChatList from "@/components/sidebar/content/chat-list";
 import GroupUserList from "@/components/sidebar/content/group-user-list";
 import NewGroupDetails from "@/components/sidebar/content/new-group-details";
 
+import { useSidebarStore } from "@/states/sidebarStates";
+
 const SidebarContent = () => {
-  const { sidebarType } = useStore();
+  const { sidebarType } = useSidebarStore();
 
   switch (sidebarType) {
     case "chat":

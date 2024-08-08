@@ -1,11 +1,13 @@
-import { useStore } from "@/lib/zustand";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth-provider";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useSidebarStore } from "@/states/sidebarStates";
+import { useUserListStore } from "@/states/userListStates";
 
+import toast from "react-hot-toast";
 import UserListItem from "@/components/sidebar/misc/user-list-item";
 import SidebarListSkeleton from "@/components/skeleton/sidebar-list-skeleton";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 type UserListProps = {
   handleClick: (user: User) => void;
@@ -14,14 +16,20 @@ type UserListProps = {
 const UserList = ({ handleClick }: UserListProps) => {
   const authUser = useAuth().authUser!;
   const [loading, fetchUsers] = useFetchUsers();
-  const { users, search, setUsers } = useStore();
+
+  const { search } = useSidebarStore();
+  const { users, setUsers } = useUserListStore();
   const [filteredUsers, setFilteredUsers] = useState<User[]>();
 
   // fetch users
   useEffect(() => {
-    fetchUsers().then((users) => {
-      setUsers(users);
-    });
+    fetchUsers()
+      .then((users) => {
+        setUsers(users);
+      })
+      .catch((error) => {
+        toast.error("Error fetching users", error.message);
+      });
   }, [fetchUsers, setUsers]);
 
   // filter users based on search

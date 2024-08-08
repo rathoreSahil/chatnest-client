@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { MessageType } from "@/types";
-import { useStore } from "@/lib/zustand";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-provider";
+import { useChatStore } from "@/states/chatStates";
 import { useSocket } from "@/context/socket-provider";
 import { EmojiPicker } from "@/components/utils/emoji-picker";
 import { addMessageToDB, isGroupChat, updateChat } from "@/lib/utils";
@@ -15,7 +15,7 @@ const ChatFooter = () => {
   const socket = useSocket();
   const authUser = useAuth().authUser!;
 
-  const { currentChat } = useStore();
+  const { currentChat } = useChatStore();
   const [messageContent, setMessageContent] = useState("");
 
   async function handleSend(event: React.FormEvent<HTMLFormElement>) {

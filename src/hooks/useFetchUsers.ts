@@ -15,7 +15,7 @@ export const useFetchUsers = (): [boolean, () => Promise<User[]>] => {
       return resJson.data;
     } catch (error: any) {
       console.error("Error fetching users", error.message);
-      return [];
+      throw new Error(error.message);
     } finally {
       setLoading(false);
     }

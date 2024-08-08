@@ -1,14 +1,14 @@
 import { FaPlus } from "react-icons/fa";
-import { useStore } from "@/lib/zustand";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
+import { useSidebarStore } from "@/states/sidebarStates";
 
 import Dropdown from "@/components/sidebar/header/dropdown";
 import ProfilePhoto from "@/components/profile/profile-photo";
 
 const SidebarChatHeader = () => {
   const authUser = useAuth().authUser!;
-  const { setSidebarType } = useStore();
+  const { setSidebarType } = useSidebarStore();
 
   return (
     <div className="flex items-center justify-between px-5 py-3">
