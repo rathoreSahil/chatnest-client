@@ -16,7 +16,7 @@ const SocketContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!authUser) return;
 
-    const newSocket = io("http://localhost:3182", {
+    const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL!, {
       autoConnect: false,
       query: {
         userId: authUser._id,
