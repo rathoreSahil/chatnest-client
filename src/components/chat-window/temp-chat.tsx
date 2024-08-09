@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Send } from "lucide-react";
 import { MessageType } from "@/types";
 import { addMessageToDB } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useChatStore } from "@/states/chatStates";
 import { useSocket } from "@/context/socket-provider";
@@ -55,10 +57,7 @@ const TempChat = ({ user }: { user: User }) => {
 
   return (
     <>
-      <div
-        onClick={() => setIsRightPanelOpen(true)}
-        className="flex items-center gap-4 cursor-pointer text-xl px-5 py-3"
-      >
+      <div className="flex items-center gap-4 cursor-pointer text-xl px-5 py-3">
         <ProfilePhoto src={user.photo} className="h-10 w-10" />
         {user.name}
       </div>
@@ -71,8 +70,16 @@ const TempChat = ({ user }: { user: User }) => {
           value={messageContent}
           onChange={(event) => setMessageContent(event.target.value)}
           placeholder="Type a message..."
-          className="rounded-xl"
+          className="rounded-xl focus-visible:ring-0"
         />
+        <Button
+          size={"icon"}
+          type="submit"
+          className="bg-primary p-2"
+          disabled={messageContent.trim() === ""}
+        >
+          <Send />
+        </Button>
       </form>
     </>
   );

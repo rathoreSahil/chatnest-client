@@ -23,13 +23,13 @@ const MessageContainer = ({ message }: MessageContainerProps) => {
         )}
       >
         {message.groupChat && !isMyMessage && (
-          <p className={`text-sm`}>{message.sender.name}</p>
+          <p className="text-sm text-muted-foreground">{message.sender.name}</p>
         )}
         <div className="flex gap-3">
           <p className="flex-1 text-wrap break-words self-center">
             {message.content}
           </p>
-          <div className="text-[12px] opacity-70 text-right w-min self-end">
+          <div className="text-[12px] text-muted-foreground text-right w-min self-end">
             {messageCreatedAt.getHours().toString().padStart(2, "0")}:
             {messageCreatedAt.getMinutes().toString().padStart(2, "0")}
           </div>

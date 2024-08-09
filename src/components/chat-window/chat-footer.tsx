@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Send } from "lucide-react";
-import { Button } from "../ui/button";
 import { MessageType } from "@/types";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-provider";
 import { useChatStore } from "@/states/chatStates";
 import { useSocket } from "@/context/socket-provider";
@@ -62,7 +62,7 @@ const ChatFooter = () => {
           value={messageContent}
           onChange={(event) => setMessageContent(event.target.value)}
           placeholder="Type a message..."
-          className="rounded-xl focus:ring-0 focus-visible:ring-0"
+          className="rounded-xl focus-visible:ring-0"
         />
         <Button
           size={"icon"}

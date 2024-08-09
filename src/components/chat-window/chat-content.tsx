@@ -51,7 +51,32 @@ const ChatContent = () => {
         <MessageSkeleton length={14} />
       ) : (
         messages.map((message, idx) => {
-          return <MessageContainer key={idx} message={message} />;
+          const currMsgDate = new Date(message.createdAt).toLocaleDateString(
+            undefined,
+            { year: "numeric", month: "long", day: "numeric" }
+          );
+          const prevMsgDate =
+            idx > 0
+              ? new Date(messages[idx - 1].createdAt).toLocaleDateString(
+                  undefined,
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )
+              : "";
+          const showDate = currMsgDate !== prevMsgDate;
+          return (
+            <>
+              {showDate && (
+                <div className="w-max bg-muted text-muted-foreground text-sm text-center mx-auto rounded-xl my-6 p-2">
+                  {currMsgDate}
+                </div>
+              )}
+              <MessageContainer key={idx} message={message} />
+            </>
+          );
         })
       )}
     </div>
