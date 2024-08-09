@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { Send } from "lucide-react";
+import { Button } from "../ui/button";
 import { MessageType } from "@/types";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-provider";
@@ -51,17 +53,27 @@ const ChatFooter = () => {
   }
 
   return (
-    <form onSubmit={handleSend} className="flex gap-4 p-4">
-      <EmojiPicker
-        onChange={(value) => setMessageContent((prev) => prev + value)}
-      />
-      <Input
-        value={messageContent}
-        onChange={(event) => setMessageContent(event.target.value)}
-        placeholder="Type a message..."
-        className="rounded-xl focus:ring-0 focus-visible:ring-0"
-      />
-    </form>
+    <>
+      <form onSubmit={handleSend} className="flex gap-4 p-4">
+        <EmojiPicker
+          onChange={(value) => setMessageContent((prev) => prev + value)}
+        />
+        <Input
+          value={messageContent}
+          onChange={(event) => setMessageContent(event.target.value)}
+          placeholder="Type a message..."
+          className="rounded-xl focus:ring-0 focus-visible:ring-0"
+        />
+        <Button
+          size={"icon"}
+          type="submit"
+          className="bg-primary p-2"
+          disabled={messageContent.trim() === ""}
+        >
+          <Send />
+        </Button>
+      </form>
+    </>
   );
 };
 

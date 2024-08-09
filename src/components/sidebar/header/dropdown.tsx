@@ -13,7 +13,7 @@ const Dropdown = () => {
   const { setSidebarType } = useSidebarStore();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
+      <DropdownMenuTrigger className="focus-visible:outline-none">
         <FaEllipsisVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent>

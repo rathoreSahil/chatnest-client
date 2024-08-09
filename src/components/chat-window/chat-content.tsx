@@ -3,7 +3,6 @@
 import { useChatStore } from "@/states/chatStates";
 import { useEffect, useRef, useState } from "react";
 import { useMessage } from "@/context/message-provider";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFetchMessages } from "@/hooks/useFetchMessages";
 
 import toast from "react-hot-toast";
@@ -47,7 +46,7 @@ const ChatContent = () => {
   }, [messages]);
 
   return (
-    <ScrollArea ref={chatWindowRef} className="px-10 py-2 flex-1">
+    <div ref={chatWindowRef} className="px-10 py-2 flex-1 overflow-y-scroll">
       {loading ? (
         <MessageSkeleton length={14} />
       ) : (
@@ -55,7 +54,7 @@ const ChatContent = () => {
           return <MessageContainer key={idx} message={message} />;
         })
       )}
-    </ScrollArea>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSidebarStore } from "@/states/sidebarStates";
 
 import Search from "@/components/sidebar/misc/search";
@@ -11,11 +12,19 @@ const Sidebar = ({ className }: { className: string }) => {
   const { sidebarType } = useSidebarStore();
 
   return (
-    <div className={cn("flex flex-col", className)}>
-      <SidebarHeader />
-      {!["profile", "group-details"].includes(sidebarType) && <Search />}
-      <SidebarContent />
-    </div>
+    <AnimatePresence initial={false} mode="wait">
+      <motion.div
+        key={sidebarType}
+        initial={{ x: "-100%" }}
+        animate={{ x: 0 }}
+        transition={{ damping: 0, duration: 0.12 }}
+        className={cn("flex flex-col", className)}
+      >
+        <SidebarHeader />
+        {!["profile", "group-details"].includes(sidebarType) && <Search />}
+        <SidebarContent />
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
