@@ -37,6 +37,7 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      console.log("values", values);
       const responseJson = await Fetch.POST("/users/login", values);
 
       localStorage.setItem("jwt", responseJson.token);
