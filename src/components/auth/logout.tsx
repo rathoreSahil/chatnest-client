@@ -9,7 +9,8 @@ const Logout = () => {
 
   async function handleLogout() {
     try {
-      await Fetch.GET("/users/logout");
+      // await Fetch.GET("/users/logout");
+      localStorage.removeItem("jwt");
       setAuthUser(null);
       toast.success("Logged out successfully!");
     } catch (error: any) {
