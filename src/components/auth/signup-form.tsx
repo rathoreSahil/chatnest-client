@@ -46,6 +46,8 @@ export function SignupForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const responseJson = await Fetch.POST("/users", values);
+
+      localStorage.setItem("jwt", responseJson.token);
       setAuthUser(responseJson.data);
       toast.success("Signed Up successfully!");
       router.push("/");

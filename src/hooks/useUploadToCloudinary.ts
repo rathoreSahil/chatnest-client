@@ -18,6 +18,7 @@ export const useUploadToCloudinary = () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const res = await fetch(`${API_URL}/images`, {
           method: "POST",
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
           body: formData,
           credentials: "include",
         });

@@ -24,6 +24,7 @@ export const useUploadGroupPhoto = (): {
           `${API_URL}/chats/group/${groupChat._id}/photo`,
           {
             method: "PATCH",
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
             body: formData,
             credentials: "include",
           }

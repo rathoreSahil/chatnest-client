@@ -59,10 +59,13 @@ export class Fetch {
     reqBody?: RequestBody,
     reqHeaders?: RequestHeaders
   ) {
+    const jwt = localStorage.getItem("jwt");
+
     const reqContent: RequestContent = {
       method,
-      headers: reqHeaders || {
+      headers: { ...reqHeaders, Authorization: `Bearer ${jwt}` } || {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
       credentials: "include",
     };

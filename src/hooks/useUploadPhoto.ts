@@ -23,6 +23,7 @@ export const useUploadPhoto = (): {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const res = await fetch(`${API_URL}/users/photo`, {
           method: "PATCH",
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
           body: formData,
           credentials: "include",
         });

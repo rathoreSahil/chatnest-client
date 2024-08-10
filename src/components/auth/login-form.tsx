@@ -39,6 +39,7 @@ export function LoginForm() {
     try {
       const responseJson = await Fetch.POST("/users/login", values);
 
+      localStorage.setItem("jwt", responseJson.token);
       setAuthUser(responseJson.data);
       toast.success("Logged in successfully!");
       router.push("/");
